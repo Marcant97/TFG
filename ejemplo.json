@@ -1,0 +1,37 @@
+[
+    {
+        "type": "name",
+        "question": "Introduce tu nombre completo:"
+    },
+    {
+        "type": "email",
+        "question": "Introduce tu correo electrónico:"
+    },
+    {
+        "type": "number",
+        "question": "Introduce tu edad:"
+    },
+    {
+        "type": "multipleChoice",
+        "multipleAnswers": "false",
+        "question": "¿Cuál es tu color favorito?",
+        "choices": [
+            {
+                "choice": "Rojo",
+                "correct": "true"
+            },
+            {
+                "choice": "Azul",
+                "correct": "false"
+            },
+            {
+                "choice": "Verde",
+                "correct": "false"
+            },
+            {
+                "choice": "Amarillo",
+                "correct": "false"
+            }
+        ]
+    }
+]
