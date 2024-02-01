@@ -1,0 +1,22 @@
+// instalar django
+  pip3 install django
+
+// Comprobar instalación
+  # Linux/Mac OS X
+  python3 -m django --version
+  1.11.7
+
+  # Windows
+  py -3 -m django --version
+  1.11.7
+
+// Crear un proyecto
+  mkdir django_test
+  cd django_test
+
+  django-admin startproject mytestsite
+  cd mytestsite
+
+// Arrancar servidor web de desarrollo
+  python3 manage.py runserver
+

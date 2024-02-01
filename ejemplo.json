@@ -1,6 +1,6 @@
 [
     {
-        "type": "textInput",
+        "type": "text",
         "title": "Introduce tu nombre completo:"
     },
     {
