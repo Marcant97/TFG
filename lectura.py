@@ -13,8 +13,12 @@ mi_fichero = open("./ejemplo.json", "r")
 def leerFichero():
   datos_fichero = json.load(mi_fichero)
   for campo in datos_fichero:
-    if campo["type"] == "text":
-      print("text encontrado")
+    if campo["type"] in tiposGenericos:
+      print("Tipo generico correcto")
+    elif campo["type"] in tiposEspecificos:
+      print("Tipo especifico correcto")
+    else:
+      print("Tipo incorrecto")
     
 
 
