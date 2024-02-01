@@ -1,37 +1,32 @@
 [
     {
-        "type": "name",
-        "question": "Introduce tu nombre completo:"
+        "type": "textInput",
+        "title": "Introduce tu nombre completo:"
     },
     {
         "type": "email",
-        "question": "Introduce tu correo electrónico:"
+        "title": "Introduce tu correo electrónico:",
+        "commonDomains": "false",
+        "additionalDomains": [
+            "ull.edu.es",
+            "ull.es"
+        ]
     },
     {
         "type": "number",
-        "question": "Introduce tu edad:"
+        "title": "Introduce tu edad:",
+        "maxValue": 140
     },
     {
         "type": "multipleChoice",
         "multipleAnswers": "false",
-        "question": "¿Cuál es tu color favorito?",
+        "title": "¿Cuál es tu color favorito?",
         "choices": [
-            {
-                "choice": "Rojo",
-                "correct": "true"
-            },
-            {
-                "choice": "Azul",
-                "correct": "false"
-            },
-            {
-                "choice": "Verde",
-                "correct": "false"
-            },
-            {
-                "choice": "Amarillo",
-                "correct": "false"
-            }
+            "Rojo",
+            "Verde",
+            "Azul",
+            "Amarillo"
         ]
+        
     }
 ]
