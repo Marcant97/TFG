@@ -2,15 +2,9 @@
 
 import json
 
-
-tiposGenericos = ["text", "number", "multipleChoice", "dropdown", "checkbox"]
-tiposEspecificos = ["email", "dni", "phoneNumber", "date", "specialField"]
-
-miDiccionario = {}
-mi_fichero = open("./ejemplo.json", "r")
-
-# Función encargada de leer el fichero
-def leerFichero():
+# Función encargada de leer el fichero, pasarlo a diccionario y verificar que los tipos son correctos
+def leerFichero(fichero, tiposGenericos, tiposEspecificos):
+  mi_fichero = open(fichero, "r")
   datos_fichero = json.load(mi_fichero)
   for campo in datos_fichero:
     if campo["type"] in tiposGenericos:
@@ -20,11 +14,3 @@ def leerFichero():
     else:
       print("Tipo incorrecto")
     
-
-
-leerFichero()
-
-# Función encaragda de verificar que los tipos son correctos
-
-
-# Función encargada de verificar que los campos son correctos
