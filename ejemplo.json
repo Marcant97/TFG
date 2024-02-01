@@ -26,7 +26,10 @@
             "Verde",
             "Azul",
             "Amarillo"
-        ]
-        
+        ]   
+    },
+    {
+        "type": "text",
+        "title": "¿Cuál es tu animal favorito?"
     }
 ]

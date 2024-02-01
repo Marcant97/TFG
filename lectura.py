@@ -11,8 +11,11 @@ mi_fichero = open("./ejemplo.json", "r")
 
 # Función encargada de leer el fichero
 def leerFichero():
-    for linea in mi_fichero:
-        print (linea)
+  datos_fichero = json.load(mi_fichero)
+  for campo in datos_fichero:
+    if campo["type"] == "text":
+      print("text encontrado")
+    
 
 
 leerFichero()
