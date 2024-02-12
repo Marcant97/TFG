@@ -14,7 +14,8 @@
   mkdir django_test
   cd django_test
 
-  django-admin startproject mytestsite
+  // django-admin startproject mytestsite  --> no me funciona
+  python -m django startproject mytestsite
   cd mytestsite
 
 // Arrancar servidor web de desarrollo
