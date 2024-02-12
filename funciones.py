@@ -13,6 +13,7 @@ def mi_switch(opcion):
     # leer el fichero
     print("Lectura de fichero")
   elif opcion == 3:
+    # utilizar las funciones del configurador.py para borrar el proyecto
     print("Borrar proyecto django")
 
 
