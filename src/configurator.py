@@ -8,16 +8,23 @@ import shutil
 # pip install -r requirements.txt
 # def instalar_django():
 
-
-
-
-# def crear_proyecto():
-#   # Crear proyecto Django
-#   print("Creando proyecto Django...")
-#   subprocess.run(["mkdir", "django_test"])
-#   subprocess.run(["cd", "django_test"])
-#   subprocess.run(["django-admin", "startproject", "mysite"])
-#   subprocess.run(["cd", "mysite"])
+def crear_proyecto():
+  try:
+    # Crear proyecto Django
+    print("Creando proyecto Django...")
+    # Crear el directorio para el proyecto
+    os.makedirs("django_test", exist_ok=True)
+    # Cambiar al directorio del proyecto
+    os.chdir("django_test")
+    print("Directorio actual:", os.getcwd())
+    # Iniciar el proyecto Django
+    # python -m django startproject mytestsite
+    subprocess.run(["python", "-m", "django", "startproject", "mysite"])
+    # Cambiar al directorio del proyecto Django
+    os.chdir("mysite")
+    print("Proyecto Django creado correctamente.")
+  except Exception as e:
+    print(f"Error al crear el proyecto Django: {str(e)}")
 
 
 # def arrancar_servidor():
@@ -61,4 +68,5 @@ def borrar_proyecto():
 #   # 3. Crear proyecto Django
 #   crear_proyecto()
     
-borrar_proyecto()
+crear_proyecto()
+# borrar_proyecto()
