@@ -1,11 +1,5 @@
 from funciones import mi_switch
 
-tiposGenericos = ["text", "number", "multipleChoice", "dropdown", "checkbox"]
-tiposEspecificos = ["email", "dni", "phoneNumber", "date", "specialField"]
-
-miDiccionario = {}
-
-
 def menu_principal():
   print("0. Salir")
   print("1. Configurar proyecto Django")
