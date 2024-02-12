@@ -1,5 +1,6 @@
 // instalar django
-  pip3 install django
+  //pip3 install django
+  pip install -r requirements.txt
 
 // Comprobar instalación
   # Linux/Mac OS X
