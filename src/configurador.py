@@ -23,13 +23,14 @@ def crear_proyecto():
     os.makedirs("django_test", exist_ok=True)
     # Cambiar al directorio del proyecto
     os.chdir("django_test")
-    print("Directorio actual:", os.getcwd())
+    # print("Directorio actual:", os.getcwd())
     # Iniciar el proyecto Django
     # python -m django startproject mytestsite
     subprocess.run(["python", "-m", "django", "startproject", "mysite"])
     # Cambiar al directorio del proyecto Django
     os.chdir("mysite")
     print("Proyecto Django creado correctamente.")
+    os.chdir("../..") # Volvemos al directorio de trabajo original, para que no afecte al resto de funciones
   except Exception as e:
     print(f"Error al crear el proyecto Django: {str(e)}")
 
@@ -38,7 +39,7 @@ def borrar_proyecto():
   try:
     # Obtener la ruta del directorio de trabajo actual
     directorio_actual = os.getcwd()
-    print("Directorio actual:", directorio_actual)
+    # print("Directorio actual para borrar:", directorio_actual)
     # Borrar el proyecto Django
     print("Borrando proyecto Django...")
     proyecto_dir = os.path.join(directorio_actual, "django_test")  # Reemplaza con el nombre del proyecto

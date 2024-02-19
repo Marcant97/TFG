@@ -20,18 +20,23 @@ def mi_switch(opcion):
   elif opcion == 3:
     # utilizar las funciones del configurador.py para borrar el proyecto
     print("Borrar proyecto django")
+  elif opcion == 4:
+    print("modo desarrollo")
+    # leer fichero
+    fichero = "./examples/prueba1.json"
+    miDiccionario = leerFichero(fichero, tiposGenericos, tiposEspecificos)
+    print("imprimiendo diccionario:")
+    print(miDiccionario)
+    # crear proyecto
+    crear_proyecto()
+    # borrar proyecto
+    borrar_proyecto()
 
 
 
 
 
-# # fichero = "./ejemplo.json"
-# fichero = "";
-# while fichero != "salir":
-#   fichero = input("Introduce el nombre del fichero: ")
-#   if fichero != "salir":
-#     miDiccionario = leerFichero(fichero, tiposGenericos, tiposEspecificos)
-#     print("imprimiendo diccionario:")
-#     print(miDiccionario)
-#   else: 
-#     exit
+
+
+
+
