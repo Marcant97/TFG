@@ -14,6 +14,8 @@ def mi_switch(opcion):
   elif opcion == 1:
     # utilizar las funciones del configurador.py
     print("configurar proyecto")
+    instalar_django()
+    # crear_proyecto()
   elif opcion == 2:
     # leer el fichero
     print("Lectura de fichero")

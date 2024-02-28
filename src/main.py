@@ -20,5 +20,5 @@ from funciones import mi_switch
 # opcion = menu_principal()
 # mi_switch(opcion)
 
-
-mi_switch(4) # modo desarrollo
+mi_switch(1) # Crear Proyecto
+# mi_switch(4) # modo desarrollo
