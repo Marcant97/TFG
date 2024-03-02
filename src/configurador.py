@@ -42,9 +42,66 @@ def crear_proyecto():
     # Cambiar al directorio del proyecto Django
     os.chdir("mysite")
     print("Proyecto Django creado correctamente.")
-    os.chdir("../..") # Volvemos al directorio de trabajo original, para que no afecte al resto de funciones
+    # os.chdir("../..") # Volvemos al directorio de trabajo original, para que no afecte al resto de funciones
   except Exception as e:
     print(f"Error al crear el proyecto Django: {str(e)}")
+
+
+def configurar_proyecto():
+  # Esta función se ejecutará después de crear proyecto, por lo que ya estaremos dentro del directorio indicado.
+  try:
+    # Configurar el proyecto Django
+    print("Configurando proyecto Django...")
+    os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
+
+    # 1. Crear y rellenar models.py
+    with open("models.py", "w") as f:
+      f.write("# Aquí va el código de los modelos")
+      print("models creado correctamente.")
+
+    # 2. Crear y rellenar forms.py
+    with open("forms.py", "w") as f:
+      f.write("# Aquí va el código de los formularios")
+
+    # 3. Crear y rellenar views.py
+    with open("views.py", "w") as f:
+      f.write("# Aquí va el código de las vistas")
+
+    # 4. Crear /templates y moverse dentro del directorio
+    os.makedirs("templates", exist_ok=True)
+    os.chdir("templates")
+
+    # 5. Crear dentro de /templates un archivo mi_template.html, rellenarlo y salir de /templates
+    with open("mi_template.html", "w") as f:
+      f.write("<!-- Aquí va el código HTML -->")
+
+    os.chdir("..")  # Salir de /templates
+
+    # 6. Modificar urls.py
+
+
+    # 7. Modificar settings.py, añadir 'mysite' a INSTALLED_APPS
+
+
+    # 8. Aplicar migraciones
+
+
+      # 8.1 python manage.py makemigrations mysite
+    
+
+      # 8.2 python manage.py migrate
+    
+
+    # 9. Crear superusuario (opcional)
+
+
+
+  except Exception as e:
+    print(f"Error al configurar el proyecto Django: {str(e)}")
+
+
+
+
 
 
 def borrar_proyecto():

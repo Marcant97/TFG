@@ -1,5 +1,5 @@
 from lectura import leerFichero
-from configurador import crear_proyecto, instalar_django, borrar_proyecto
+from configurador import crear_proyecto, instalar_django, borrar_proyecto, configurar_proyecto
 
 
 tiposGenericos = ["text", "number", "multipleChoice", "dropdown", "checkbox"]
@@ -15,7 +15,7 @@ def mi_switch(opcion):
     # utilizar las funciones del configurador.py
     print("configurar proyecto")
     instalar_django()
-    # crear_proyecto()
+    crear_proyecto()
   elif opcion == 2:
     # leer el fichero
     print("Lectura de fichero")
@@ -24,15 +24,23 @@ def mi_switch(opcion):
     print("Borrar proyecto django")
   elif opcion == 4:
     print("modo desarrollo")
+    # 1.Instalar django
+    # instalar_django()
+    # 2.Crear proyecto
+    # crear_proyecto()
+    # 3. Configurar proyecto
+    configurar_proyecto()
+
+
     # leer fichero
-    fichero = "./examples/prueba1.json"
-    miDiccionario = leerFichero(fichero, tiposGenericos, tiposEspecificos)
-    print("imprimiendo diccionario:")
-    print(miDiccionario)
+    # fichero = "./examples/prueba1.json"
+    # miDiccionario = leerFichero(fichero, tiposGenericos, tiposEspecificos)
+    # print("imprimiendo diccionario:")
+    # print(miDiccionario)
     # crear proyecto
-    crear_proyecto()
+    # crear_proyecto()
     # borrar proyecto
-    borrar_proyecto()
+    # borrar_proyecto()
 
 
 
