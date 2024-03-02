@@ -5,14 +5,26 @@ import os
 import shutil
 
 # pip install -r requirements.txt
+import subprocess
+
 def instalar_django():
   try:
-    # Instalar Django
-    print("Instalando Django...")
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
-    print("Django instalado correctamente.")
-  except Exception as e:
-    print(f"Error al instalar Django: {str(e)}")
+    # Verificar si Django ya está instalado
+    print("Verificando si Django ya está instalado...")
+    subprocess.run(["pip", "show", "Django"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+
+  except subprocess.CalledProcessError:
+    # Si hay un error, significa que Django no está instalado, entonces lo instalamos
+    try:
+      # Instalar Django
+      print("Instalando Django...")
+      subprocess.run(["pip", "install", "Django==5.0.1", "--user"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+      print("Django instalado correctamente.")
+    except Exception as e:
+      print(f"Error al instalar Django: {str(e)}")
+  else:
+    print("Django ya está instalado.")
+
 
 
 def crear_proyecto():
