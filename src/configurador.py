@@ -1,11 +1,12 @@
 # script python encargado de configurar el proyecto
-
 import subprocess
 import os
 import shutil
-
 # pip install -r requirements.txt
 import subprocess
+import webbrowser
+
+
 
 def instalar_django():
   try:
@@ -28,6 +29,7 @@ def instalar_django():
 
 
 def crear_proyecto():
+
   try:
     # Crear proyecto Django
     print("Creando proyecto Django...")
@@ -42,30 +44,65 @@ def crear_proyecto():
     # Cambiar al directorio del proyecto Django
     os.chdir("mysite")
     print("Proyecto Django creado correctamente.")
-    # os.chdir("../..") # Volvemos al directorio de trabajo original, para que no afecte al resto de funciones
+
   except Exception as e:
     print(f"Error al crear el proyecto Django: {str(e)}")
 
 
 def configurar_proyecto():
-  # Esta función se ejecutará después de crear proyecto, por lo que ya estaremos dentro del directorio indicado.
   try:
     # Configurar el proyecto Django
     print("Configurando proyecto Django...")
-    os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
+    os.chdir("mysite")  # Cambiar al directorio del proyecto Django
+    # os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
 
     # 1. Crear y rellenar models.py
     with open("models.py", "w") as f:
-      f.write("# Aquí va el código de los modelos")
-      print("models creado correctamente.")
+      f.write("""
+from django.db import models
+
+class TuModelo(models.Model):
+    campo1 = models.CharField(max_length=100)
+    campo2 = models.EmailField()
+    # Agrega más campos según sea necesario
+""")
 
     # 2. Crear y rellenar forms.py
     with open("forms.py", "w") as f:
-      f.write("# Aquí va el código de los formularios")
+      f.write("""
+from django import forms
+from .models import TuModelo
+
+class TuFormulario(forms.ModelForm):
+    class Meta:
+        model = TuModelo
+        fields = ['campo1', 'campo2']
+""")
 
     # 3. Crear y rellenar views.py
     with open("views.py", "w") as f:
-      f.write("# Aquí va el código de las vistas")
+      f.write("""
+# views.py
+
+from django.shortcuts import render
+from .forms import TuFormulario
+from .models import TuModelo
+
+
+def mi_vista(request):
+    if request.method == 'POST':
+        form = TuFormulario(request.POST)
+        if form.is_valid():
+            form.save()
+            # Realiza acciones adicionales después de guardar el formulario
+            # Por ejemplo, podrías querer acceder a TuModelo aquí
+            # Por ejemplo:
+            nuevo_objeto = TuModelo(campo1=form.cleaned_data['campo1'], campo2=form.cleaned_data['campo2'])
+            nuevo_objeto.save()
+    else:
+        form = TuFormulario()
+    return render(request, 'mi_template.html', {'form': form})
+""")
 
     # 4. Crear /templates y moverse dentro del directorio
     os.makedirs("templates", exist_ok=True)
@@ -73,24 +110,77 @@ def configurar_proyecto():
 
     # 5. Crear dentro de /templates un archivo mi_template.html, rellenarlo y salir de /templates
     with open("mi_template.html", "w") as f:
-      f.write("<!-- Aquí va el código HTML -->")
+      f.write("""
+<!-- mi_template.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario</title>
+</head>
+<body>
+    <h2>Formulario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
+""")
 
     os.chdir("..")  # Salir de /templates
 
     # 6. Modificar urls.py
+    with open("urls.py", "w") as f:
+      f.write("""
+from django.contrib import admin
+from django.urls import path
+from . import views
 
+urlpatterns = [
+    path('formulario/', views.mi_vista, name='mi_vista'),
+    path('admin/', admin.site.urls)
+]
+""")
 
-    # 7. Modificar settings.py, añadir 'mysite' a INSTALLED_APPS
+    # 7. Modificar settings.py, añadir 'mysite' a INSTALLED_APPS.
+      # 7.1 Obtener líneas del fichero.
+    with open('settings.py', 'r') as f:
+            lines = f.readlines()
+      # 7.2 Añadir 'mysite' a INSTALLED_APPS, justo donde queremos.
+    with open('settings.py', 'w') as f:
+      for line in lines:
+          f.write(line)
+          if line.strip() == "INSTALLED_APPS = [":  # Busca el inicio de INSTALLED_APPS
+              f.write("    'mysite',\n")  # Agrega tu nuevo elemento
+              # Puedes agregar más elementos si es necesario
+      print("Nuevo elemento agregado a INSTALLED_APPS en settings.py")
 
 
     # 8. Aplicar migraciones
+      # 8.1 cambiar de directorio a la raíz del proyecto, donde está manage.py
+    os.chdir("..")  # Cambiar al directorio raíz del proyecto 
+      
+      # 8.2 python manage.py makemigrations mysite
+    subprocess.run(["python", "manage.py", "makemigrations", "mysite"])
+      
+      # 8.3 python manage.py migrate
+    subprocess.run(["python", "manage.py", "migrate"])
 
 
-      # 8.1 python manage.py makemigrations mysite
+    # PASO OPCIONAL --> Arrancar servidor en modo desarrollo
+    print("Arrancando servidor de desarrollo...")
+    comando = 'start cmd /c "python manage.py runserver"'
+    subprocess.run(comando, shell=True)
+    # subprocess.run(["python", "manage.py", "runserver"])
+
+    # entrar en la dirección con "http://127.0.0.1:8000/formulario"
+    url = "http://127.0.0.1:8000/formulario"
+    webbrowser.open(url)
+
     
 
-      # 8.2 python manage.py migrate
-    
 
     # 9. Crear superusuario (opcional)
 

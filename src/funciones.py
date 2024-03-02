@@ -1,6 +1,7 @@
 from lectura import leerFichero
 from configurador import crear_proyecto, instalar_django, borrar_proyecto, configurar_proyecto
-
+import time
+import os
 
 tiposGenericos = ["text", "number", "multipleChoice", "dropdown", "checkbox"]
 tiposEspecificos = ["email", "dni", "phoneNumber", "date", "specialField"]
@@ -27,8 +28,11 @@ def mi_switch(opcion):
     # 1.Instalar django
     # instalar_django()
     # 2.Crear proyecto
-    # crear_proyecto()
-    # 3. Configurar proyecto
+    crear_proyecto()
+    # time.sleep(1) # Esperar 1 segundo para dar tiempo a la creación del proyecto.
+    # 3. Leer fichero de entrada
+    # leerFichero()
+    # 4. Configurar proyecto
     configurar_proyecto()
 
 
