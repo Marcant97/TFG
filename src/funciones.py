@@ -83,11 +83,43 @@ diccionario = [
     }
 ]
 
-codigo_generado = generar_modelo(diccionario)
+# codigo_generado = generar_modelo(diccionario)
 
-with open("models.py", "w") as f:
-    f.write(codigo_generado)
-
-
+# with open("models.py", "w") as f:
+#     f.write(codigo_generado)
 
 
+
+def generar_forms(miDiccionario):
+  print('Creando formularios...')
+  with open("forms.py", "w", encoding="utf-8") as file:
+    file.write("from django import forms\n\n")
+    file.write("class TuFormulario(forms.Form):\n")
+    for pregunta in miDiccionario:
+      tipo = pregunta.get("type", "")
+      titulo = pregunta.get("title", "")
+      nombre_campo = limpiar_titulo(titulo)
+      if tipo == "text":
+        file.write(f"    {nombre_campo} = forms.CharField(label='{titulo}', max_length=100)\n")
+      # elif tipo == "number":
+      #   f.write(f"    {nombre_campo} = forms.IntegerField(label='{titulo}')\n")
+      # Agrega más tipos de campo según sea necesario
+      else:
+        print(f"Tipo de campo no válido para la pregunta: {titulo}")
+
+
+generar_forms(diccionario)
+
+
+  
+
+#       with open("forms.py", "w") as f:
+#       f.write("""
+# from django import forms
+# from .models import TuModelo
+
+# class TuFormulario(forms.ModelForm):
+#     class Meta:
+#         model = TuModelo
+#         fields = ['campo1', 'campo2']
+# """)

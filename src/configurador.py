@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import webbrowser
 
-from funciones import generar_modelo
+from funciones import generar_modelo, generar_forms
 
 
 def instalar_django():
@@ -62,16 +62,7 @@ def configurar_proyecto(miDiccionario):
 
 
     # 2. Crear y rellenar forms.py
-    with open("forms.py", "w") as f:
-      f.write("""
-from django import forms
-from .models import TuModelo
-
-class TuFormulario(forms.ModelForm):
-    class Meta:
-        model = TuModelo
-        fields = ['campo1', 'campo2']
-""")
+    generar_forms(miDiccionario)
 
     # 3. Crear y rellenar views.py
     with open("views.py", "w") as f:
