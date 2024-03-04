@@ -46,26 +46,40 @@ def generar_models(miDiccionario):
 def generar_forms(miDiccionario):
   print('Creando formularios...')
   with open("forms.py", "w", encoding="utf-8") as file:
-    file.write("from django import forms\n\n")
-    file.write("class TuFormulario(forms.Form):\n")
+    file.write("from django import forms\n")
+    file.write("from .models import TuModelo\n\n")
+
+    file.write("class TuFormulario(forms.ModelForm):\n")
+    file.write("    class Meta:\n")
+    file.write("        model = TuModelo\n")
+
+    file.write("        fields = [\n")
     for pregunta in miDiccionario:
       tipo = pregunta.get("type", "")
       titulo = pregunta.get("title", "")
       nombre_campo = limpiar_titulo(titulo)
       if tipo == "text":
-        file.write(f"    {nombre_campo} = forms.CharField(label='{titulo}', max_length=100)\n")
-      # elif tipo == "number":
-      #   f.write(f"    {nombre_campo} = forms.IntegerField(label='{titulo}')\n")
-      # Agrega más tipos de campo según sea necesario
-      else:
-        print(f"Tipo de campo no válido para la pregunta: {titulo}")
+        file.write(f"            '{nombre_campo}',\n")
+
+    file.write("        ]\n")
+         
+
+    # for pregunta in miDiccionario:
+    #   tipo = pregunta.get("type", "")
+    #   titulo = pregunta.get("title", "")
+    #   nombre_campo = limpiar_titulo(titulo)
+    #   if tipo == "text":
+    #     file.write(f"    {nombre_campo} = forms.CharField(label='{titulo}', max_length=100)\n")
+
+      # else:
+      #   print(f"Tipo de campo no válido para la pregunta: {titulo}")
 
 
 # LLAMADA PARA HACER PRUEBAS
 # generar_forms(diccionario)
 
 
-def generar_views():
+def generar_views(miDiccionario):
   print('Creando vistas...')
   codigo = "from django.shortcuts import render\n"
   codigo += "from .forms import TuFormulario\n"
@@ -77,6 +91,20 @@ def generar_views():
   codigo += "        if form.is_valid():\n"
   codigo += "            form.save()\n"
   codigo += "            # Realiza acciones adicionales después de guardar el formulario\n"
+
+  # nuevo_objeto = TuModelo(campo1=form.cleaned_data['campo1'], campo2=form.cleaned_data['campo2'])
+  #           nuevo_objeto.save()
+  codigo += "            nuevo_objeto = TuModelo("
+  for pregunta in miDiccionario:
+    tipo = pregunta.get("type", "")
+    titulo = pregunta.get("title", "")
+    nombre_campo = limpiar_titulo(titulo)
+    if tipo == "text":
+      codigo += f"{nombre_campo}=form.cleaned_data['{nombre_campo}'], "
+  codigo += ")\n"
+  codigo += "            nuevo_objeto.save()\n"
+
+
   codigo += "    else:\n"
   codigo += "        form = TuFormulario()\n"
   codigo += "    return render(request, 'mi_template.html', {'form': form})\n"

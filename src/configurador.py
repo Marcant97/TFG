@@ -65,7 +65,7 @@ def configurar_proyecto(miDiccionario):
     generar_forms(miDiccionario)
 
     # 3. Crear y rellenar views.py
-    generar_views()
+    generar_views(miDiccionario)
 
     # 4. Crear /templates y moverse dentro del directorio
     os.makedirs("templates", exist_ok=True)
