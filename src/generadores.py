@@ -43,8 +43,6 @@ def generar_models(miDiccionario):
 
 
 
-
-
 def generar_forms(miDiccionario):
   print('Creando formularios...')
   with open("forms.py", "w", encoding="utf-8") as file:

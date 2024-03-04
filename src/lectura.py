@@ -14,7 +14,7 @@ def verificarJSON(contenido):
 def leerFichero(fichero, tiposGenericos, tiposEspecificos):
   # manejo de errores en la lectura del fichero
   try :
-    mi_fichero = open(fichero, "r")
+    mi_fichero = open(fichero, "r", encoding="utf-8")
     datos_fichero = json.load(mi_fichero)
     for campo in datos_fichero:
       if ((campo["type"] not in tiposGenericos) and (campo["type"] not in tiposEspecificos)):

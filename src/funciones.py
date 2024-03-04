@@ -20,6 +20,8 @@ def mi_switch(opcion):
   elif opcion == 2:
     # leer el fichero
     print("Lectura de fichero")
+    miDiccionario = leerFichero("./examples/prueba1.json", tiposGenericos, tiposEspecificos)
+    print(miDiccionario)
 
   elif opcion == 3:
     # utilizar las funciones del configurador.py para borrar el proyecto
