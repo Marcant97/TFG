@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import webbrowser
 
+from funciones import generar_modelos
 
 
 def instalar_django():
@@ -49,7 +50,7 @@ def crear_proyecto():
     print(f"Error al crear el proyecto Django: {str(e)}")
 
 
-def configurar_proyecto():
+def configurar_proyecto(miDiccionario):
   try:
     # Configurar el proyecto Django
     print("Configurando proyecto Django...")
@@ -57,15 +58,17 @@ def configurar_proyecto():
     # os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
 
     # 1. Crear y rellenar models.py
-    with open("models.py", "w") as f:
-      f.write("""
-from django.db import models
+    generar_modelos(miDiccionario)
+#         with open("models.py", "w") as f:
+#       f.write("""
+# from django.db import models
 
-class TuModelo(models.Model):
-    campo1 = models.CharField(max_length=100)
-    campo2 = models.EmailField()
-    # Agrega más campos según sea necesario
-""")
+# class TuModelo(models.Model):
+#     campo1 = models.CharField(max_length=100)
+#     campo2 = models.EmailField()
+#     # Agrega más campos según sea necesario
+# """)
+
 
     # 2. Crear y rellenar forms.py
     with open("forms.py", "w") as f:
@@ -178,8 +181,6 @@ urlpatterns = [
     # entrar en la dirección con "http://127.0.0.1:8000/formulario"
     url = "http://127.0.0.1:8000/formulario"
     webbrowser.open(url)
-
-    
 
 
     # 9. Crear superusuario (opcional)
