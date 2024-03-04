@@ -62,6 +62,16 @@ def generar_forms(miDiccionario):
         file.write(f"            '{nombre_campo}',\n")
 
     file.write("        ]\n")
+
+    file.write("        labels = {\n")
+    for pregunta in miDiccionario:
+      tipo = pregunta.get("type", "")
+      titulo = pregunta.get("title", "")
+      nombre_campo = limpiar_titulo(titulo)
+      if tipo == "text":
+        file.write(f"            '{nombre_campo}': '{titulo}',\n")
+
+    file.write("        }\n")
          
 
     # for pregunta in miDiccionario:
@@ -91,19 +101,6 @@ def generar_views(miDiccionario):
   codigo += "        if form.is_valid():\n"
   codigo += "            form.save()\n"
   codigo += "            # Realiza acciones adicionales después de guardar el formulario\n"
-
-  # nuevo_objeto = TuModelo(campo1=form.cleaned_data['campo1'], campo2=form.cleaned_data['campo2'])
-  #           nuevo_objeto.save()
-  codigo += "            nuevo_objeto = TuModelo("
-  for pregunta in miDiccionario:
-    tipo = pregunta.get("type", "")
-    titulo = pregunta.get("title", "")
-    nombre_campo = limpiar_titulo(titulo)
-    if tipo == "text":
-      codigo += f"{nombre_campo}=form.cleaned_data['{nombre_campo}'], "
-  codigo += ")\n"
-  codigo += "            nuevo_objeto.save()\n"
-
 
   codigo += "    else:\n"
   codigo += "        form = TuFormulario()\n"
@@ -166,7 +163,6 @@ urlpatterns = [
 # modify_urls_py()
       
 
-
 def modify_settings_py():
   print('Modificando settings.py...')
   with open("settings.py", "r", encoding="utf-8") as f:
@@ -175,10 +171,9 @@ def modify_settings_py():
   # Buscar la línea que contiene 'INSTALLED_APPS'
   for i, linea in enumerate(lineas):
     if 'INSTALLED_APPS' in linea:
-      # Añadir 'mysite' a INSTALLED_APPS
-      lineas[i] = linea.rstrip()[:-1] + "[ 'mysite',\n"
-      break
+      lineas[i] = "INSTALLED_APPS = [ 'mysite',\n"
 
   # Escribir las líneas modificadas en el archivo
   with open("settings.py", "w", encoding="utf-8") as f:
     f.writelines(lineas)
+
