@@ -48,27 +48,12 @@ miDiccionario = {}
 #     # borrar_proyecto()
 
 
+# Función que se encarga de quitar los caracteres especiales y espacios de un string, para evitar problemas 
+# con el nombre de los campos de las variables.
 def limpiar_titulo(titulo):
     caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_')
     titulo_sin_acentos = ''.join(c if c in caracteres_validos else '_' for c in titulo)
     return titulo_sin_acentos.lower().rstrip('_')
-
-
-def generar_modelo(miDiccionario):
-  # Procesamos el diccionario
-  # de momento sólo las preguntas con tipo "text"
-  print('Creando modelos...')
-  codigo = """from django.db import models
-
-class TuModelo(models.Model):\n"""
-  for pregunta in diccionario:
-    if pregunta['type'] == 'text':
-      titulo_limpio = limpiar_titulo(pregunta['title'])
-      campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
-      codigo += campo
-  
-      
-  return codigo
 
 
 # Ejemplo de uso con tu diccionario
@@ -83,10 +68,29 @@ diccionario = [
     }
 ]
 
-# codigo_generado = generar_modelo(diccionario)
 
-# with open("models.py", "w") as f:
-#     f.write(codigo_generado)
+
+
+def generar_models(miDiccionario):
+  # Procesamos el diccionario
+  # de momento sólo las preguntas con tipo "text"
+  print('Creando modelos...')
+  codigo = "from django.db import models\n\n"
+  codigo += "class TuModelo(models.Model):\n"
+  for pregunta in miDiccionario:
+    if pregunta['type'] == 'text':
+      titulo_limpio = limpiar_titulo(pregunta['title'])
+      campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
+      codigo += campo
+
+  # Escribir el código en el archivo
+  with open("models.py", "w") as f:
+      f.write(codigo)
+
+# LLAMADA PARA HACER PRUEBAS
+# generar_modelo(diccionario)
+
+
 
 
 
@@ -108,18 +112,53 @@ def generar_forms(miDiccionario):
         print(f"Tipo de campo no válido para la pregunta: {titulo}")
 
 
-generar_forms(diccionario)
+# LLAMADA PARA HACER PRUEBAS
+# generar_forms(diccionario)
 
 
-  
+def generar_views(miDiccionario):
+  print('Creando vistas...')
+  codigo = "from django.shortcuts import render\n"
+  codigo += "from .forms import TuFormulario\n"
+  codigo += "from .models import TuModelo\n\n"
 
-#       with open("forms.py", "w") as f:
+  codigo += "def mi_vista(request):\n"
+  codigo += "    if request.method == 'POST':\n"
+  codigo += "        form = TuFormulario(request.POST)\n"
+  codigo += "        if form.is_valid():\n"
+  codigo += "            form.save()\n"
+  codigo += "            # Realiza acciones adicionales después de guardar el formulario\n"
+  codigo += "    else:\n"
+  codigo += "        form = TuFormulario()\n"
+  codigo += "    return render(request, 'mi_template.html', {'form': form})\n"
+
+  # Escribir el código en el archivo
+  with open("views.py", "w") as f:
+      f.write(codigo)
+
+# LLAMADA PARA HACER PRUEBAS
+generar_views(diccionario)
+
+# with open("views.py", "w") as f:
 #       f.write("""
-# from django import forms
+# # views.py
+
+# from django.shortcuts import render
+# from .forms import TuFormulario
 # from .models import TuModelo
 
-# class TuFormulario(forms.ModelForm):
-#     class Meta:
-#         model = TuModelo
-#         fields = ['campo1', 'campo2']
+
+# def mi_vista(request):
+#     if request.method == 'POST':
+#         form = TuFormulario(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             # Realiza acciones adicionales después de guardar el formulario
+#             # Por ejemplo, podrías querer acceder a TuModelo aquí
+#             # Por ejemplo:
+#             nuevo_objeto = TuModelo(campo1=form.cleaned_data['campo1'], campo2=form.cleaned_data['campo2'])
+#             nuevo_objeto.save()
+#     else:
+#         form = TuFormulario()
+#     return render(request, 'mi_template.html', {'form': form})
 # """)

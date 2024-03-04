@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import webbrowser
 
-from funciones import generar_modelo, generar_forms
+from funciones import generar_models, generar_forms, generar_views
 
 
 def instalar_django():
@@ -58,36 +58,14 @@ def configurar_proyecto(miDiccionario):
     # os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
 
     # 1. Crear y rellenar models.py
-    generar_modelo(miDiccionario)
+    generar_models(miDiccionario)
 
 
     # 2. Crear y rellenar forms.py
     generar_forms(miDiccionario)
 
     # 3. Crear y rellenar views.py
-    with open("views.py", "w") as f:
-      f.write("""
-# views.py
-
-from django.shortcuts import render
-from .forms import TuFormulario
-from .models import TuModelo
-
-
-def mi_vista(request):
-    if request.method == 'POST':
-        form = TuFormulario(request.POST)
-        if form.is_valid():
-            form.save()
-            # Realiza acciones adicionales después de guardar el formulario
-            # Por ejemplo, podrías querer acceder a TuModelo aquí
-            # Por ejemplo:
-            nuevo_objeto = TuModelo(campo1=form.cleaned_data['campo1'], campo2=form.cleaned_data['campo2'])
-            nuevo_objeto.save()
-    else:
-        form = TuFormulario()
-    return render(request, 'mi_template.html', {'form': form})
-""")
+    generar_views(miDiccionario)
 
     # 4. Crear /templates y moverse dentro del directorio
     os.makedirs("templates", exist_ok=True)
