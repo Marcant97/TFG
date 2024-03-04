@@ -2,5 +2,13 @@
   {
     "type": "text",
     "title": "Introduce tu nombre completo:"
+  },
+  {
+    "type": "text",
+    "title": "Introduce tu dirección"
+  },
+  {
+    "type": "text",
+    "title": "¿Cuál es tu animal favorito?"
   }
 ]
