@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import webbrowser
 
-from funciones import generar_models, generar_forms, generar_views, generar_template
+from generadores import generar_models, generar_forms, generar_views, generar_template, modify_urls_py, modify_settings_py
 
 
 def instalar_django():
@@ -33,7 +33,7 @@ def crear_proyecto():
 
   try:
     # Crear proyecto Django
-    print("Creando proyecto Django...")
+    print("\nCreando proyecto Django...")
     # Crear el directorio para el proyecto
     os.makedirs("django_test", exist_ok=True)
     # Cambiar al directorio del proyecto
@@ -46,6 +46,7 @@ def crear_proyecto():
     os.chdir("mysite")
     print("Proyecto Django creado correctamente.")
 
+
   except Exception as e:
     print(f"Error al crear el proyecto Django: {str(e)}")
 
@@ -53,7 +54,7 @@ def crear_proyecto():
 def configurar_proyecto(miDiccionario):
   try:
     # Configurar el proyecto Django
-    print("Configurando proyecto Django...")
+    print("\nConfigurando proyecto Django...")
     os.chdir("mysite")  # Cambiar al directorio del proyecto Django
     # os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
 
@@ -76,30 +77,11 @@ def configurar_proyecto(miDiccionario):
     os.chdir("..")  # Salir de /templates
 
     # 6. Modificar urls.py
-    with open("urls.py", "w") as f:
-      f.write("""
-from django.contrib import admin
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('formulario/', views.mi_vista, name='mi_vista'),
-    path('admin/', admin.site.urls)
-]
-""")
+    modify_urls_py()
 
     # 7. Modificar settings.py, añadir 'mysite' a INSTALLED_APPS.
       # 7.1 Obtener líneas del fichero.
-    with open('settings.py', 'r') as f:
-            lines = f.readlines()
-      # 7.2 Añadir 'mysite' a INSTALLED_APPS, justo donde queremos.
-    with open('settings.py', 'w') as f:
-      for line in lines:
-          f.write(line)
-          if line.strip() == "INSTALLED_APPS = [":  # Busca el inicio de INSTALLED_APPS
-              f.write("    'mysite',\n")  # Agrega tu nuevo elemento
-              # Puedes agregar más elementos si es necesario
-      print("Nuevo elemento agregado a INSTALLED_APPS en settings.py")
+    modify_settings_py()
 
 
     # 8. Aplicar migraciones
