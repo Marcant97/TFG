@@ -1,9 +1,10 @@
 # Función que se encarga de quitar los caracteres especiales y espacios de un string, para evitar problemas 
 # con el nombre de los campos de las variables.
 def limpiar_titulo(titulo):
-  caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_')
-  titulo_sin_acentos = ''.join(c if c in caracteres_validos else '_' for c in titulo)
-  return titulo_sin_acentos.lower().rstrip('_')
+    caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+    titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo)
+    return titulo_limpio.lower().rstrip('_')
+
 
 
 # # Ejemplo de uso con tu diccionario
@@ -34,7 +35,7 @@ def generar_models(miDiccionario):
       codigo += campo
 
   # Escribir el código en el archivo
-  with open("models.py", "w") as f:
+  with open("models.py", "w", encoding="utf-8") as f:
       f.write(codigo)
 
 # LLAMADA PARA HACER PRUEBAS
@@ -83,7 +84,7 @@ def generar_views():
   codigo += "    return render(request, 'mi_template.html', {'form': form})\n"
 
   # Escribir el código en el archivo
-  with open("views.py", "w") as f:
+  with open("views.py", "w", encoding="utf-8") as f:
       f.write(codigo)
 
 # LLAMADA PARA HACER PRUEBAS
@@ -112,7 +113,7 @@ def generar_template():
 """
 
     # Escribir el código en el archivo
-    with open("mi_template.html", "w") as f:
+    with open("mi_template.html", "w", encoding="utf-8") as f:
         f.write(codigo)
 
 # LLAMADA PARA HACER PRUEBAS
@@ -131,7 +132,7 @@ urlpatterns = [
 ]
 """
   # Escribir el código en el archivo
-  with open("urls.py", "w") as f:
+  with open("urls.py", "w", encoding="utf-8") as f:
     f.write(codigo)
 
 
@@ -142,7 +143,7 @@ urlpatterns = [
 
 def modify_settings_py():
   print('Modificando settings.py...')
-  with open("settings.py", "r") as f:
+  with open("settings.py", "r", encoding="utf-8") as f:
     lineas = f.readlines()
 
   # Buscar la línea que contiene 'INSTALLED_APPS'
@@ -153,5 +154,5 @@ def modify_settings_py():
       break
 
   # Escribir las líneas modificadas en el archivo
-  with open("settings.py", "w") as f:
+  with open("settings.py", "w", encoding="utf-8") as f:
     f.writelines(lineas)

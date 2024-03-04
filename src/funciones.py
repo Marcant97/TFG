@@ -1,7 +1,5 @@
 from lectura import leerFichero
 from configurador import crear_proyecto, instalar_django, borrar_proyecto, configurar_proyecto
-import time
-import os
 
 tiposGenericos = ["text", "number", "multipleChoice", "dropdown", "checkbox"]
 tiposEspecificos = ["email", "dni", "phoneNumber", "date", "specialField"]
@@ -31,14 +29,11 @@ def mi_switch(opcion):
     print("Entrando en modo desarrollo del switch")
     # 1.Instalar django
     # instalar_django()
-    
+    borrar_proyecto()
     # 3. Leer fichero de entrada y guardar el diccionario obtenido.
-    directorio_actual = os.getcwd()
-    print("Directorio de trabajo antes de leer fichero:", directorio_actual)
+
     # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
     miDiccionario = leerFichero("./examples/prueba1.json", tiposGenericos, tiposEspecificos)
-    directorio_actual = os.getcwd()
-    print("Directorio de trabajo después de leer fichero:", directorio_actual)
 
     # 2.Crear proyecto
     crear_proyecto()
