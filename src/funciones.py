@@ -116,7 +116,7 @@ def generar_forms(miDiccionario):
 # generar_forms(diccionario)
 
 
-def generar_views(miDiccionario):
+def generar_views():
   print('Creando vistas...')
   codigo = "from django.shortcuts import render\n"
   codigo += "from .forms import TuFormulario\n"
@@ -137,28 +137,39 @@ def generar_views(miDiccionario):
       f.write(codigo)
 
 # LLAMADA PARA HACER PRUEBAS
-generar_views(diccionario)
-
-# with open("views.py", "w") as f:
-#       f.write("""
-# # views.py
-
-# from django.shortcuts import render
-# from .forms import TuFormulario
-# from .models import TuModelo
+# generar_views(diccionario)
 
 
-# def mi_vista(request):
-#     if request.method == 'POST':
-#         form = TuFormulario(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             # Realiza acciones adicionales después de guardar el formulario
-#             # Por ejemplo, podrías querer acceder a TuModelo aquí
-#             # Por ejemplo:
-#             nuevo_objeto = TuModelo(campo1=form.cleaned_data['campo1'], campo2=form.cleaned_data['campo2'])
-#             nuevo_objeto.save()
-#     else:
-#         form = TuFormulario()
-#     return render(request, 'mi_template.html', {'form': form})
-# """)
+
+def generar_template():
+    print('Creando template...')
+    codigo = """<!-- mi_template.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario</title>
+</head>
+<body>
+    <h2>Formulario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
+"""
+
+    # Escribir el código en el archivo
+    with open("mi_template.html", "w") as f:
+        f.write(codigo)
+
+# LLAMADA PARA HACER PRUEBAS
+generar_template()
+
+
+
+
+# LLAMADA PARA HACER PRUEBAS
+generar_templates(diccionario)

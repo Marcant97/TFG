@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import webbrowser
 
-from funciones import generar_models, generar_forms, generar_views
+from funciones import generar_models, generar_forms, generar_views, generar_template
 
 
 def instalar_django():
@@ -60,37 +60,18 @@ def configurar_proyecto(miDiccionario):
     # 1. Crear y rellenar models.py
     generar_models(miDiccionario)
 
-
     # 2. Crear y rellenar forms.py
     generar_forms(miDiccionario)
 
     # 3. Crear y rellenar views.py
-    generar_views(miDiccionario)
+    generar_views()
 
     # 4. Crear /templates y moverse dentro del directorio
     os.makedirs("templates", exist_ok=True)
     os.chdir("templates")
 
     # 5. Crear dentro de /templates un archivo mi_template.html, rellenarlo y salir de /templates
-    with open("mi_template.html", "w") as f:
-      f.write("""
-<!-- mi_template.html -->
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Formulario</title>
-</head>
-<body>
-    <h2>Formulario</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enviar</button>
-    </form>
-</body>
-</html>
-""")
+    generar_template()
 
     os.chdir("..")  # Salir de /templates
 
