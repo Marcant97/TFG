@@ -48,6 +48,10 @@ miDiccionario = {}
 #     # borrar_proyecto()
 
 
+def limpiar_titulo(titulo):
+    caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_')
+    titulo_sin_acentos = ''.join(c if c in caracteres_validos else '_' for c in titulo)
+    return titulo_sin_acentos.lower().rstrip('_')
 
 
 def generar_modelo(miDiccionario):
@@ -57,10 +61,10 @@ def generar_modelo(miDiccionario):
   codigo = """from django.db import models
 
 class TuModelo(models.Model):\n"""
-  for pregunta in miDiccionario:
+  for pregunta in diccionario:
     if pregunta['type'] == 'text':
-      titulo = pregunta['title'].replace(' ', '_').lower().rstrip(':')  # Eliminar cualquier carácter no deseado al final
-      campo = f"    {titulo} = models.CharField(max_length=100)\n"
+      titulo_limpio = limpiar_titulo(pregunta['title'])
+      campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
       codigo += campo
   
       
@@ -79,7 +83,7 @@ diccionario = [
     }
 ]
 
-codigo_generado = generar_modelos(diccionario)
+codigo_generado = generar_modelo(diccionario)
 
 with open("models.py", "w") as f:
     f.write(codigo_generado)
