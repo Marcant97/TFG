@@ -50,7 +50,7 @@ miDiccionario = {}
 
 
 
-def generar_modelos(miDiccionario):
+def generar_modelo(miDiccionario):
   # Procesamos el diccionario
   # de momento sólo las preguntas con tipo "text"
   print('Creando modelos...')

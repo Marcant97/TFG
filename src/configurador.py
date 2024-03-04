@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import webbrowser
 
-from funciones import generar_modelos
+from funciones import generar_modelo
 
 
 def instalar_django():
@@ -58,16 +58,7 @@ def configurar_proyecto(miDiccionario):
     # os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
 
     # 1. Crear y rellenar models.py
-    generar_modelos(miDiccionario)
-#         with open("models.py", "w") as f:
-#       f.write("""
-# from django.db import models
-
-# class TuModelo(models.Model):
-#     campo1 = models.CharField(max_length=100)
-#     campo2 = models.EmailField()
-#     # Agrega más campos según sea necesario
-# """)
+    generar_modelo(miDiccionario)
 
 
     # 2. Crear y rellenar forms.py
