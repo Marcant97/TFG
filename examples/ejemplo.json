@@ -22,10 +22,10 @@
         "multipleAnswers": "false",
         "title": "¿Cuál es tu color favorito?",
         "choices": [
-            "Rojo",
-            "Verde",
-            "Azul",
-            "Amarillo"
+            {"choice": "Rojo", "answer": false},
+            {"choice": "Verde", "answer": false},
+            {"choice": "Azul", "answer": false},
+            {"choice": "Amarillo", "answer": false}
         ]   
     },
     {
@@ -33,3 +33,4 @@
         "title": "¿Cuál es tu animal favorito?"
     }
 ]
+
