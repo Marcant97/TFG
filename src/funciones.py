@@ -1,4 +1,4 @@
-from lectura import leerFichero
+from lectura import leerFichero, comprobarDiccionario
 from configurador import crear_proyecto, instalar_django, borrar_proyecto, configurar_proyecto
 
 tiposGenericos = ["text", "number", "multipleChoice", "dropdown", "checkbox"]
@@ -36,6 +36,7 @@ def mi_switch(opcion):
 
     # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
     miDiccionario = leerFichero("./examples/prueba2.json", tiposGenericos, tiposEspecificos)
+    comprobarDiccionario(miDiccionario)
 
     # 2.Crear proyecto
     crear_proyecto()
