@@ -1,10 +1,4 @@
-# Función que se encarga de quitar los caracteres especiales y espacios de un string, para evitar problemas 
-# con el nombre de los campos de las variables.
-def limpiar_titulo(titulo):
-    caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-    titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo)
-    return titulo_limpio.lower().rstrip('_')
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # # Ejemplo de uso con tu diccionario
@@ -21,24 +15,62 @@ def limpiar_titulo(titulo):
 
 
 
+# Función que se encarga de quitar los caracteres especiales y espacios de un string, para evitar problemas 
+# con el nombre de los campos de las variables.
+def limpiar_titulo(titulo):
+    caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+    titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo)
+    return titulo_limpio.lower().rstrip('_')
+
+
+
 
 def generar_models(miDiccionario):
   # Procesamos el diccionario
   # de momento sólo las preguntas con tipo "text"
   print('Creando modelos...')
   codigo = "from django.db import models\n\n"
+  # Comprobar si hay un campo numérico con límites
+  for pregunta in miDiccionario:
+    if pregunta['type'] == 'number':
+      if 'minValue' in pregunta or 'maxValue' in pregunta:
+        codigo += "from django.core.validators import MinValueValidator, MaxValueValidator\n\n"
+        break
   codigo += "class TuModelo(models.Model):\n"
   for pregunta in miDiccionario:
+
+    titulo_limpio = limpiar_titulo(pregunta['title']) # Limpiar el título para que sea un nombre de campo válido
+
+    # Tipo de campo de texto con opcionalmente límite de caracteres.
     if pregunta['type'] == 'text':
-      titulo_limpio = limpiar_titulo(pregunta['title'])
       # Comprobar si hay un límite de caracteres (parámetro opcional)
       if 'limit' in pregunta:
-        print (f"El límite de caracteres para {titulo_limpio} es {pregunta['limit']}")
         campo = f"    {titulo_limpio} = models.CharField(max_length={pregunta['limit']})\n"
       else:
-        print('No hay limites de caracteres para este campo.')
         campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
+
+    # Tipo de campo numérico con opcionalmente mínimo y máximo.
+    elif pregunta['type'] == 'number':
+      minValue = pregunta.get('minValue', None)
+      maxValue = pregunta.get('maxValue', None)
+      if minValue != None and maxValue != None:
+        print('minValue y maxValue presentes')
+        campo = f"    {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({minValue}), MaxValueValidator({maxValue})])\n"
+      elif minValue != None:
+        print('minValue presente')
+        campo = f"    {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({minValue})])\n"
+      elif maxValue != None:
+        print('maxValue presente')
+        campo = f"    {titulo_limpio} = models.IntegerField(validators=[MaxValueValidator({maxValue})])\n"
+      else:
+        campo = f"    {titulo_limpio} = models.IntegerField()\n"
       codigo += campo
+
+    else:
+      print(f"Tipo de campo no válido para la pregunta: {pregunta['title']}")
+      continue
+
+    codigo += campo
 
   # Escribir el código en el archivo
   with open("models.py", "w", encoding="utf-8") as f:
@@ -64,35 +96,27 @@ def generar_forms(miDiccionario):
       tipo = pregunta.get("type", "")
       titulo = pregunta.get("title", "")
       nombre_campo = limpiar_titulo(titulo)
-      if tipo == "text":
-        file.write(f"            '{nombre_campo}',\n")
+      # if tipo == "text":
+      # Comentado por que en realidad el tipo da igual, todas las variables se añaden.
+      file.write(f"            '{nombre_campo}',\n") 
 
     file.write("        ]\n")
-
     file.write("        labels = {\n")
+
     for pregunta in miDiccionario:
       tipo = pregunta.get("type", "")
       titulo = pregunta.get("title", "")
       nombre_campo = limpiar_titulo(titulo)
-      if tipo == "text":
-        file.write(f"            '{nombre_campo}': '{titulo}',\n")
+      # if tipo == "text":
+      # Comentado por que en realidad el tipo da igual, todas las variables se añaden.
+      file.write(f"            '{nombre_campo}': '{titulo}',\n")
 
     file.write("        }\n")
-         
-
-    # for pregunta in miDiccionario:
-    #   tipo = pregunta.get("type", "")
-    #   titulo = pregunta.get("title", "")
-    #   nombre_campo = limpiar_titulo(titulo)
-    #   if tipo == "text":
-    #     file.write(f"    {nombre_campo} = forms.CharField(label='{titulo}', max_length=100)\n")
-
-      # else:
-      #   print(f"Tipo de campo no válido para la pregunta: {titulo}")
-
 
 # LLAMADA PARA HACER PRUEBAS
 # generar_forms(diccionario)
+
+
 
 
 def generar_views(miDiccionario):
