@@ -30,13 +30,15 @@ def generar_models(miDiccionario):
   # de momento sólo las preguntas con tipo "text"
   print('Creando modelos...')
   codigo = "from django.db import models\n\n"
-  # Comprobar si hay un campo numérico con límites
+  # Comprobar si hay un campo numérico con límites, para añadir los validadores de django.
   for pregunta in miDiccionario:
     if pregunta['type'] == 'number':
       if 'minValue' in pregunta or 'maxValue' in pregunta:
         codigo += "from django.core.validators import MinValueValidator, MaxValueValidator\n\n"
         break
   codigo += "class TuModelo(models.Model):\n"
+
+
   for pregunta in miDiccionario:
 
     titulo_limpio = limpiar_titulo(pregunta['title']) # Limpiar el título para que sea un nombre de campo válido
@@ -48,6 +50,9 @@ def generar_models(miDiccionario):
         campo = f"    {titulo_limpio} = models.CharField(max_length={pregunta['limit']})\n"
       else:
         campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
+      
+      codigo += campo
+
 
     # Tipo de campo numérico con opcionalmente mínimo y máximo.
     elif pregunta['type'] == 'number':
@@ -66,11 +71,28 @@ def generar_models(miDiccionario):
         campo = f"    {titulo_limpio} = models.IntegerField()\n"
       codigo += campo
 
+
+
+    # Tipo de campo para preguntas de multiple elección. 
+    # Si multipleAnswers es True, pueden haber varias respuestas, si está a false, sólo una.
+    elif pregunta['type'] == 'multipleChoice':
+      multipleAnswers = pregunta.get('multipleAnswers', None)
+      campo = f"    {titulo_limpio} = models.ManyToManyField('Choice', related_name='{titulo_limpio}')\n"
+      codigo += campo
+
+      # Crear el modelo Choice
+      codigo += "\nclass Choice(models.Model):\n"
+      codigo += "    id = models.AutoField(primary_key=True)\n"
+      codigo += "    choice = models.CharField(max_length=100)\n"
+      codigo += "    is_correct = models.BooleanField(default=False)\n"
+      default_choices = {choice['choice']: choice['answer'] for choice in pregunta['choices']}
+      codigo += f"    choices = models.JSONField(default={default_choices})\n"
+
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['title']}")
       continue
 
-    codigo += campo
+    
 
   # Escribir el código en el archivo
   with open("models.py", "w", encoding="utf-8") as f:

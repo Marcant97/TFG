@@ -83,7 +83,7 @@ def comprobarDiccionario(miDiccionario):
     elif pregunta["type"] == "multipleChoice":
       # Procesar campos de la pregunta
       multipleAnswers = pregunta.get('multipleAnswers', None)
-      # Comprobamos que multipleAnswers sea un booleano
+      # Comprobamos que multipleAnswers sea true o false
       if multipleAnswers != None and type(multipleAnswers) != bool:
         print("multipleAnswers debe ser un booleano")
         return -1
