@@ -19,7 +19,7 @@
     },
     {
         "type": "multipleChoice",
-        "multipleAnswers": "false",
+        "multipleAnswers": false,
         "title": "¿Cuál es tu color favorito?",
         "choices": [
             {"choice": "Rojo", "answer": false},
