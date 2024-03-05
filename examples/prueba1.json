@@ -1,7 +1,8 @@
 [
   {
     "type": "text",
-    "title": "Introduce tu nombre completo:"
+    "title": "Introduce tu nombre completo:",
+    "limit": 20
   },
   {
     "type": "text",

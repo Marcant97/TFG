@@ -31,7 +31,13 @@ def generar_models(miDiccionario):
   for pregunta in miDiccionario:
     if pregunta['type'] == 'text':
       titulo_limpio = limpiar_titulo(pregunta['title'])
-      campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
+      # Comprobar si hay un límite de caracteres (parámetro opcional)
+      if 'limit' in pregunta:
+        print (f"El límite de caracteres para {titulo_limpio} es {pregunta['limit']}")
+        campo = f"    {titulo_limpio} = models.CharField(max_length={pregunta['limit']})\n"
+      else:
+        print('No hay limites de caracteres para este campo.')
+        campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
       codigo += campo
 
   # Escribir el código en el archivo
