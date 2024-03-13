@@ -5,6 +5,7 @@ import shutil
 # pip install -r requirements.txt
 import subprocess
 import webbrowser
+import time
 
 from generadores import generar_models, generar_forms, generar_views, generar_template, modify_urls_py, modify_settings_py
 
@@ -100,6 +101,8 @@ def configurar_proyecto(miDiccionario):
     comando = 'start cmd /c "python manage.py runserver"'
     subprocess.run(comando, shell=True)
     # subprocess.run(["python", "manage.py", "runserver"])
+    
+    time.sleep(1) # esperar 1 segundo para que el servidor arranque
 
     # entrar en la dirección con "http://127.0.0.1:8000/formulario"
     url = "http://127.0.0.1:8000/formulario"
