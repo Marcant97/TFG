@@ -102,7 +102,7 @@ def configurar_proyecto(miDiccionario):
     subprocess.run(comando, shell=True)
     # subprocess.run(["python", "manage.py", "runserver"])
     
-    time.sleep(1) # esperar 1 segundo para que el servidor arranque
+    time.sleep(2) # esperar 2 segundo para que el servidor arranque
 
     # entrar en la dirección con "http://127.0.0.1:8000/formulario"
     url = "http://127.0.0.1:8000/formulario"
