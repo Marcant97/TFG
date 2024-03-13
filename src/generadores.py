@@ -75,7 +75,6 @@ def generar_models(miDiccionario):
 
     #^ Tipo de campo para preguntas con varias opciones con sólo una repuesta correcta (dropdown)
     elif pregunta['type'] == 'dropdown':
-      
       campo = f"    {titulo_limpio} = models.CharField(max_length=100, choices=["
       # Se itera sobre las opciones ("choices") disponibles.
       for choice in pregunta['choices']:
@@ -86,11 +85,7 @@ def generar_models(miDiccionario):
 
 
     elif pregunta['type'] == 'checkbox':
-
-      # Definimos el campo en el modelo como un campo JSONField para almacenar las selecciones
-      campo = f"    {titulo_limpio} = models.JSONField(default=list)\n"
-      
-      # Agregamos el campo al código del modelo
+      campo = f"    {titulo_limpio} = models.BooleanField(default=False)\n"
       codigo += campo
 
 
@@ -135,6 +130,15 @@ def generar_forms(miDiccionario):
     file.write("from .models import TuModelo\n\n")
 
     file.write("class TuFormulario(forms.ModelForm):\n")
+
+    for pregunta in miDiccionario:
+      if pregunta['type'] == 'checkbox':
+        titulo = pregunta.get("title", "")
+        nombre_campo = limpiar_titulo(titulo)
+        required = pregunta.get("required", False)
+        file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={required})\n")
+
+
     file.write("    class Meta:\n")
     file.write("        model = TuModelo\n")
 
@@ -151,7 +155,6 @@ def generar_forms(miDiccionario):
     file.write("        labels = {\n")
 
     for pregunta in miDiccionario:
-      tipo = pregunta.get("type", "")
       titulo = pregunta.get("title", "")
       nombre_campo = limpiar_titulo(titulo)
       # if tipo == "text":
