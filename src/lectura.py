@@ -124,7 +124,7 @@ def comprobarDiccionario(miDiccionario):
     
     elif pregunta["type"] == "checkbox":
       for campo in pregunta:
-        if campo == "type" or campo == "title" or campo == 'content':
+        if campo == "type" or campo == "title" or campo == 'required':
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
