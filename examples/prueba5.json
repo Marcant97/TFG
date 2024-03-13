@@ -1,11 +1,12 @@
 [
     {
         "type": "checkbox",
-        "title": "Casillas de Verificación",
-        "content": [
-            "Opción 1",
-            "Opción 2",
-            "Opción 3"
-        ]
+        "title": "Acepto los términos y condiciones del presente reglamento",
+        "required": "True"
+    },
+    {
+        "type": "checkbox",
+        "title": "CheckBox no obligatorio",
+        "required": "False"
     }
 ]
