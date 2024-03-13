@@ -1,0 +1,11 @@
+[
+    {
+        "type": "dropdown",
+        "title": "Menú desplegable",
+        "choices": [
+            "Opción 1",
+            "Opción 2",
+            "Opción 3"
+        ]
+    }
+]
