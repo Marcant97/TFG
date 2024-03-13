@@ -76,17 +76,12 @@ def generar_models(miDiccionario):
     #^ Tipo de campo para preguntas con varias opciones con sólo una repuesta correcta (dropdown)
     elif pregunta['type'] == 'dropdown':
       
-      # Definimos el campo en el modelo como un campo CharField con choices
       campo = f"    {titulo_limpio} = models.CharField(max_length=100, choices=["
-      
-      # Iteramos sobre las opciones y las agregamos al campo
+      # Se itera sobre las opciones ("choices") disponibles.
       for choice in pregunta['choices']:
           campo += f"('{choice}', '{choice}'),"
       
-      # Cerramos el campo
       campo += "])\n"
-      
-      # Agregamos el campo al código del modelo
       codigo += campo
 
 
