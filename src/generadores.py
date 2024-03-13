@@ -85,6 +85,16 @@ def generar_models(miDiccionario):
       codigo += campo
 
 
+    elif pregunta['type'] == 'checkbox':
+
+      # Definimos el campo en el modelo como un campo JSONField para almacenar las selecciones
+      campo = f"    {titulo_limpio} = models.JSONField(default=list)\n"
+      
+      # Agregamos el campo al código del modelo
+      codigo += campo
+
+
+
 
     #^ Tipo de campo para preguntas de multiple elección. 
     # Si multipleAnswers es True, pueden haber varias respuestas, si está a false, sólo una.

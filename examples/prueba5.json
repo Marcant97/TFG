@@ -1,0 +1,11 @@
+[
+    {
+        "type": "checkbox",
+        "title": "Casillas de Verificación",
+        "content": [
+            "Opción 1",
+            "Opción 2",
+            "Opción 3"
+        ]
+    }
+]
