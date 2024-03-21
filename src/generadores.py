@@ -42,17 +42,33 @@ def generar_models(miDiccionario):
   #* Se comprueba si hay un campo de email con dominios disponibles, ya que se necesita importar el validador de email.
   for pregunta in miDiccionario:
     if pregunta['type'] == 'email':
-      if ('availableDomains' in pregunta) and (not bandera):
-        codigo += "from django.core.validators import EmailValidator\n\n"
-        break
-        # bandera = True
-        # codigo += "availableDomains = EmailValidator(\n"
-        # codigo += "    whitelist=["
-        # availableDomainsString = ', '.join([f"'{dominio}'" for dominio in pregunta['availableDomains']])
-        # codigo += availableDomainsString
-      # elif ('availableDomains' in pregunta) and bandera:
-      #   availableDomainsString = ', '.join([f"'{dominio}'" for dominio in pregunta['availableDomains']])
-      #   codigo += ", " + availableDomainsString
+      if ('availableDomains' in pregunta):
+        if not bandera:
+          codigo += "from django.core.validators import EmailValidator\n"
+          codigo += "from django.core.validators import validate_email\n"
+          codigo += "from django.core.exceptions import ValidationError\n\n"
+          bandera = True
+      
+        # generamos el código del validador de dominios disponibles
+        codigo += f"def f{limpiar_titulo(pregunta['title'])}_email(value):\n"
+        availableDomainsError = str(pregunta['availableDomains']).replace("'", "")
+        # lo convertimos en una string y le quitamos "'", para que sea válido en el código
+        availableDomains = pregunta['availableDomains']
+        # if not value.endswith('ull.edu.es') and not value.endswith('ull.es'):
+        if (len(availableDomains) == 1):
+          codigo += f"    if not value.endswith('{availableDomains[0]}'):\n"
+        else:
+          codigo += f"    if not"
+          for i in range(len(availableDomains)):
+            if i == len(availableDomains)-1: # si es el último, no se añade 'and not' y se cierra
+              codigo += f" value.endswith('{availableDomains[i]}'):\n"
+            else: # si no es el último, se añade 'and not'
+              codigo += f" value.endswith('{availableDomains[i]}') and not"
+
+
+        #codigo += f"    if not value.endswith({availableDomains}):\n"
+        errorString = f"'El correo electrónico debe ser del dominio {availableDomainsError}'"
+        codigo += f"        raise ValidationError({errorString})\n\n"
   
   # cerramos la lista de dominios disponibles
   # codigo += "])\n\n"
@@ -118,25 +134,10 @@ def generar_models(miDiccionario):
     elif pregunta['type'] == 'email':
 
       # Determinamos si existe el campo availableDomains
-      availableDomains = pregunta.get('availableDomains', None)
+      checkAvailableDomains = pregunta.get('availableDomains', None)
 
-      if availableDomains != None:
-
-        # Obtenemos en una string los dominios disponibles.
-        availableDomainsString = ', '.join([f"'{dominio}'" for dominio in availableDomains])
-        # Creamos el texto de ayuda para el campo email.
-        helpString = 'Introduce un email del dominio ' + ', '.join(availableDomains)
-        print(helpString)
-        campo = f"    {titulo_limpio} = models.EmailField(\n"
-        campo += "        max_length=254,\n"
-        campo +=f"        help_text='{helpString}',\n"
-        campo += "        whitelist=["
-        campo += availableDomainsString
-        campo += "])\n"
-        # validators=[EmailValidator(whitelist=['ull.edu.es'])]
-        # campo +=f"        validators=[availableDomains]\n"
-        # campo +=f"        validators=[EmailValidator(availableDomains=[{availableDomainsString}])]\n"
-        # campo += "    ])\n"
+      if checkAvailableDomains != None:
+        campo = f"    {titulo_limpio} = models.EmailField(max_length=254, validators=[validate_email,f{titulo_limpio}_email])\n"
       else:
         campo = f"    {titulo_limpio} = models.EmailField(max_length=254)\n"
       codigo += campo
