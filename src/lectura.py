@@ -42,10 +42,12 @@ def leerFichero(fichero, tiposGenericos, tiposEspecificos):
 
 
 
-def comprobarDiccionario(miDiccionario):
+def comprobarDiccionario(miDiccionario, tiposGenericos, tiposEspecificos):
   print("Comprobando diccionario")
   print(miDiccionario)
   for pregunta in miDiccionario:
+
+    #* COMPROBACIONES INICIALES
     print('\n')
     if "title" not in pregunta:
       print("Falta el título de la pregunta")
@@ -129,6 +131,12 @@ def comprobarDiccionario(miDiccionario):
         else:
           print(f"Campo {campo} no válido")
           return -1
+        
+
+    elif pregunta["type"] in tiposEspecificos:
+      print(f"Procesando campo de tipo específico {pregunta['type']}")
+
+      # ! PENDIENTE DE HACER
         
     
     else:

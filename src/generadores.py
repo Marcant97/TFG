@@ -26,23 +26,45 @@ def limpiar_titulo(titulo):
 
 
 def generar_models(miDiccionario):
-  # Procesamos el diccionario
-  # ! de momento sólo las preguntas con tipo "text"
+  
+  #^ Procesamos el diccionario para generar el modelo
   print('Creando modelos...')
   codigo = "from django.db import models\n\n"
-  # *Comprobar si hay un campo numérico con límites, para añadir los validadores de django.
+
+  #* Se comprueba si hay un campo numérico con límites, ya que se necesita importar los validadores de Django.
   for pregunta in miDiccionario:
     if pregunta['type'] == 'number':
       if 'minValue' in pregunta or 'maxValue' in pregunta:
         codigo += "from django.core.validators import MinValueValidator, MaxValueValidator\n\n"
         break
+
+  bandera = False # para saber si ya se ha importado el validador de email
+  #* Se comprueba si hay un campo de email con dominios disponibles, ya que se necesita importar el validador de email.
+  for pregunta in miDiccionario:
+    if pregunta['type'] == 'email':
+      if ('availableDomains' in pregunta) and (not bandera):
+        codigo += "from django.core.validators import EmailValidator\n\n"
+        break
+        # bandera = True
+        # codigo += "availableDomains = EmailValidator(\n"
+        # codigo += "    whitelist=["
+        # availableDomainsString = ', '.join([f"'{dominio}'" for dominio in pregunta['availableDomains']])
+        # codigo += availableDomainsString
+      # elif ('availableDomains' in pregunta) and bandera:
+      #   availableDomainsString = ', '.join([f"'{dominio}'" for dominio in pregunta['availableDomains']])
+      #   codigo += ", " + availableDomainsString
+  
+  # cerramos la lista de dominios disponibles
+  # codigo += "])\n\n"
+        
+
+
   codigo += "class TuModelo(models.Model):\n"
 
-
-  ### * Se procesan las preguntas ###
+  ###* Se procesan las preguntas del diccionario ###
   for pregunta in miDiccionario:
 
-    titulo_limpio = limpiar_titulo(pregunta['title']) # Limpiar el título para que sea un nombre de campo válido
+    titulo_limpio = limpiar_titulo(pregunta['title']) # Obtenemos un nombre de campo válido para una variable.
 
     #^ Tipo de campo de texto con opcionalmente límite de caracteres.
     if pregunta['type'] == 'text':
@@ -83,31 +105,45 @@ def generar_models(miDiccionario):
       campo += "])\n"
       codigo += campo
 
-
+    #^ Tipo de campo para preguntas de selección múltiple (checkbox)
     elif pregunta['type'] == 'checkbox':
       campo = f"    {titulo_limpio} = models.BooleanField(default=False)\n"
       codigo += campo
 
-
-
-
     #^ Tipo de campo para preguntas de multiple elección. 
-    # Si multipleAnswers es True, pueden haber varias respuestas, si está a false, sólo una.
-    # elif pregunta['type'] == 'multipleChoice':
-    #   multipleAnswers = pregunta.get('multipleAnswers', None)
-    #   campo = f"    {titulo_limpio} = models.ManyToManyField('Choice', related_name='{titulo_limpio}')\n"
-    #   codigo += campo
-
-    #   # Crear el modelo Choice
-    #   codigo += "\nclass Choice(models.Model):\n"
-    #   codigo += "    id = models.AutoField(primary_key=True)\n"
-    #   codigo += "    choice = models.CharField(max_length=100)\n"
-    #   codigo += "    is_correct = models.BooleanField(default=False)\n"
-    #   default_choices = {choice['choice']: choice['answer'] for choice in pregunta['choices']}
-    #   codigo += f"    choices = models.JSONField(default={default_choices})\n"
+    # ? de momento comentado, es posible que no lo implemente, su funcionalidad ya se cumple con dropdown y checkbox.
       
-    
+  
+    #^ Tipo de campos para preguntas de tipo específico, email.
+    elif pregunta['type'] == 'email':
 
+      # Determinamos si existe el campo availableDomains
+      availableDomains = pregunta.get('availableDomains', None)
+
+      if availableDomains != None:
+
+        # Obtenemos en una string los dominios disponibles.
+        availableDomainsString = ', '.join([f"'{dominio}'" for dominio in availableDomains])
+        # Creamos el texto de ayuda para el campo email.
+        helpString = 'Introduce un email del dominio ' + ', '.join(availableDomains)
+        print(helpString)
+        campo = f"    {titulo_limpio} = models.EmailField(\n"
+        campo += "        max_length=254,\n"
+        campo +=f"        help_text='{helpString}',\n"
+        campo += "        whitelist=["
+        campo += availableDomainsString
+        campo += "])\n"
+        # validators=[EmailValidator(whitelist=['ull.edu.es'])]
+        # campo +=f"        validators=[availableDomains]\n"
+        # campo +=f"        validators=[EmailValidator(availableDomains=[{availableDomainsString}])]\n"
+        # campo += "    ])\n"
+      else:
+        campo = f"    {titulo_limpio} = models.EmailField(max_length=254)\n"
+      codigo += campo
+
+
+
+    # tiposEspecificos = ["email", "dni", "phoneNumber", "date", "specialField"]
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['title']}")
       continue
@@ -124,13 +160,17 @@ def generar_models(miDiccionario):
 
 
 def generar_forms(miDiccionario):
+
   print('Creando formularios...')
+
   with open("forms.py", "w", encoding="utf-8") as file:
+    
     file.write("from django import forms\n")
     file.write("from .models import TuModelo\n\n")
 
     file.write("class TuFormulario(forms.ModelForm):\n")
 
+    #^ Parte específica sólo para las preguntas del tipo checkbox.
     for pregunta in miDiccionario:
       if pregunta['type'] == 'checkbox':
         titulo = pregunta.get("title", "")
@@ -138,17 +178,15 @@ def generar_forms(miDiccionario):
         required = pregunta.get("required", False)
         file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={required})\n")
 
-
+    #^ Parte común para el resto de preguntas.
     file.write("    class Meta:\n")
     file.write("        model = TuModelo\n")
-
     file.write("        fields = [\n")
+
     for pregunta in miDiccionario:
       tipo = pregunta.get("type", "")
       titulo = pregunta.get("title", "")
       nombre_campo = limpiar_titulo(titulo)
-      # if tipo == "text":
-      # Comentado por que en realidad el tipo da igual, todas las variables se añaden.
       file.write(f"            '{nombre_campo}',\n") 
 
     file.write("        ]\n")
@@ -157,15 +195,12 @@ def generar_forms(miDiccionario):
     for pregunta in miDiccionario:
       titulo = pregunta.get("title", "")
       nombre_campo = limpiar_titulo(titulo)
-      # if tipo == "text":
-      # Comentado por que en realidad el tipo da igual, todas las variables se añaden.
       file.write(f"            '{nombre_campo}': '{titulo}',\n")
 
     file.write("        }\n")
 
 # LLAMADA PARA HACER PRUEBAS
 # generar_forms(diccionario)
-
 
 
 
@@ -192,7 +227,6 @@ def generar_views(miDiccionario):
 
 # LLAMADA PARA HACER PRUEBAS
 # generar_views(diccionario)
-
 
 
 def generar_template():

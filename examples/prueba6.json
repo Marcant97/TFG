@@ -1,0 +1,23 @@
+[
+    {
+        "type": "email",
+        "title": "Introduce tu email sin restricciones"
+    },
+    {
+        "type": "email",
+        "title": "Introduce tu email (sólo @ull.edu.es válido)",
+        "availableDomains": [
+            "ull.edu.es"
+        ]
+            
+    },
+    {
+        "type": "email",
+        "title": "Introduce tu email (sólo @ull.edu.es y @ull.es válido)",
+        "availableDomains": [
+            "ull.edu.es",
+            "ull.es"
+        ]
+    }
+
+]
