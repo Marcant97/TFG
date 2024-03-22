@@ -1,16 +1,30 @@
-    
-    #^ Tipo de campo para preguntas de multiple elección. 
-    # ? de momento comentado, es posible que no lo implemente, su funcionalidad ya se cumple con desplegable y casilla.
-    # Si opcionMultiple es True, pueden haber varias respuestas, si está a false, sólo una.
-    # elif pregunta['tipo'] == 'opcionMultiple':
-    #   opcionMultiple = pregunta.get('opcionMultiple', None)
-    #   campo = f"    {titulo_limpio} = models.ManyToManyField('opcion', related_name='{titulo_limpio}')\n"
-    #   codigo += campo
 
-    #   # Crear el modelo opcion
-    #   codigo += "\nclass opcion(models.Model):\n"
-    #   codigo += "    id = models.AutoField(primary_key=True)\n"
-    #   codigo += "    opcion = models.CharField(max_length=100)\n"
-    #   codigo += "    is_correct = models.BooleanField(default=False)\n"
-    #   default_opciones = {opcion['opcion']: opcion['answer'] for opcion in pregunta['opciones']}
-    #   codigo += f"    opciones = models.JSONField(default={default_opciones})\n"
+#^ Tipo de campo para preguntas de multiple elección. 
+# ? de momento comentado, es posible que no lo implemente, su funcionalidad ya se cumple con desplegable y casilla.
+# Si opcionMultiple es True, pueden haber varias respuestas, si está a false, sólo una.
+# elif pregunta['tipo'] == 'opcionMultiple':
+#   opcionMultiple = pregunta.get('opcionMultiple', None)
+#   campo = f"    {titulo_limpio} = models.ManyToManyField('opcion', related_name='{titulo_limpio}')\n"
+#   codigo += campo
+
+#   # Crear el modelo opcion
+#   codigo += "\nclass opcion(models.Model):\n"
+#   codigo += "    id = models.AutoField(primary_key=True)\n"
+#   codigo += "    opcion = models.CharField(max_length=100)\n"
+#   codigo += "    is_correct = models.BooleanField(default=False)\n"
+#   default_opciones = {opcion['opcion']: opcion['answer'] for opcion in pregunta['opciones']}
+#   codigo += f"    opciones = models.JSONField(default={default_opciones})\n"
+
+
+
+    
+# # fichero = "./ejemplo.json"
+# fichero = "";
+# while fichero != "salir":
+#   fichero = input("Introduce el nombre del fichero: ")
+#   if fichero != "salir":
+#     miDiccionario = leerFichero(fichero, tiposGenericos, tiposEspecificos)
+#     print("imprimiendo diccionario:")
+#     print(miDiccionario)
+#   else: 
+#     exit
