@@ -11,6 +11,9 @@ from generadores import generar_models, generar_forms, generar_views, generar_te
 
 
 def instalar_django():
+  """
+  Función encargada de comprobar la instalación de Django y, en caso de no estar instalado, instalarlo.
+  """
   try:
     # Verificar si Django ya está instalado
     print("Verificando si Django ya está instalado...")
@@ -25,89 +28,83 @@ def instalar_django():
       print("Django instalado correctamente.")
     except Exception as e:
       print(f"Error al instalar Django: {str(e)}")
+      raise
+    
   else:
     print("Django ya está instalado.")
 
 
-
 def crear_proyecto():
-
+  """
+  Función encargada de crear el proyecto Django.
+  """
   try:
-    # Crear proyecto Django
     print("\nCreando proyecto Django...")
-    # Crear el directorio para el proyecto
-    os.makedirs("django_test", exist_ok=True)
-    # Cambiar al directorio del proyecto
-    os.chdir("django_test")
-    # print("Directorio actual:", os.getcwd())
-    # Iniciar el proyecto Django
+    
+    os.makedirs("django_test", exist_ok=True) # Crear el directorio para el proyecto
+    os.chdir("django_test") # Cambiar al directorio del proyecto
+    
     # python -m django startproject mytestsite
     subprocess.run(["python", "-m", "django", "startproject", "mysite"])
-    # Cambiar al directorio del proyecto Django
-    os.chdir("mysite")
+    
+    os.chdir("mysite") # Cambiar al directorio del proyecto Django
     print("Proyecto Django creado correctamente.")
 
 
   except Exception as e:
     print(f"Error al crear el proyecto Django: {str(e)}")
+    raise
 
 
 def configurar_proyecto(miDiccionario):
+  """
+  Función encargada de configurar el proyecto Django.
+  Args:
+    miDiccionario (dict): diccionario con los datos del fichero JSON
+  """
+
   try:
-    # Configurar el proyecto Django
+    
     print("\nConfigurando proyecto Django...")
-    os.chdir("mysite")  # Cambiar al directorio del proyecto Django
-    # os.chdir("./django_test/mysite/mysite")  # Cambiar al directorio del proyecto Django
+    os.chdir("mysite")  # se cambias al directorio del proyecto Django "./django_test/mysite/mysite"
 
-    # 1. Crear y rellenar models.py
-    generar_models(miDiccionario)
+    
+    generar_models(miDiccionario) #? 1. Crear y rellenar models.py
+    generar_forms(miDiccionario) #? 2. Crear y rellenar forms.py
+    generar_views(miDiccionario) #? 3. Crear y rellenar views.py
 
-    # 2. Crear y rellenar forms.py
-    generar_forms(miDiccionario)
-
-    # 3. Crear y rellenar views.py
-    generar_views(miDiccionario)
-
-    # 4. Crear /templates y moverse dentro del directorio
+    #* 4. Se crea la subcarpeta /templates y nos movemos dentro de ella.
     os.makedirs("templates", exist_ok=True)
     os.chdir("templates")
 
-    # 5. Crear dentro de /templates un archivo mi_template.html, rellenarlo y salir de /templates
-    generar_template()
+    generar_template() #? 5. Se crea y rellena /templates/mi_template.html.
+    os.chdir("..")  #* Volvemos al directorio raíz del proyecto.
 
-    os.chdir("..")  # Salir de /templates
-
-    # 6. Modificar urls.py
-    modify_urls_py()
-
-    # 7. Modificar settings.py, añadir 'mysite' a INSTALLED_APPS.
-      # 7.1 Obtener líneas del fichero.
-    modify_settings_py()
+    modify_urls_py() #? 6. Modificar urls.py
+    modify_settings_py() #? 7. Modificar settings.py, se añade 'mysite' a INSTALLED_APPS.
 
 
-    # 8. Aplicar migraciones
-      # 8.1 cambiar de directorio a la raíz del proyecto, donde está manage.py
-    os.chdir("..")  # Cambiar al directorio raíz del proyecto 
+    #? 8. Aplicar migraciones
+      #* 8.1 cambiar de directorio a la raíz del proyecto, que es donde está el fichero manage.py
+    os.chdir("..")
       
-      # 8.2 python manage.py makemigrations mysite
+      #* 8.2 python manage.py makemigrations mysite
     subprocess.run(["python", "manage.py", "makemigrations", "mysite"])
       
-      # 8.3 python manage.py migrate
+      #* 8.3 python manage.py migrate
     subprocess.run(["python", "manage.py", "migrate"])
 
 
-    # PASO OPCIONAL --> Arrancar servidor en modo desarrollo
-    print("Arrancando servidor de desarrollo...")
+    #!! PASO OPCIONAL --> Arrancar servidor en modo desarrollo ("python manage.py runserver")
+    print("Arrancando servidor en modo desarrollo...")
     comando = 'start cmd /c "python manage.py runserver"'
     subprocess.run(comando, shell=True)
-    # subprocess.run(["python", "manage.py", "runserver"])
     
-    time.sleep(2) # esperar 2 segundo para que el servidor arranque
+    time.sleep(2) # esperar 2 segundos, para que el servidor arranque.
 
-    # entrar en la dirección con "http://127.0.0.1:8000/formulario"
+    #? Abrir navegador y entrar en la dirección con "http://127.0.0.1:8000/formulario"
     url = "http://127.0.0.1:8000/formulario"
     webbrowser.open(url)
-
 
     # 9. Crear superusuario (opcional)
 
@@ -115,13 +112,17 @@ def configurar_proyecto(miDiccionario):
 
   except Exception as e:
     print(f"Error al configurar el proyecto Django: {str(e)}")
+    raise
 
 
 
 
 
-
+# Sin probar demasiado, no la he utilizado casi.
 def borrar_proyecto():
+  """
+  Función encargada de borrar el proyecto Django.
+  """
   try:
     # Obtener la ruta del directorio de trabajo actual
     directorio_actual = os.getcwd()
@@ -133,6 +134,10 @@ def borrar_proyecto():
     print("Proyecto Django borrado correctamente.")
   except Exception as e:
     print(f"Error al borrar el proyecto Django: {str(e)}")
+
+
+
+# FUNCIONES SIN UTILIZAR.
 
 
 # def arrancar_servidor():
