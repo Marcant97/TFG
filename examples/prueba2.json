@@ -1,27 +1,27 @@
 [
     {
-      "type": "text",
-      "title": "Introduce tu nombre completo:",
-      "limit": 20
+      "tipo": "texto",
+      "titulo": "Introduce tu nombre completo:",
+      "limite": 20
     },
     {
-      "type": "number",
-      "title": "Introduce tu edad"
+      "tipo": "numero",
+      "titulo": "Introduce tu edad"
     },
     {
-        "type": "number",
-        "title": "Introduce tu edad con límite inferior",
-        "minValue": 0
+        "tipo": "numero",
+        "titulo": "Introduce tu edad con límite inferior",
+        "valorMinimo": 0
     },
     {
-        "type": "number",
-        "title": "Introduce tu edad con límite superior",
-        "maxValue": 100
+        "tipo": "numero",
+        "titulo": "Introduce tu edad con límite superior",
+        "valorMaximo": 100
     },
     {
-        "type": "number",
-        "title": "Introduce tu edad con límite inferior y superior",
-        "minValue": 0,
-        "maxValue": 100
+        "tipo": "numero",
+        "titulo": "Introduce tu edad con límite inferior y superior",
+        "valorMinimo": 0,
+        "valorMaximo": 100
     }
   ]

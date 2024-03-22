@@ -1,20 +1,20 @@
 [
     {
-        "type": "email",
-        "title": "Introduce tu email sin restricciones"
+        "tipo": "email",
+        "titulo": "Introduce tu email sin restricciones"
     },
     {
-        "type": "email",
-        "title": "Introduce tu email (sólo @ull.edu.es válido)",
-        "availableDomains": [
+        "tipo": "email",
+        "titulo": "Introduce tu email (sólo @ull.edu.es válido)",
+        "dominiosDisponibles": [
             "ull.edu.es"
         ]
             
     },
     {
-        "type": "email",
-        "title": "Introduce tu email (sólo @ull.edu.es y @ull.es válido)",
-        "availableDomains": [
+        "tipo": "email",
+        "titulo": "Introduce tu email (sólo @ull.edu.es y @ull.es válido)",
+        "dominiosDisponibles": [
             "ull.edu.es",
             "ull.es"
         ]

@@ -1,15 +1,15 @@
 [
   {
-    "type": "text",
-    "title": "Introduce tu nombre completo:",
-    "limit": 20
+    "tipo": "texto",
+    "titulo": "Introduce tu nombre completo:",
+    "limite": 20
   },
   {
-    "type": "text",
-    "title": "Introduce tu dirección"
+    "tipo": "texto",
+    "titulo": "Introduce tu dirección"
   },
   {
-    "type": "text",
-    "title": "¿Cuál es tu animal favorito?"
+    "tipo": "texto",
+    "titulo": "¿Cuál es tu animal favorito?"
   }
 ]

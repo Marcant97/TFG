@@ -1,13 +1,13 @@
 [
     {
-        "type": "multipleChoice",
-        "multipleAnswers": false,
-        "title": "¿Cuál es tu color favorito?",
-        "choices": [
-            {"choice": "Rojo", "answer": false},
-            {"choice": "Verde", "answer": false},
-            {"choice": "Azul", "answer": true},
-            {"choice": "Amarillo", "answer": false}
+        "tipo": "opcionMultiple",
+        "opcionMultiple": false,
+        "titulo": "¿Cuál es tu color favorito?",
+        "opciones": [
+            {"opcion": "Rojo", "answer": false},
+            {"opcion": "Verde", "answer": false},
+            {"opcion": "Azul", "answer": true},
+            {"opcion": "Amarillo", "answer": false}
         ]   
     }   
 ]

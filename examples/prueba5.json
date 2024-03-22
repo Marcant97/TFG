@@ -1,12 +1,12 @@
 [
     {
-        "type": "checkbox",
-        "title": "Acepto los términos y condiciones del presente reglamento",
-        "required": "True"
+        "tipo": "casilla",
+        "titulo": "Acepto los términos y condiciones del presente reglamento",
+        "obligatorio": "True"
     },
     {
-        "type": "checkbox",
-        "title": "CheckBox no obligatorio",
-        "required": "False"
+        "tipo": "casilla",
+        "titulo": "casilla no obligatorio",
+        "obligatorio": "False"
     }
 ]

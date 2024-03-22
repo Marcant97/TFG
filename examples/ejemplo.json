@@ -1,11 +1,11 @@
 [
     {
-        "type": "text",
-        "title": "Introduce tu nombre completo:"
+        "tipo": "texto",
+        "titulo": "Introduce tu nombre completo:"
     },
     {
-        "type": "email",
-        "title": "Introduce tu correo electrónico:",
+        "tipo": "email",
+        "titulo": "Introduce tu correo electrónico:",
         "commonDomains": "false",
         "additionalDomains": [
             "ull.edu.es",
@@ -13,24 +13,24 @@
         ]
     },
     {
-        "type": "number",
-        "title": "Introduce tu edad:",
-        "maxValue": 140
+        "tipo": "numero",
+        "titulo": "Introduce tu edad:",
+        "valorMaximo": 140
     },
     {
-        "type": "multipleChoice",
-        "multipleAnswers": false,
-        "title": "¿Cuál es tu color favorito?",
-        "choices": [
-            {"choice": "Rojo", "answer": false},
-            {"choice": "Verde", "answer": false},
-            {"choice": "Azul", "answer": false},
-            {"choice": "Amarillo", "answer": false}
+        "tipo": "opcionMultiple",
+        "opcionMultiple": false,
+        "titulo": "¿Cuál es tu color favorito?",
+        "opciones": [
+            {"opcion": "Rojo", "answer": false},
+            {"opcion": "Verde", "answer": false},
+            {"opcion": "Azul", "answer": false},
+            {"opcion": "Amarillo", "answer": false}
         ]   
     },
     {
-        "type": "text",
-        "title": "¿Cuál es tu animal favorito?"
+        "tipo": "texto",
+        "titulo": "¿Cuál es tu animal favorito?"
     }
 ]
 

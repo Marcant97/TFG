@@ -1,8 +1,8 @@
 [
     {
-        "type": "dropdown",
-        "title": "Menú desplegable",
-        "choices": [
+        "tipo": "desplegable",
+        "titulo": "Menú desplegable",
+        "opciones": [
             "Opción 1",
             "Opción 2",
             "Opción 3"
