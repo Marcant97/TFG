@@ -2,20 +2,20 @@ from lectura import comprobarDiccionario
 
 
 miDiccionario0 = [
-  {"type": "inventado"}
+  {"tipo": "inventado"}
 ]
 
 
 miDiccionario1 = [
   {
-    "type": "text",
-    "title": "Nombre",
-    "limit": 20
-  },
-  { # limite incorrecto
-    "type": "text",
-    "title": "Nombre",
+    "tipo": "texto",
+    "titulo": "Nombre",
     "limite": 20
+  },
+  { # limitee incorrecto
+    "tipo": "texto",
+    "titulo": "Nombre",
+    "limitee": 20
   }
 ]
 
@@ -23,14 +23,14 @@ miDiccionario1 = [
 
 miDiccionario2 = [
   {
-    "type": "number",
-    "title": "Edad",
-    "minValue": 0,
-    "maxValue": 100
+    "tipo": "numero",
+    "titulo": "Edad",
+    "valorMinimo": 0,
+    "valorMaximo": 100
   },
   {  # campo con contenido no válido
-    "type": "number",
-    "title": "Edad",
+    "tipo": "numero",
+    "titulo": "Edad",
     "minimo": "hola"
   }
 ]
@@ -38,15 +38,15 @@ miDiccionario2 = [
 
 miDiccionario22 = [
   {
-    "type": "number",
-    "title": "Edad",
-    "minValue": 0,
-    "maxValue": 100
+    "tipo": "numero",
+    "titulo": "Edad",
+    "valorMinimo": 0,
+    "valorMaximo": 100
   },
   {  # campo con contenido no válido
-    "type": "number",
-    "title": "Edad",
-    "minValue": "hola"
+    "tipo": "numero",
+    "titulo": "Edad",
+    "valorMinimo": "hola"
   }
 ]
 
@@ -54,40 +54,40 @@ miDiccionario22 = [
 
 miDiccionario3 = [
   {
-    "type": "multipleChoice",
-    "title": "Pregunta multiopción",
-    "multipleAnswers": False,
-    "choices": [
+    "tipo": "opcionMultiple",
+    "titulo": "Pregunta multiopción",
+    "opcionMultiple": False,
+    "opciones": [
       {
-        "choice": "Opción 1",
+        "opcion": "Opción 1",
         "answer": True
       },
       {
-        "choice": "Opción 2",
+        "opcion": "Opción 2",
         "answer": False
       }
     ]
   },
   {
-    "title": "Pregunta multiopción",
-    "type": "multipleChoice",
-    "multipleAnswers": False,
-    # falta el campo choices
+    "titulo": "Pregunta multiopción",
+    "tipo": "opcionMultiple",
+    "opcionMultiple": False,
+    # falta el campo opciones
   }
 ]
 
 miDiccionario33 = [
   {
-    "type": "multipleChoice",
-    "title": "Pregunta multiopción",
-    "multipleAnswers": "hola",
-    "choices": [
+    "tipo": "opcionMultiple",
+    "titulo": "Pregunta multiopción",
+    "opcionMultiple": "hola",
+    "opciones": [
       {
-        "choice": "Opción 1",
+        "opcion": "Opción 1",
         "answer": True
       },
       {
-        "choice": "Opción 2",
+        "opcion": "Opción 2",
         "answer": False
       }
     ]
@@ -96,16 +96,16 @@ miDiccionario33 = [
 
 miDiccionario4 = [
   {
-    "type": "multipleChoice",
-    "title": "Pregunta multiopción",
-    "multipleAnswers": False,
-    "choices": [
+    "tipo": "opcionMultiple",
+    "titulo": "Pregunta multiopción",
+    "opcionMultiple": False,
+    "opciones": [
       {
-        "choice": "Opción 1"
+        "opcion": "Opción 1"
         # falta campos answer
       },
       {
-        "choice": "Opción 2",
+        "opcion": "Opción 2",
         "answer": False
       }
     ]
@@ -117,20 +117,20 @@ miDiccionario4 = [
 # Comprobamos multiple answers, sólo puede haber una si está a false.
 miDiccionario5 = [
   {
-    "type": "multipleChoice",
-    "title": "Pregunta multiopción",
-    "multipleAnswers": False,
-    "choices": [
+    "tipo": "opcionMultiple",
+    "titulo": "Pregunta multiopción",
+    "opcionMultiple": False,
+    "opciones": [
       {
-        "choice": "Opción 1",
+        "opcion": "Opción 1",
         "answer": True
       },
       {
-        "choice": "Opción 2",
+        "opcion": "Opción 2",
         "answer": False
       },
       {
-        "choice": "Opción 3",
+        "opcion": "Opción 3",
         "answer": True # fallo, ya hay 2 correctas
       }
     ]
@@ -142,17 +142,17 @@ miDiccionario5 = [
 
 miDiccionario6 = [
   {
-    "type": "dropdown",
-      "title": "Pregunta desplegable",
-      "choices": [
+    "tipo": "desplegable",
+      "titulo": "Pregunta desplegable",
+      "opciones": [
         "Opción 1",
         "Opción 2",
         "Opción 3"
       ]
   },
   {
-    "type": "dropdown",
-      "title": "Pregunta desplegable",
+    "tipo": "desplegable",
+      "titulo": "Pregunta desplegable",
       "content": [ # nombre del campo incorrecto
         "Opción 1",
         "Opción 2",
@@ -166,8 +166,8 @@ miDiccionario6 = [
 
 miDiccionario7 = [
   {
-    "type": "checkbox",
-      "title": "Pregunta de selección múltiple",
+    "tipo": "casilla",
+      "titulo": "Pregunta de selección múltiple",
       "content": [
         "Opción 1",
         "Opción 2",
@@ -175,9 +175,9 @@ miDiccionario7 = [
       ]
   },
   {
-    "type": "checkbox",
-      "title": "Pregunta de selección múltiple",
-      "choices": [ # nombre del campo incorrecto
+    "tipo": "casilla",
+      "titulo": "Pregunta de selección múltiple",
+      "opciones": [ # nombre del campo incorrecto
         "Opción 1",
         "Opción 2",
         "Opción 3"

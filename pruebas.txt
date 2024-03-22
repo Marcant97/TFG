@@ -1,16 +1,16 @@
     
     #^ Tipo de campo para preguntas de multiple elección. 
-    # ? de momento comentado, es posible que no lo implemente, su funcionalidad ya se cumple con dropdown y checkbox.
-    # Si multipleAnswers es True, pueden haber varias respuestas, si está a false, sólo una.
-    # elif pregunta['type'] == 'multipleChoice':
-    #   multipleAnswers = pregunta.get('multipleAnswers', None)
-    #   campo = f"    {titulo_limpio} = models.ManyToManyField('Choice', related_name='{titulo_limpio}')\n"
+    # ? de momento comentado, es posible que no lo implemente, su funcionalidad ya se cumple con desplegable y casilla.
+    # Si opcionMultiple es True, pueden haber varias respuestas, si está a false, sólo una.
+    # elif pregunta['tipo'] == 'opcionMultiple':
+    #   opcionMultiple = pregunta.get('opcionMultiple', None)
+    #   campo = f"    {titulo_limpio} = models.ManyToManyField('opcion', related_name='{titulo_limpio}')\n"
     #   codigo += campo
 
-    #   # Crear el modelo Choice
-    #   codigo += "\nclass Choice(models.Model):\n"
+    #   # Crear el modelo opcion
+    #   codigo += "\nclass opcion(models.Model):\n"
     #   codigo += "    id = models.AutoField(primary_key=True)\n"
-    #   codigo += "    choice = models.CharField(max_length=100)\n"
+    #   codigo += "    opcion = models.CharField(max_length=100)\n"
     #   codigo += "    is_correct = models.BooleanField(default=False)\n"
-    #   default_choices = {choice['choice']: choice['answer'] for choice in pregunta['choices']}
-    #   codigo += f"    choices = models.JSONField(default={default_choices})\n"
+    #   default_opciones = {opcion['opcion']: opcion['answer'] for opcion in pregunta['opciones']}
+    #   codigo += f"    opciones = models.JSONField(default={default_opciones})\n"

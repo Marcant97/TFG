@@ -13,4 +13,4 @@ Se realizará un generador de código para la automatización de la creación de
 4. Se arranca el servidor en modo desarrollo y se abre el navegador.
 5. Funcionando correctamente, incluído el post a la base de datos desde el formulario.
 
-Actualmente funciona para campos de texto, numéricos, dropdown y checkbox.
+Actualmente funciona para campos de texto, numéricos, desplegable y casilla.
