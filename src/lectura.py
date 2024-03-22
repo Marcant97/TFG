@@ -70,10 +70,10 @@ def comprobarDiccionario(miDiccionario, tiposGenericos, tiposEspecificos):
 
   print("Comprobando diccionario")
   print(miDiccionario)
+  print('\n')
   for pregunta in miDiccionario:
 
     #* COMPROBACIONES INICIALES
-    print('\n')
     if "titulo" not in pregunta:
       print("Falta el título de la pregunta")
       return -1
