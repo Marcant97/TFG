@@ -178,7 +178,7 @@ def generar_forms(miDiccionario):
         titulo = pregunta.get("titulo", "")
         nombre_campo = limpiar_titulo(titulo)
         obligatorio = pregunta.get("obligatorio", False)
-        file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', obligatorio={obligatorio})\n")
+        file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
 
     #? Parte común para el resto de preguntas.
     file.write("    class Meta:\n")
