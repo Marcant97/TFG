@@ -68,7 +68,7 @@ def generar_models(miDiccionario):
         errorString = f"'El correo electrónico debe ser del dominio {dominiosDisponiblesError}'"
         codigo += f"        raise ValidationError({errorString})\n\n"
 
-  #* Sólo para preguntas del tipo email.
+  #* Sólo para preguntas del tipo dni.
   for pregunta in miDiccionario:
     if pregunta['tipo'] == 'dni':
       # introducir código de validar_dni.txt
@@ -207,7 +207,8 @@ def generar_forms(miDiccionario):
       if pregunta['tipo'] == 'fecha':
         titulo = pregunta.get("titulo", "")
         nombre_campo = limpiar_titulo(titulo)
-        file.write(f"    {nombre_campo} = forms.DateField(input_formats=['%d-%m-%Y'])\n")
+        # file.write(f"    {nombre_campo} = forms.DateField()\n")
+        file.write(f"    {nombre_campo} = forms.DateField(label='{titulo}')\n")
 
     #? Parte común para el resto de preguntas.
     file.write("    class Meta:\n")
@@ -226,6 +227,7 @@ def generar_forms(miDiccionario):
 
     #* Se recorren las preguntas del diccionario
     for pregunta in miDiccionario:
+      
       titulo = pregunta.get("titulo", "")
       nombre_campo = limpiar_titulo(titulo)
       file.write(f"            '{nombre_campo}': '{titulo}',\n")
@@ -340,5 +342,7 @@ def modify_settings_py():
   # Escribir las líneas modificadas en el archivo
   with open("settings.py", "w", encoding="utf-8") as f:
     f.writelines(lineas)
-    # f.write("DATE_INPUT_FORMATS = ['%d-%m-%Y']")
+    f.write('DATE_FORMAT = "%d/%m/%Y"\n')
+    f.write("USE_L10N = False")
+
 
