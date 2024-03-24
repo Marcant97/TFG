@@ -22,6 +22,8 @@ def generar_models(miDiccionario):
   #^ Procesamos el diccionario para generar el modelo
   print('Creando modelos...')
   codigo = "from django.db import models\n\n"
+  codigo += "from django.core.exceptions import ValidationError\n\n"
+
 
   #* Sólo para campos numéricos con límites.
   for pregunta in miDiccionario:
@@ -42,7 +44,6 @@ def generar_models(miDiccionario):
         if not bandera:
           codigo += "from django.core.validators import EmailValidator\n"
           codigo += "from django.core.validators import validate_email\n"
-          codigo += "from django.core.exceptions import ValidationError\n\n"
           bandera = True
       
         #^ generamos el código para el validador de dominios disponibles
@@ -66,7 +67,15 @@ def generar_models(miDiccionario):
         #codigo += f"    if not value.endswith({dominiosDisponibles}):\n"
         errorString = f"'El correo electrónico debe ser del dominio {dominiosDisponiblesError}'"
         codigo += f"        raise ValidationError({errorString})\n\n"
-        
+
+  #* Sólo para preguntas del tipo email.
+  for pregunta in miDiccionario:
+    if pregunta['tipo'] == 'dni':
+      # introducir código de validar_dni.txt
+      nombre_archivo = "../../../src/validar_dni.txt"
+      with open(nombre_archivo, "r", encoding="utf-8") as f:
+        codigo += f.read() + "\n"
+      break  
 
 
   codigo += "class TuModelo(models.Model):\n"
@@ -138,7 +147,10 @@ def generar_models(miDiccionario):
         campo = f"    {titulo_limpio} = models.EmailField(max_length=254)\n"
       codigo += campo
 
-
+    #^ Tipo de campos para preguntas de tipo específico, dni.
+    elif pregunta['tipo'] == 'dni':
+      campo = f"    {titulo_limpio} = models.CharField(max_length=9, validators=[validar_dni])\n"
+      codigo += campo
 
     # tiposEspecificos = ["email", "dni", "phonenumero", "date", "specialField"]
     else:
