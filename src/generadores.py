@@ -134,7 +134,6 @@ def generar_models(miDiccionario):
     #^ Tipo de campo para preguntas de multiple elección. 
     # ? Es posible que no lo implemente, su funcionalidad ya se cumple con desplegable y casilla.
       
-  
     #^ Tipo de campos para preguntas de tipo específico, email.
     elif pregunta['tipo'] == 'email':
 
@@ -152,7 +151,18 @@ def generar_models(miDiccionario):
       campo = f"    {titulo_limpio} = models.CharField(max_length=9, validators=[validar_dni])\n"
       codigo += campo
 
-    # tiposEspecificos = ["email", "dni", "phonenumero", "date", "specialField"]
+
+    #^ Tipo de campos para preguntas de tipo específico, teléfono.
+    #! PENDIENTE
+      
+
+    #^ Tipo de campos para preguntas de tipo específico, fecha.
+    elif pregunta['tipo'] == 'fecha':
+      campo = f"    {titulo_limpio} = models.DateField()\n"
+      codigo += campo
+
+
+    # tiposEspecificos = ["email", "dni", "telefono", "date", "campoEspecial"]
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
       continue
@@ -191,6 +201,13 @@ def generar_forms(miDiccionario):
         nombre_campo = limpiar_titulo(titulo)
         obligatorio = pregunta.get("obligatorio", False)
         file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
+
+    #? Parte específica sólo para las preguntas del tipo fecha
+    for pregunta in miDiccionario:
+      if pregunta['tipo'] == 'fecha':
+        titulo = pregunta.get("titulo", "")
+        nombre_campo = limpiar_titulo(titulo)
+        file.write(f"    {nombre_campo} = forms.DateField(input_formats=['%d-%m-%Y'])\n")
 
     #? Parte común para el resto de preguntas.
     file.write("    class Meta:\n")
@@ -317,8 +334,11 @@ def modify_settings_py():
     #* Si encontramos la línea, le añadimos 'mysite' a la lista
     if 'INSTALLED_APPS' in linea:
       lineas[i] = "INSTALLED_APPS = [ 'mysite',\n"
+    elif 'LANGUAGE_CODE' in linea:
+      lineas[i] = "LANGUAGE_CODE = 'es-es'\n"
 
   # Escribir las líneas modificadas en el archivo
   with open("settings.py", "w", encoding="utf-8") as f:
     f.writelines(lineas)
+    # f.write("DATE_INPUT_FORMATS = ['%d-%m-%Y']")
 
