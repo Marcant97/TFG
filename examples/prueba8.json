@@ -2,5 +2,9 @@
     {
         "tipo": "fecha",
         "titulo": "Introduce tu fecha de nacimiento:"
+    },
+    {
+        "tipo": "fecha",
+        "titulo": "¿Qué día es hoy?"
     }
 ]

@@ -234,16 +234,28 @@ def generar_forms(miDiccionario):
 
     file.write("        }\n")
 
+    primera_fecha = True
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'fecha':
         titulo = pregunta.get("titulo", "")
         nombre_campo = limpiar_titulo(titulo)
-        file.write("        widgets = {\n")
-        file.write(f"            '{nombre_campo}': forms.DateInput(\n")
+
+        if primera_fecha:
+          file.write("        widgets = {\n")
+          file.write(f"            '{nombre_campo}': forms.DateInput(\n")
+          primera_fecha = False
+        
+        else:
+          file.write(f"            ,'{nombre_campo}': forms.DateInput(\n")
+
+        # común
         file.write("                attrs={'type': 'date', 'class': 'form-control'\n")
         file.write("                })\n")
+
+    if primera_fecha == False: # hay una fecha mínimo, cerramos widget
         file.write("        }\n")
-        # de momento solo para una fecha
+
+
 
 
 # LLAMADA PARA HACER PRUEBAS
