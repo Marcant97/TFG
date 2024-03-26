@@ -203,12 +203,12 @@ def generar_forms(miDiccionario):
         file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
 
     #? Parte específica sólo para las preguntas del tipo fecha
-    for pregunta in miDiccionario:
-      if pregunta['tipo'] == 'fecha':
-        titulo = pregunta.get("titulo", "")
-        nombre_campo = limpiar_titulo(titulo)
-        # file.write(f"    {nombre_campo} = forms.DateField()\n")
-        file.write(f"    {nombre_campo} = forms.DateField(label='{titulo}')\n")
+    # for pregunta in miDiccionario:
+    #   if pregunta['tipo'] == 'fecha':
+    #     titulo = pregunta.get("titulo", "")
+    #     nombre_campo = limpiar_titulo(titulo)
+    #     # file.write(f"    {nombre_campo} = forms.DateField()\n")
+    #     file.write(f"    {nombre_campo} = forms.DateField(label='{titulo}')\n")
 
     #? Parte común para el resto de preguntas.
     file.write("    class Meta:\n")
@@ -233,6 +233,18 @@ def generar_forms(miDiccionario):
       file.write(f"            '{nombre_campo}': '{titulo}',\n")
 
     file.write("        }\n")
+
+    for pregunta in miDiccionario:
+      if pregunta['tipo'] == 'fecha':
+        titulo = pregunta.get("titulo", "")
+        nombre_campo = limpiar_titulo(titulo)
+        file.write("        widgets = {\n")
+        file.write(f"            '{nombre_campo}': forms.DateInput(\n")
+        file.write("                attrs={'type': 'date', 'class': 'form-control'\n")
+        file.write("                })\n")
+        file.write("        }\n")
+        # de momento solo para una fecha
+
 
 # LLAMADA PARA HACER PRUEBAS
 # generar_forms(diccionario)
