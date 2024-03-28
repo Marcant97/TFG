@@ -1,10 +1,13 @@
 [
     {
         "tipo": "fecha",
-        "titulo": "Introduce tu fecha de nacimiento:"
+        "titulo": "Introduce tu fecha de nacimiento:",
+        "primeraFecha": "01/01/1900"
     },
     {
         "tipo": "fecha",
-        "titulo": "¿Qué día es hoy?"
+        "titulo": "Elige un día de los disponibles:",
+        "primeraFecha": "01/04/2024",
+        "ultimaFecha": "7/04/2024"
     }
 ]

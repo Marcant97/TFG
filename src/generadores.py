@@ -202,9 +202,28 @@ def generar_forms(miDiccionario):
         obligatorio = pregunta.get("obligatorio", False)
         file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
 
-    #? Parte específica sólo para las preguntas del tipo fecha
-    # for pregunta in miDiccionario:
-    #   if pregunta['tipo'] == 'fecha':
+    #? Parte específica sólo para las preguntas del tipo fecha, se importan lo necesario para gestionar las fechas mínimas y máximas.
+    primeraFecha = False; # bandera para controlar si hay preguntas de tipo fecha
+    for pregunta in miDiccionario:
+      if pregunta['tipo'] == 'fecha': 
+        if primeraFecha == False:
+          if (pregunta.get('primeraFecha', None) != None or pregunta.get('ultimaFecha', None) != None):
+            file.write("from django.utils import timezone\n")
+            file.write("from datetime import datetime\n")
+            primeraFecha = True
+          
+
+
+
+
+# def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         min_date_iso_format = datetime.strptime('01/01/2020', '%d/%m/%Y').strftime('%Y-%m-%d')
+#         self.fields['introducetufechadenacimiento'].widget.attrs['min'] = min_date_iso_format
+#         max_date_iso_format = datetime.strptime('01/05/2024', '%d/%m/%Y').strftime('%Y-%m-%d')
+#         self.fields['introducetufechadenacimiento'].widget.attrs['max'] = max_date_iso_format
+
+
     #     titulo = pregunta.get("titulo", "")
     #     nombre_campo = limpiar_titulo(titulo)
     #     # file.write(f"    {nombre_campo} = forms.DateField()\n")
