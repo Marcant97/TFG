@@ -192,12 +192,11 @@ def generar_forms(miDiccionario):
     
     file.write("from django import forms\n")
     file.write("from .models import TuModelo\n\n")
-
+    # importaciones para los campos de fecha
     file.write("from django.utils import timezone\n")
     file.write("from datetime import datetime\n")
 
     file.write("class TuFormulario(forms.ModelForm):\n")
-
     #? Parte específica sólo para las preguntas del tipo casilla.
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'casilla':
@@ -213,25 +212,18 @@ def generar_forms(miDiccionario):
         titulo = limpiar_titulo(pregunta.get('titulo', ''))
         # obtenemos la primera fecha y la última fecha
 
-        primera_fecha = pregunta.get('primeraFecha', '01/01/1900')
-        ultima_fecha = pregunta.get('ultimaFecha', datetime.now().strftime('%d/%m/%Y')) # por defecto, hoy
+        primera_fecha = pregunta.get('primeraFecha', '01/01/1900') # por defecto, la primera fecha es 01/01/1900.
+        ultima_fecha = pregunta.get('ultimaFecha', datetime.now().strftime('%d/%m/%Y')) # por defecto, la útlima fecha es hoy.
 
         if primera_fecha_formulario == True:
-          file.write("    def __init__(self, field_configs=None, *args, **kwargs):\n")
+          file.write("    def __init__(self, *args, **kwargs):\n")
           file.write("        super().__init__(*args, **kwargs)\n")
-          file.write("        if field_configs:\n")
-          file.write("            for field_config in field_configs:\n")
-          file.write("                if field_config['tipo'] == 'fecha':\n")
           primera_fecha_formulario = False
 
-        file.write(f"                    min_date_iso_format = datetime.strptime('{primera_fecha}', '%d/%m/%Y').strftime('%Y-%m-%d')\n")
-        file.write(f"                    max_date_iso_format = datetime.strptime('{ultima_fecha}', '%d/%m/%Y').strftime('%Y-%m-%d')\n")
-        file.write(f"                    self.fields[field_config['{titulo}']].widget.attrs['min'] = min_date_iso_format\n")
-        file.write(f"                    self.fields[field_config['{titulo}']].widget.attrs['max'] = max_date_iso_format\n")
-
-
-
-
+        file.write(f"        min_date_{titulo} = datetime.strptime('{primera_fecha}', '%d/%m/%Y').strftime('%Y-%m-%d')\n")
+        file.write(f"        max_date_{titulo} = datetime.strptime('{ultima_fecha}', '%d/%m/%Y').strftime('%Y-%m-%d')\n")
+        file.write(f"        self.fields['{titulo}'].widget.attrs['min'] = min_date_{titulo}\n")
+        file.write(f"        self.fields['{titulo}'].widget.attrs['max'] = max_date_{titulo}\n")
 
 
     # def __init__(self, field_configs=None, *args, **kwargs):
