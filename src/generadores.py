@@ -1,3 +1,4 @@
+from datetime import datetime
 
 def limpiar_titulo(titulo):
     """
@@ -192,6 +193,9 @@ def generar_forms(miDiccionario):
     file.write("from django import forms\n")
     file.write("from .models import TuModelo\n\n")
 
+    file.write("from django.utils import timezone\n")
+    file.write("from datetime import datetime\n")
+
     file.write("class TuFormulario(forms.ModelForm):\n")
 
     #? Parte específica sólo para las preguntas del tipo casilla.
@@ -203,25 +207,42 @@ def generar_forms(miDiccionario):
         file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
 
     #? Parte específica sólo para las preguntas del tipo fecha, se importan lo necesario para gestionar las fechas mínimas y máximas.
-    primeraFecha = False; # bandera para controlar si hay preguntas de tipo fecha
+    primera_fecha_formulario = True
     for pregunta in miDiccionario:
-      if pregunta['tipo'] == 'fecha': 
-        if primeraFecha == False:
-          if (pregunta.get('primeraFecha', None) != None or pregunta.get('ultimaFecha', None) != None):
-            file.write("from django.utils import timezone\n")
-            file.write("from datetime import datetime\n")
-            primeraFecha = True
-          
+      if pregunta['tipo'] == 'fecha':
+        titulo = limpiar_titulo(pregunta.get('titulo', ''))
+        # obtenemos la primera fecha y la última fecha
+
+        primera_fecha = pregunta.get('primeraFecha', '01/01/1900')
+        ultima_fecha = pregunta.get('ultimaFecha', datetime.now().strftime('%d/%m/%Y')) # por defecto, hoy
+
+        if primera_fecha_formulario == True:
+          file.write("    def __init__(self, field_configs=None, *args, **kwargs):\n")
+          file.write("        super().__init__(*args, **kwargs)\n")
+          file.write("        if field_configs:\n")
+          file.write("            for field_config in field_configs:\n")
+          file.write("                if field_config['tipo'] == 'fecha':\n")
+          primera_fecha_formulario = False
+
+        file.write(f"                    min_date_iso_format = datetime.strptime('{primera_fecha}', '%d/%m/%Y').strftime('%Y-%m-%d')\n")
+        file.write(f"                    max_date_iso_format = datetime.strptime('{ultima_fecha}', '%d/%m/%Y').strftime('%Y-%m-%d')\n")
+        file.write(f"                    self.fields[field_config['{titulo}']].widget.attrs['min'] = min_date_iso_format\n")
+        file.write(f"                    self.fields[field_config['{titulo}']].widget.attrs['max'] = max_date_iso_format\n")
 
 
 
 
-# def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         min_date_iso_format = datetime.strptime('01/01/2020', '%d/%m/%Y').strftime('%Y-%m-%d')
-#         self.fields['introducetufechadenacimiento'].widget.attrs['min'] = min_date_iso_format
-#         max_date_iso_format = datetime.strptime('01/05/2024', '%d/%m/%Y').strftime('%Y-%m-%d')
-#         self.fields['introducetufechadenacimiento'].widget.attrs['max'] = max_date_iso_format
+
+
+    # def __init__(self, field_configs=None, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     if field_configs:
+    #         for field_config in field_configs:
+    #             if field_config['tipo'] == 'fecha':
+    #                 min_date_iso_format = datetime.strptime(field_config['primeraFecha'], '%d/%m/%Y').strftime('%Y-%m-%d')
+    #                 max_date_iso_format = datetime.strptime(field_config['ultimaFecha'], '%d/%m/%Y').strftime('%Y-%m-%d')
+    #                 self.fields[field_config['nombre_campo']].widget.attrs['min'] = min_date_iso_format
+    #                 self.fields[field_config['nombre_campo']].widget.attrs['max'] = max_date_iso_format
 
 
     #     titulo = pregunta.get("titulo", "")
