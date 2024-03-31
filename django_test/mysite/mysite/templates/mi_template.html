@@ -1,0 +1,16 @@
+<!-- mi_template.html -->
+
+<!DOCtipo html>
+<html>
+<head>
+    <titulo>Formulario</titulo>
+</head>
+<body>
+    <h2>Formulario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button tipo="submit">Enviar</button>
+    </form>
+</body>
+</html>
