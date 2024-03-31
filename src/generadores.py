@@ -325,15 +325,17 @@ def generar_views(miDiccionario):
   codigo += "    if request.method == 'POST':\n"
   codigo += "        form = TuFormulario(request.POST)\n"
   codigo += "        if form.is_valid():\n"
-  # se combina el número de teléfono con el prefijo antes de guardar el contenido del formulario en la base de datos.
-            # prefix = request.POST.get('prefix')
-            # numero_telefono = request.POST.get('numero_telefono')
-            # numero_completo = f"{prefix} {numero_telefono}"
-            # # Guarda el número de teléfono completo en el formulario
-            # form.instance.numero_telefono = numero_completo
-  # codigo += "            # se combina el número de teléfono con el prefijo antes de guardar el contenido del formulario en la base de datos."
-  # codigo += "            prefijo = request.POST.get('prefijo')\n"
-  
+
+  codigo += "            # se combina el número de teléfono con el prefijo antes de guardar el contenido del formulario en la base de datos.\n"
+  for pregunta in miDiccionario:
+    if pregunta['tipo'] == 'telefono':
+      titulo = pregunta.get("titulo", "")
+      nombre_campo = limpiar_titulo(titulo)
+      codigo += f"            prefijo = request.POST.get('prefijo_{nombre_campo}')\n"
+      codigo += f"            numero_telefono = request.POST.get('{nombre_campo}')\n"
+      codigo += f"            numero_completo = f\"{{prefijo}} {{numero_telefono}}\"\n"
+      codigo += "             # Guarda el número de teléfono completo en el formulario\n"
+      codigo += f"            form.instance.{nombre_campo} = numero_completo\n"  
   
   codigo += "            form.save()\n"
   codigo += "            # Realiza acciones adicionales después de guardar el formulario\n"
