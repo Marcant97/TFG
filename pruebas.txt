@@ -14,17 +14,3 @@
 #   codigo += "    is_correct = models.BooleanField(default=False)\n"
 #   default_opciones = {opcion['opcion']: opcion['answer'] for opcion in pregunta['opciones']}
 #   codigo += f"    opciones = models.JSONField(default={default_opciones})\n"
-
-
-
-    
-# # fichero = "./ejemplo.json"
-# fichero = "";
-# while fichero != "salir":
-#   fichero = input("Introduce el nombre del fichero: ")
-#   if fichero != "salir":
-#     miDiccionario = leerFichero(fichero, tiposGenericos, tiposEspecificos)
-#     print("imprimiendo diccionario:")
-#     print(miDiccionario)
-#   else: 
-#     exit
