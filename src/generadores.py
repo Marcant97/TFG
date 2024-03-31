@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 def limpiar_titulo(titulo):
     """
@@ -77,6 +78,24 @@ def generar_models(miDiccionario):
       with open(nombre_archivo, "r", encoding="utf-8") as f:
         codigo += f.read() + "\n"
       break  
+
+  #* Sólo para preguntas del tipo número de teléfono.
+  # Se crea utils/prefijos.py a partir de src/prefijos.txt y se importa en models.py el contenido.
+  for pregunta in miDiccionario:
+    if pregunta['tipo'] == 'telefono':
+      codigo += "from .utils.prefijos import PREFIJOS\n\n"
+      # generamos el fichero de prefijos en /utils/prefijos.py
+      nombre_archivo = "../../../src/prefijos.txt"
+      with open(nombre_archivo, "r", encoding="utf-8") as f:
+        contenido_fichero = f.read()
+
+      os.makedirs("utils", exist_ok=True) # Crear el directorio para el proyecto
+      os.chdir("utils")
+      # Escribir el contenido del fichero en el fichero prefijos.py
+      with open("prefijos.py", "w", encoding="utf-8") as f:
+        f.write(contenido_fichero)
+      os.chdir("..")
+
 
 
   codigo += "class TuModelo(models.Model):\n"
@@ -163,6 +182,12 @@ def generar_models(miDiccionario):
       codigo += campo
 
 
+    #^ Tipo de campo para preguntas de tipo específico, numero de teléfono.
+    elif pregunta['tipo'] == 'telefono':
+      campo = f"  prefijo_{titulo_limpio} = models.CharField(max_length=14, blank=True, choices=PREFIJOS)\n"
+      campo += f"  {titulo_limpio} = models.CharField(max_length=14, blank=True)\n"
+      codigo += campo
+
     # tiposEspecificos = ["email", "dni", "telefono", "date", "campoEspecial"]
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
@@ -226,22 +251,6 @@ def generar_forms(miDiccionario):
         file.write(f"        self.fields['{titulo}'].widget.attrs['max'] = max_date_{titulo}\n")
 
 
-    # def __init__(self, field_configs=None, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if field_configs:
-    #         for field_config in field_configs:
-    #             if field_config['tipo'] == 'fecha':
-    #                 min_date_iso_format = datetime.strptime(field_config['primeraFecha'], '%d/%m/%Y').strftime('%Y-%m-%d')
-    #                 max_date_iso_format = datetime.strptime(field_config['ultimaFecha'], '%d/%m/%Y').strftime('%Y-%m-%d')
-    #                 self.fields[field_config['nombre_campo']].widget.attrs['min'] = min_date_iso_format
-    #                 self.fields[field_config['nombre_campo']].widget.attrs['max'] = max_date_iso_format
-
-
-    #     titulo = pregunta.get("titulo", "")
-    #     nombre_campo = limpiar_titulo(titulo)
-    #     # file.write(f"    {nombre_campo} = forms.DateField()\n")
-    #     file.write(f"    {nombre_campo} = forms.DateField(label='{titulo}')\n")
-
     #? Parte común para el resto de preguntas.
     file.write("    class Meta:\n")
     file.write("        model = TuModelo\n")
@@ -252,16 +261,22 @@ def generar_forms(miDiccionario):
       tipo = pregunta.get("tipo", "")
       titulo = pregunta.get("titulo", "")
       nombre_campo = limpiar_titulo(titulo)
-      file.write(f"            '{nombre_campo}',\n") 
+
+      if tipo == 'telefono':
+        file.write(f"            'prefijo_{nombre_campo}',\n")
+        
+      file.write(f"            '{nombre_campo}',\n")
 
     file.write("        ]\n")
-    file.write("        labels = {\n")
 
+    file.write("        labels = {\n")
     #* Se recorren las preguntas del diccionario
     for pregunta in miDiccionario:
-      
+      tipo = pregunta.get("tipo", "")
       titulo = pregunta.get("titulo", "")
       nombre_campo = limpiar_titulo(titulo)
+      if tipo == 'telefono':
+        file.write(f"            'prefijo_{nombre_campo}': 'Prefijo telefónico',\n")
       file.write(f"            '{nombre_campo}': '{titulo}',\n")
 
     file.write("        }\n")
@@ -310,6 +325,16 @@ def generar_views(miDiccionario):
   codigo += "    if request.method == 'POST':\n"
   codigo += "        form = TuFormulario(request.POST)\n"
   codigo += "        if form.is_valid():\n"
+  # se combina el número de teléfono con el prefijo antes de guardar el contenido del formulario en la base de datos.
+            # prefix = request.POST.get('prefix')
+            # numero_telefono = request.POST.get('numero_telefono')
+            # numero_completo = f"{prefix} {numero_telefono}"
+            # # Guarda el número de teléfono completo en el formulario
+            # form.instance.numero_telefono = numero_completo
+  # codigo += "            # se combina el número de teléfono con el prefijo antes de guardar el contenido del formulario en la base de datos."
+  # codigo += "            prefijo = request.POST.get('prefijo')\n"
+  
+  
   codigo += "            form.save()\n"
   codigo += "            # Realiza acciones adicionales después de guardar el formulario\n"
 

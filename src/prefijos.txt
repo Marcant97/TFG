@@ -1,4 +1,4 @@
-PREFIX_CHOICES = [
+PREFIJOS = [
     ("+1", "Estados Unidos (+1)"),
     ("+1", "Canadá (+1)"),
     ("+1-340", "Islas Vírgenes de los Estados Unidos (+1-340)"),
