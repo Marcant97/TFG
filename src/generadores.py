@@ -96,6 +96,7 @@ def generar_models(miDiccionario):
         f.write(contenido_fichero)
       os.chdir("..")
 
+  codigo += ("from django.core.validators import RegexValidator\n\n")
 
 
   codigo += "class TuModelo(models.Model):\n"
@@ -188,6 +189,14 @@ def generar_models(miDiccionario):
       campo += f"  {titulo_limpio} = models.CharField(max_length=14, blank=True)\n"
       codigo += campo
 
+    #^ Tipo de campo para preguntas de tipo específico, campo especial.
+    elif pregunta['tipo'] == 'campoEspecial':
+      titulo = pregunta.get("titulo", "")
+      nombre_campo = limpiar_titulo(titulo)
+      expresion_regular = pregunta.get("expresionRegular", "")
+      if expresion_regular != "":
+        codigo += (f"    {nombre_campo} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
+
     # tiposEspecificos = ["email", "dni", "telefono", "date", "campoEspecial"]
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
@@ -220,6 +229,7 @@ def generar_forms(miDiccionario):
     # importaciones para los campos de fecha
     file.write("from django.utils import timezone\n")
     file.write("from datetime import datetime\n")
+
 
     file.write("class TuFormulario(forms.ModelForm):\n")
     #? Parte específica sólo para las preguntas del tipo casilla.
