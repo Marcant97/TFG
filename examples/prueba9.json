@@ -2,5 +2,9 @@
     {
         "tipo": "telefono",
         "titulo": "Introduce tu número de teléfono"
+    },
+    {
+        "tipo": "telefono",
+        "titulo": "Introduce un segundo número de teléfono"
     }
 ]
