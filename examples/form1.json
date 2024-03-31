@@ -16,6 +16,11 @@
         "valorMaximo": 100
     },
     {
+        "tipo": "campoEspecial",
+        "titulo": "Introduce tu alu",
+        "expresionRegular": "^alu[0-9]{10}$"
+    },
+    {
         "tipo": "telefono",
         "titulo": "Introduce tu número de teléfono:"
     },
