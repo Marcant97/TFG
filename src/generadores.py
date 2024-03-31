@@ -30,7 +30,7 @@ def generar_models(miDiccionario):
   for pregunta in miDiccionario:
     if pregunta['tipo'] == 'numero':
       if 'valorMinimo' in pregunta or 'valorMaximo' in pregunta:
-        codigo += "from django.core.validators import valorMinimoValidator, valorMaximoValidator\n\n"
+        codigo += "from django.core.validators import MinValueValidator, MaxValueValidator\n\n"
         break
 
 
@@ -90,9 +90,9 @@ def generar_models(miDiccionario):
     if pregunta['tipo'] == 'texto':
       # Comprobar si hay un límite de caracteres (parámetro opcional)
       if 'limite' in pregunta:
-        campo = f"    {titulo_limpio} = models.CharField(max_length={pregunta['limite']})\n"
+        campo = f"  {titulo_limpio} = models.CharField(max_length={pregunta['limite']})\n"
       else:
-        campo = f"    {titulo_limpio} = models.CharField(max_length=100)\n"
+        campo = f"  {titulo_limpio} = models.CharField(max_length=100)\n"
       
       codigo += campo
 
@@ -103,21 +103,21 @@ def generar_models(miDiccionario):
       valorMaximo = pregunta.get('valorMaximo', None)
       if valorMinimo != None and valorMaximo != None:
         print('valorMinimo y valorMaximo presentes')
-        campo = f"    {titulo_limpio} = models.IntegerField(validators=[valorMinimoValidator({valorMinimo}), valorMaximoValidator({valorMaximo})])\n"
+        campo = f"  {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({valorMinimo}), MaxValueValidator({valorMaximo})])\n"
       elif valorMaximo != None:
         print('valorMinimo presente')
-        campo = f"    {titulo_limpio} = models.IntegerField(validators=[valorMinimoValidator({valorMinimo})])\n"
+        campo = f"  {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({valorMinimo})])\n"
       elif valorMaximo != None:
         print('valorMaximo presente')
-        campo = f"    {titulo_limpio} = models.IntegerField(validators=[valorMaximoValidator({valorMaximo})])\n"
+        campo = f"  {titulo_limpio} = models.IntegerField(validators=[MaxValueValidator({valorMaximo})])\n"
       else:
-        campo = f"    {titulo_limpio} = models.IntegerField()\n"
+        campo = f"  {titulo_limpio} = models.IntegerField()\n"
       codigo += campo
 
 
     #^ Tipo de campo para preguntas con varias opciones con sólo una repuesta correcta (desplegable)
     elif pregunta['tipo'] == 'desplegable':
-      campo = f"    {titulo_limpio} = models.CharField(max_length=100, opciones=["
+      campo = f"  {titulo_limpio} = models.CharField(max_length=100, choices=["
 
       # Se itera sobre las opciones disponibles.
       for opcion in pregunta['opciones']:
@@ -129,7 +129,7 @@ def generar_models(miDiccionario):
 
     #^ Tipo de campo para preguntas de selección múltiple (casilla)
     elif pregunta['tipo'] == 'casilla':
-      campo = f"    {titulo_limpio} = models.BooleanField(default=False)\n"
+      campo = f"  {titulo_limpio} = models.BooleanField(default=False)\n"
       codigo += campo
 
     #^ Tipo de campo para preguntas de multiple elección. 
@@ -142,14 +142,14 @@ def generar_models(miDiccionario):
       checkdominiosDisponibles = pregunta.get('dominiosDisponibles', None)
 
       if checkdominiosDisponibles != None:
-        campo = f"    {titulo_limpio} = models.EmailField(max_length=254, validators=[validate_email,f{titulo_limpio}_email])\n"
+        campo = f"  {titulo_limpio} = models.EmailField(max_length=254, validators=[validate_email,f{titulo_limpio}_email])\n"
       else:
-        campo = f"    {titulo_limpio} = models.EmailField(max_length=254)\n"
+        campo = f"  {titulo_limpio} = models.EmailField(max_length=254)\n"
       codigo += campo
 
     #^ Tipo de campos para preguntas de tipo específico, dni.
     elif pregunta['tipo'] == 'dni':
-      campo = f"    {titulo_limpio} = models.CharField(max_length=9, validators=[validar_dni])\n"
+      campo = f"  {titulo_limpio} = models.CharField(max_length=9, validators=[validar_dni])\n"
       codigo += campo
 
 
@@ -159,7 +159,7 @@ def generar_models(miDiccionario):
 
     #^ Tipo de campos para preguntas de tipo específico, fecha.
     elif pregunta['tipo'] == 'fecha':
-      campo = f"    {titulo_limpio} = models.DateField()\n"
+      campo = f"  {titulo_limpio} = models.DateField()\n"
       codigo += campo
 
 
