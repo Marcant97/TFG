@@ -16,6 +16,10 @@
         "valorMaximo": 100
     },
     {
+        "tipo": "telefono",
+        "titulo": "Introduce tu número de teléfono:"
+    },
+    {
         "tipo": "email",
         "titulo": "Introduce tu dirección de correo electrónico:",
         "dominiosDisponibles": ["ull.edu.es", "ull.es"]
