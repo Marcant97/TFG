@@ -195,7 +195,7 @@ def generar_models(miDiccionario):
       nombre_campo = limpiar_titulo(titulo)
       expresion_regular = pregunta.get("expresionRegular", "")
       if expresion_regular != "":
-        codigo += (f"    {nombre_campo} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
+        codigo += (f"  {nombre_campo} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
 
     # tiposEspecificos = ["email", "dni", "telefono", "date", "campoEspecial"]
     else:
