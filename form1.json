@@ -1,0 +1,48 @@
+[
+    {
+        "tipo": "texto",
+        "titulo": "Introduce tu nombre y apellidos:"
+    },
+    {
+        "tipo": "fecha",
+        "titulo": "Introduce tu fecha de nacimiento:",
+        "primeraFecha": "01/01/1910",
+        "ultimaFecha": "31/12/2010"
+    },
+    {
+        "tipo": "numero",
+        "titulo": "Introduce tu edad",
+        "valorMinimo": 14,
+        "valorMaximo": 100
+    },
+    {
+        "tipo": "campoEspecial",
+        "titulo": "Introduce tu alu",
+        "expresionRegular": "^alu[0-9]{10}$"
+    },
+    {
+        "tipo": "telefono",
+        "titulo": "Introduce tu número de teléfono:"
+    },
+    {
+        "tipo": "email",
+        "titulo": "Introduce tu dirección de correo electrónico:",
+        "dominiosDisponibles": ["ull.edu.es", "ull.es"]
+    },
+    {
+        "tipo": "dni",
+        "titulo": "Introduce tu DNI:"
+    },
+    {
+        "tipo": "desplegable",
+        "titulo": "Selecciona tu talla de camiseta:",
+        "opciones": [
+            "XS", "S", "M", "L", "XL", "XXL"
+        ]
+    },
+    {
+        "tipo": "casilla",
+        "titulo": "Acepto el reglamento de la prueba",
+        "obligatorio" : true
+    }
+]
