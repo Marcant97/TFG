@@ -27,7 +27,7 @@ def verificarJSON(contenido):
 
 
 #! pendiente de hacer un cambio
-def leerFichero(fichero, tiposGenericos, tiposEspecificos):
+def leerFichero(fichero):
   """
   Función encargada de leer el fichero, pasarlo a diccionario y verificar que los tipos son correctos
   Args:
@@ -44,12 +44,7 @@ def leerFichero(fichero, tiposGenericos, tiposEspecificos):
   try :
     mi_fichero = open(fichero, "r", encoding="utf-8")
     datos_fichero = json.load(mi_fichero)
-    for campo in datos_fichero:
-      if ((campo["tipo"] not in tiposGenericos) and (campo["tipo"] not in tiposEspecificos)):
-        print(f"Tipo incorrecto para '{campo['tipo']}'")
-      else:
-        print(f"Tipo correcto para '{campo['tipo']}'")
-
+    
     return datos_fichero
 
 
