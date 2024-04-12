@@ -1,6 +1,17 @@
 # En este fichero se aloja la lógica encargada de leer el fichero JSON de entrada y comprobar que es correcto.
 
 import json
+import re
+
+def validar_fecha(fecha):
+    # Expresión regular para el formato dd/mm/aaaa
+    patron = r"^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/(\d{4})$"
+    # Verificar si la cadena cumple con el patrón
+    if re.match(patron, fecha):
+        return True
+    else:
+        return False
+
 
 def verificarJSON(contenido):
   """
@@ -57,7 +68,7 @@ def leerFichero(fichero, tiposGenericos, tiposEspecificos):
 
 
 
-def comprobarDiccionario(miDiccionario, tiposGenericos, tiposEspecificos):
+def comprobarDiccionario(miDiccionario):
   """
   Función encargada de comprobar que el diccionario pasado cumple con los requisitos
   Args:
@@ -105,51 +116,31 @@ def comprobarDiccionario(miDiccionario, tiposGenericos, tiposEspecificos):
         else:
           print(f"Campo {campo} no válido")
           return -1
-        
-    #? Campo de opcion múltiple --> todavía no sé si lo haré
-    # elif pregunta["tipo"] == "opcionMultiple":
-    #   # Procesar campos de la pregunta
-    #   opcionMultiple = pregunta.get('opcionMultiple', None)
-    #   # Comprobamos que opcionMultiple sea true o false
-    #   if opcionMultiple != None and type(opcionMultiple) != bool:
-    #     print("opcionMultiple debe ser un booleano")
-    #     return -1
-    #   TrueAnswerFound = False
-    #   # Comprobamos que hay un campo opciones 
-    #   if 'opciones' not in pregunta:
-    #     print("Falta el campo opciones")
-    #     return -1
-    #   for campo in pregunta:
-    #     if campo == "tipo" or campo == "titulo" or campo == 'opcionMultiple':
-    #       print(f"Campo {campo} procesado")
-    #     elif campo == 'opciones':
-    #       print (f"Campo {campo} procesado")
-    #       for opcion in pregunta['opciones']:
-    #         if 'opcion' not in opcion or 'answer' not in opcion:
-    #           print("Falta opcion o answer en un campo de opciones")
-    #           return -1
-    #         if opcionMultiple == False:
-    #           if opcion['answer'] == True and TrueAnswerFound == False:
-    #             TrueAnswerFound = True
-    #           elif opcion['answer'] == True and TrueAnswerFound == True: 
-    #             print("Solo puede haber una respuesta correcta, ya que opcionMultiple está a False")
-    #             return -1
-              
-    #     else:
-    #       print(f"Campo {campo} no válido")
-    #       return -1
     
     
     #? Campo desplegable
     elif pregunta["tipo"] == "desplegable":
+      opciones = False
       for campo in pregunta:
-        if campo == "tipo" or campo == "titulo" or campo == 'opciones':
+        if campo == "tipo" or campo == "titulo":
           print(f"Campo {campo} procesado")
+
+        elif campo == 'opciones': # se revisa que esté el campo de opciones (obligatorio)
+          opciones = True
+          # comprobamos que se trate de un array
+          if type(pregunta[campo]) != list:
+            print(f"El campo {campo} debe ser un array")
+            return -1
         else:
           print(f"Campo {campo} no válido")
           return -1
+      if not opciones:
+        print("Falta el campo opciones, obligatorio para el tipo desplegable")
+        return -1
+      
         
     #? Campo casilla
+    # el campo 'obligatorio' es opcional, si no se especifica se considera False
     elif pregunta["tipo"] == "casilla":
       for campo in pregunta:
         if campo == "tipo" or campo == "titulo" or campo == 'obligatorio':
@@ -159,11 +150,64 @@ def comprobarDiccionario(miDiccionario, tiposGenericos, tiposEspecificos):
           return -1
         
 
+    #? campo email
+    # el campo 'dominiosDisponibles' es opcional, si no se especifica se consideran todos los dominios de correo que cumplan con la expresión regular 
+    elif pregunta["tipo"] == "email":
+      for campo in pregunta:
+        if campo == "tipo" or campo == "titulo" or campo == 'dominiosDisponibles':
+          if campo == 'dominiosDisponibles':
+            # comprobamos que se trate de un array
+            if type(pregunta[campo]) != list:
+              print(f"El campo {campo} debe ser un array")
+              return -1
+          print(f"Campo {campo} procesado")
+        else:
+          print(f"Campo {campo} no válido")
+          return -1
 
-    elif pregunta["tipo"] in tiposEspecificos:
-      print(f"Procesando campo de tipo específico {pregunta['tipo']}")
 
-      # ! PENDIENTE DE HACER
+    #? teléfono y dni
+    elif pregunta["tipo"] == "telefono" or pregunta["tipo"] == "dni":
+      for campo in pregunta:
+        if campo == "tipo" or campo == "titulo":
+          print(f"Campo {campo} procesado")
+        else:
+          print(f"Campo {campo} no válido")
+          return -1
+        
+
+    #? campo fecha
+    elif pregunta["tipo"] == "fecha":
+      for campo in pregunta:
+        if campo == "tipo" or campo == "titulo":
+          print(f"Campo {campo} procesado")
+        elif campo == 'primeraFecha' or campo == 'ultimaFecha':
+          # comprobamos que se trate de un string y con formato dd/mm/aaaa
+          if type(pregunta[campo]) != str:
+            print(f"El campo {campo} debe ser una string")
+            return -1
+          if not validar_fecha(pregunta[campo]):
+            print(f"El campo {campo} debe tener el formato dd/mm/aaaa")
+            return -1
+        else:
+          print(f"Campo {campo} no válido")
+          return -1
+
+    #? campo especial
+    elif pregunta["tipo"] == "campoEspecial":
+      expresionRegular = False
+      for campo in pregunta:
+        if campo == "tipo" or campo == "titulo":
+          print(f"Campo {campo} procesado")
+        elif campo == 'expresionRegular':
+          expresionRegular = True
+          # comprobamos que se trate de un string
+          if type(pregunta[campo]) != str:
+            print(f"El campo {campo} debe ser una string")
+            return -1
+        else:
+          print(f"Campo {campo} no válido")
+          return -1
         
     
     else:
