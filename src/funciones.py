@@ -2,7 +2,7 @@ from lectura import leerFichero, comprobarDiccionario
 from configurador import crear_proyecto, instalar_django, borrar_proyecto, configurar_proyecto
 
 tiposGenericos = ["texto", "numero", "opcionMultiple", "desplegable", "casilla"]
-tiposEspecificos = ["email", "dni", "phonenumero", "date", "specialField"]
+tiposEspecificos = ["email", "dni", "telefono", "fecha", "campoEspecial"]
 miDiccionario = {}
 
 
