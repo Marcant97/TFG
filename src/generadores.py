@@ -152,9 +152,7 @@ def generar_models(miDiccionario):
       campo = f"  {titulo_limpio} = models.BooleanField(default=False)\n"
       codigo += campo
 
-    #^ Tipo de campo para preguntas de multiple elección. 
-    # ? Es posible que no lo implemente, su funcionalidad ya se cumple con desplegable y casilla.
-      
+
     #^ Tipo de campos para preguntas de tipo específico, email.
     elif pregunta['tipo'] == 'email':
 
@@ -172,10 +170,6 @@ def generar_models(miDiccionario):
       campo = f"  {titulo_limpio} = models.CharField(max_length=9, validators=[validar_dni])\n"
       codigo += campo
 
-
-    #^ Tipo de campos para preguntas de tipo específico, teléfono.
-    #! PENDIENTE
-      
 
     #^ Tipo de campos para preguntas de tipo específico, fecha.
     elif pregunta['tipo'] == 'fecha':
@@ -197,7 +191,7 @@ def generar_models(miDiccionario):
       if expresion_regular != "":
         codigo += (f"  {nombre_campo} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
 
-    # tiposEspecificos = ["email", "dni", "telefono", "date", "campoEspecial"]
+
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
       continue

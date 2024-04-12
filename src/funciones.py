@@ -36,7 +36,7 @@ def mi_switch(opcion):
 
     # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
     miDiccionario = leerFichero("./examples/form1.json", tiposGenericos, tiposEspecificos)
-    comprobarDiccionario(miDiccionario, tiposGenericos, tiposEspecificos)
+    comprobarDiccionario(miDiccionario)
 
     # 2.Crear proyecto
     crear_proyecto()
