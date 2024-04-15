@@ -134,25 +134,3 @@ def borrar_proyecto():
     print("Proyecto Django borrado correctamente.")
   except Exception as e:
     print(f"Error al borrar el proyecto Django: {str(e)}")
-
-
-
-# FUNCIONES SIN UTILIZAR.
-
-
-# def arrancar_servidor():
-#   # Arrancar servidor de desarrollo
-#   print("Arrancando servidor de desarrollo...")
-#   subprocess.run(["python", "manage.py", "runserver"])
-
-
-# def desinstalar_django():
-#   try:
-#     # Desinstalar Django
-#     print("Desinstalando Django...")
-#     subprocess.run(["pip", "uninstall", "-y", "django"])
-#     print("Django desinstalado correctamente.")
-#   except Exception as e:
-#     print(f"Error al desinstalar Django: {str(e)}")
-
-

@@ -4,8 +4,9 @@ import json
 import re
 
 def validar_fecha(fecha):
-    # Expresión regular para el formato dd/mm/aaaa
-    patron = r"^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/(\d{4})$"
+    # Expresión regular para el formato dd/mm/aaaa ó dd-mm-aaaa (también admite para día y fecha sólo un dígito).
+    patron = r"^(3[01]|[12][0-9]|0?[1-9])(\/|-)(0?[1-9]|1[0-2])\2(\d{4})$" ## admite guiones y barras
+    
     # Verificar si la cadena cumple con el patrón
     if re.match(patron, fecha):
         return True
@@ -122,10 +123,16 @@ def comprobarDiccionario(miDiccionario):
 
         elif campo == 'opciones': # se revisa que esté el campo de opciones (obligatorio)
           opciones = True
-          # comprobamos que se trate de un array
-          if type(pregunta[campo]) != list:
-            print(f"El campo {campo} debe ser un array")
+          # comprobamos que se trate de una lista
+          if not isinstance(pregunta[campo], list):
+            print(f"El campo {campo} debe ser una lista")
             return -1
+
+          # comprobamos que todos los elementos de la lista sean strings
+          if not all(isinstance(item, str) for item in pregunta[campo]):
+            print(f"El campo {campo} debe ser una lista de strings")
+            return -1
+          print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
           return -1
@@ -138,7 +145,13 @@ def comprobarDiccionario(miDiccionario):
     # el campo 'obligatorio' es opcional, si no se especifica se considera False
     elif pregunta["tipo"] == "casilla":
       for campo in pregunta:
-        if campo == "tipo" or campo == "titulo" or campo == 'obligatorio':
+        if campo == "tipo" or campo == "titulo":
+          print(f"Campo {campo} procesado")
+        elif campo == 'obligatorio':
+          # comprobamos que se trate de un boolean
+          if type(pregunta[campo]) != bool:
+            print(f"El campo {campo} debe ser un booleano")
+            return -1
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
@@ -151,11 +164,18 @@ def comprobarDiccionario(miDiccionario):
       for campo in pregunta:
         if campo == "tipo" or campo == "titulo" or campo == 'dominiosDisponibles':
           if campo == 'dominiosDisponibles':
-            # comprobamos que se trate de un array
-            if type(pregunta[campo]) != list:
-              print(f"El campo {campo} debe ser un array")
+            # comprobamos que se trate de una lista
+            if not isinstance(pregunta[campo], list):
+              print(f"El campo {campo} debe ser una lista")
               return -1
+
+            # comprobamos que todos los elementos de la lista sean strings
+            if not all(isinstance(item, str) for item in pregunta[campo]):
+              print(f"El campo {campo} debe ser una lista de strings")
+              return -1
+            
           print(f"Campo {campo} procesado")
+
         else:
           print(f"Campo {campo} no válido")
           return -1
@@ -176,6 +196,7 @@ def comprobarDiccionario(miDiccionario):
       for campo in pregunta:
         if campo == "tipo" or campo == "titulo":
           print(f"Campo {campo} procesado")
+
         elif campo == 'primeraFecha' or campo == 'ultimaFecha':
           # comprobamos que se trate de un string y con formato dd/mm/aaaa
           if type(pregunta[campo]) != str:
@@ -184,6 +205,7 @@ def comprobarDiccionario(miDiccionario):
           if not validar_fecha(pregunta[campo]):
             print(f"El campo {campo} debe tener el formato dd/mm/aaaa")
             return -1
+          print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
           return -1
@@ -200,14 +222,24 @@ def comprobarDiccionario(miDiccionario):
           if type(pregunta[campo]) != str:
             print(f"El campo {campo} debe ser una string")
             return -1
+
+          # le añadimos a la expresión regular una r al principio
+          campo_aux = 'r' + pregunta[campo]
+          pregunta[campo] = campo_aux
+          
+          print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
           return -1
-        
+
+      if not expresionRegular:
+        print("Falta el campo expresionRegular, obligatorio para el tipo campoEspecial")
+        return -1
     
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
       return -1
 
-  return 0
+  # si todo ha ido bien, devolvemos el diccionario (por si han habido modificaciones en algún campo como en la expresión regular).
+  return miDiccionario
   
