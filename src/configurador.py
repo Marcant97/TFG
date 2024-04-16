@@ -105,7 +105,6 @@ def configurar_proyecto(miDiccionario):
 
 
 
-# Sin probar demasiado, no la he utilizado casi.
 def borrar_proyecto():
   """
   Función encargada de borrar el proyecto Django.
@@ -114,11 +113,16 @@ def borrar_proyecto():
     # Obtener la ruta del directorio de trabajo actual
     directorio_actual = os.getcwd()
     # print("Directorio actual para borrar:", directorio_actual)
-    # Borrar el proyecto Django
-    print("Borrando proyecto Django...")
+    # Construir la ruta del directorio del proyecto
     proyecto_dir = os.path.join(directorio_actual, "django_test")  # Reemplaza con el nombre del proyecto
-    shutil.rmtree(proyecto_dir)
-    print("Proyecto Django borrado correctamente.")
+    
+    # Verificar si el directorio del proyecto existe
+    if os.path.exists(proyecto_dir):
+      # Borrar el proyecto Django si existe
+      print("Borrando proyecto Django...")
+      shutil.rmtree(proyecto_dir)
+      print("Proyecto Django borrado correctamente.")
+          
   except Exception as e:
-    mensaje_error = "Error al borrar el proyecto Django: {str(e)}"
+    mensaje_error = f"Error al borrar el proyecto Django: {str(e)}"
     raise Exception(mensaje_error)
