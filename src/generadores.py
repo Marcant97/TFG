@@ -273,17 +273,21 @@ def generar_forms(miDiccionario):
 
     file.write("        ]\n")
 
-    file.write("        labels = {\n")
-    #* Se recorren las preguntas del diccionario
-    for pregunta in miDiccionario:
-      tipo = pregunta.get("tipo", "")
-      titulo = pregunta.get("titulo", "")
-      nombre_campo = limpiar_titulo(titulo)
-      if tipo == 'telefono':
-        file.write(f"            'prefijo_{nombre_campo}': 'Prefijo telefónico',\n")
-      file.write(f"            '{nombre_campo}': '{titulo}',\n")
+    # si existe un campo cuyo tipo sea diferente a 'casilla', se añade el atributo 'labels' al formulario.
+    if any(pregunta['tipo'] != 'casilla' for pregunta in miDiccionario):
+      # se evita escribir labels vacío si sólo hay casillas.
+      file.write("        labels = {\n")
+      #* Se recorren las preguntas del diccionario
+      for pregunta in miDiccionario:
+        tipo = pregunta.get("tipo", "")
+        titulo = pregunta.get("titulo", "")
+        nombre_campo = limpiar_titulo(titulo)
+        if tipo != 'casilla':
+          if tipo == 'telefono':
+            file.write(f"            'prefijo_{nombre_campo}': 'Prefijo telefónico',\n")
+          file.write(f"            '{nombre_campo}': '{titulo}',\n")
 
-    file.write("        }\n")
+      file.write("        }\n")
 
     primera_fecha = True
     for pregunta in miDiccionario:
