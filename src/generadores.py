@@ -1,21 +1,42 @@
 from datetime import datetime
 import os
 
-def limpiar_titulo(titulo):
-    """
-    Función que se encarga de quitar los caracteres especiales y espacios de un string, creando así un nombre 
-    válido para una variable.
+variables_creadas = [] # Lista para almacenar las variables creadas en el diccionario.
 
-    Args:
-      titulo (str): cadena de caracteres a limpiar.
+def generar_variables(miDiccionario):
+  """
+  Función que se encarga de agrgar un campo a cada pregunta del diccionario, quitando los caracteres especiales y espacios de un string, creando así un nombre 
+  válido para cada variable del diccionario. En el caso de que existan preguntas idénticas en el diccionario, se añade un número al final del nombre de la variable.
 
-    Returns:
-      str: cadena de caracteres limpia.
-    """
+  Args:
+    titulo (str): cadena de caracteres a limpiar.
 
-    caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-    titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo)
-    return titulo_limpio.lower().rstrip('_')
+  Returns:
+    str: cadena de caracteres limpia.
+  """
+
+  caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+  for pregunta in miDiccionario:
+    titulo_original = pregunta['titulo']
+    titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo_original)
+    nuevo_titulo = titulo_limpio.lower().rstrip('_')
+
+
+    if nuevo_titulo not in variables_creadas:
+      variables_creadas.append(nuevo_titulo)
+      nombre_variable = {'nombre_variable': nuevo_titulo}
+      pregunta.update(nombre_variable)
+
+    else: # ya existe una pregunta con el mismo nombre de variable
+      contador = 1
+      while True:
+        nuevo_titulo = f"{titulo_limpio}{contador}"
+        if nuevo_titulo not in variables_creadas:
+          variables_creadas.append(nuevo_titulo)
+          nombre_variable = {'nombre_variable': nuevo_titulo}
+          pregunta.update(nombre_variable)
+          break
+        contador += 1
 
 
 
@@ -49,7 +70,7 @@ def generar_models(miDiccionario):
           bandera = True
       
         #^ generamos el código para el validador de dominios disponibles
-        codigo += f"def f{limpiar_titulo(pregunta['titulo'])}_email(value):\n"
+        codigo += f"def f{pregunta['nombre_variable']}_email(value):\n"
 
         #^ lo convertimos en una string y le quitamos "'", para que sea válido en el código
         dominiosDisponiblesError = str(pregunta['dominiosDisponibles']).replace("'", "")
@@ -98,13 +119,15 @@ def generar_models(miDiccionario):
 
   codigo += ("from django.core.validators import RegexValidator\n\n")
 
-
   codigo += "class TuModelo(models.Model):\n"
+
+
+
 
   ###* Se procesan las preguntas del diccionario ###
   for pregunta in miDiccionario:
 
-    titulo_limpio = limpiar_titulo(pregunta['titulo']) # Obtenemos un nombre de campo válido para una variable.
+    titulo_limpio = pregunta['nombre_variable'] # Obtenemos un nombre de campo válido para una variable.
 
     #^ Tipo de campo de texto con opcionalmente límite de caracteres.
     if pregunta['tipo'] == 'texto':
@@ -186,10 +209,10 @@ def generar_models(miDiccionario):
     #^ Tipo de campo para preguntas de tipo específico, campo especial.
     elif pregunta['tipo'] == 'campoEspecial':
       titulo = pregunta.get("titulo", "")
-      nombre_campo = limpiar_titulo(titulo)
+      # nombre_campo = limpiar_titulo(titulo)
       expresion_regular = pregunta.get("expresionRegular", "")
       if expresion_regular != "":
-        codigo += (f"  {nombre_campo} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
+        codigo += (f"  {titulo_limpio} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
 
 
     else:
@@ -230,7 +253,7 @@ def generar_forms(miDiccionario):
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'casilla':
         titulo = pregunta.get("titulo", "")
-        nombre_campo = limpiar_titulo(titulo)
+        nombre_campo = pregunta['nombre_variable']
         obligatorio = pregunta.get("obligatorio", False)
         file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
 
@@ -238,7 +261,7 @@ def generar_forms(miDiccionario):
     primera_fecha_formulario = True
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'fecha':
-        titulo = limpiar_titulo(pregunta.get('titulo', ''))
+        titulo = pregunta['nombre_variable']
         # obtenemos la primera fecha y la última fecha
 
         primera_fecha = pregunta.get('primeraFecha', '01/01/1900') # por defecto, la primera fecha es 01/01/1900.
@@ -264,7 +287,7 @@ def generar_forms(miDiccionario):
     for pregunta in miDiccionario:
       tipo = pregunta.get("tipo", "")
       titulo = pregunta.get("titulo", "")
-      nombre_campo = limpiar_titulo(titulo)
+      nombre_campo = pregunta['nombre_variable']
 
       if tipo == 'telefono':
         file.write(f"            'prefijo_{nombre_campo}',\n")
@@ -281,7 +304,7 @@ def generar_forms(miDiccionario):
       for pregunta in miDiccionario:
         tipo = pregunta.get("tipo", "")
         titulo = pregunta.get("titulo", "")
-        nombre_campo = limpiar_titulo(titulo)
+        nombre_campo = pregunta['nombre_variable']
         if tipo != 'casilla':
           if tipo == 'telefono':
             file.write(f"            'prefijo_{nombre_campo}': 'Prefijo telefónico',\n")
@@ -292,8 +315,7 @@ def generar_forms(miDiccionario):
     primera_fecha = True
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'fecha':
-        titulo = pregunta.get("titulo", "")
-        nombre_campo = limpiar_titulo(titulo)
+        nombre_campo = pregunta['nombre_variable']
 
         if primera_fecha:
           file.write("        widgets = {\n")
@@ -338,7 +360,7 @@ def generar_views(miDiccionario):
   for pregunta in miDiccionario:
     if pregunta['tipo'] == 'telefono':
       titulo = pregunta.get("titulo", "")
-      nombre_campo = limpiar_titulo(titulo)
+      nombre_campo = pregunta['nombre_variable']
       codigo += f"            prefijo = request.POST.get('prefijo_{nombre_campo}')\n"
       codigo += f"            numero_telefono = request.POST.get('{nombre_campo}')\n"
       codigo += f"            numero_completo = f\"{{prefijo}} {{numero_telefono}}\"\n"

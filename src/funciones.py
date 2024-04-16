@@ -1,5 +1,6 @@
 from lectura import leerFichero, comprobarDiccionario
 from configurador import crear_proyecto, verificar_django, borrar_proyecto, configurar_proyecto
+from generadores import generar_variables
 
 tiposGenericos = ["texto", "numero", "opcionMultiple", "desplegable", "casilla"]
 tiposEspecificos = ["email", "dni", "telefono", "fecha", "campoEspecial"]
@@ -21,15 +22,18 @@ def mi_switch(opcion):
 
       # 3. Leer fichero de entrada y guardar el diccionario obtenido.
       # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
-      miDiccionario = leerFichero("./examples/form1.json")
+      miDiccionario = leerFichero("./examples/prueba11.json")
 
       # 4. Comprobar diccionario
       comprobarDiccionario(miDiccionario)
 
-      # 5.Crear proyecto
+      # 5. Generar variables para cada pregunta.
+      generar_variables(miDiccionario)
+
+      # 6.Crear proyecto
       crear_proyecto()
 
-      # 6. Configurar proyecto
+      # 7. Configurar proyecto
       configurar_proyecto(miDiccionario)
     
     except Exception as e:
