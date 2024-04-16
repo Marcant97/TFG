@@ -2,11 +2,11 @@
     {
         "tipo": "casilla",
         "titulo": "Acepto los términos y condiciones del presente reglamento",
-        "obligatorio": "True"
+        "obligatorio": true
     },
     {
         "tipo": "casilla",
         "titulo": "casilla no obligatorio",
-        "obligatorio": "False"
+        "obligatorio": false
     }
 ]
