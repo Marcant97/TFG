@@ -152,6 +152,11 @@ def comprobarDiccionario(miDiccionario):
           if type(pregunta[campo]) != bool:
             print(f"El campo {campo} debe ser un booleano")
             return -1
+          
+          if pregunta[campo] == True:
+            # si es obligatoria, le añadimos un asterisco para indicar que es obligatoria al usuario.
+            pregunta["titulo"] += " *"
+
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")

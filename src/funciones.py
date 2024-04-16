@@ -35,8 +35,11 @@ def mi_switch(opcion):
     # 3. Leer fichero de entrada y guardar el diccionario obtenido.
 
     # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
-    miDiccionario = leerFichero("./examples/prueba10.json")
+    miDiccionario = leerFichero("./examples/prueba5.json")
+    #! gestionar error de fichero.
     comprobarDiccionario(miDiccionario)
+
+
 
     # 2.Crear proyecto
     crear_proyecto()
