@@ -14,16 +14,16 @@ def validar_fecha(fecha):
         return False
 
 
-def verificarJSON(contenido):
-  """
-  Función que verifica si el contenido pasado es un JSON válido
-  Parámetros:
-    contenido: 
-  """
-  try:
-    json.loads(contenido)
-  except json.JSONDecodeError:
-    raise Exception("El contenido no es un JSON válido", json.JSONDecodeError)
+# def verificarJSON(contenido):
+#   """
+#   Función que verifica si el contenido pasado es un JSON válido
+#   Parámetros:
+#     contenido: 
+#   """
+#   try:
+#     json.loads(contenido)
+#   except json.JSONDecodeError:
+#     raise Exception("El contenido no es un JSON válido", json.JSONDecodeError)
 
 
 
@@ -41,22 +41,18 @@ def leerFichero(fichero):
   # manejo de errores en la lectura del fichero
   try :
     mi_fichero = open(fichero, "r", encoding="utf-8")
-    verificarJSON(mi_fichero.read())
+
     datos_fichero = json.load(mi_fichero)
     return datos_fichero
 
   except FileNotFoundError:
-    print("El fichero no existe")
-    exit
+    raise Exception("El fichero no existe")
   except PermissionError:
-    print("No tienes permisos para leer el fichero")
-    exit
+    raise Exception("No tienes permisos para leer el fichero")
   except json.JSONDecodeError:
-    print("El fichero no es un JSON válido")
-    exit
-  except Exception:
-    print("Error desconocido")
-    exit
+    raise Exception("El contenido no es un JSON válido")
+  except Exception as e:
+    raise Exception(f"Error al leer el fichero: {str(e)}")
 
 
 
