@@ -78,11 +78,9 @@ def comprobarDiccionario(miDiccionario):
 
     #* COMPROBACIONES INICIALES
     if "titulo" not in pregunta:
-      print("Falta el título de la pregunta")
-      return -1
+      raise Exception("Falta el título de la pregunta")
     if "tipo" not in pregunta:
-      print("Falta el tipo de la pregunta")
-      return -1
+      raise Exception("Falta el tipo de la pregunta")
 
     #? Campo de texto
     if pregunta["tipo"] == "texto":
@@ -92,7 +90,7 @@ def comprobarDiccionario(miDiccionario):
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
         
     #? Campo numérico
     elif pregunta["tipo"] == "numero":
@@ -104,10 +102,10 @@ def comprobarDiccionario(miDiccionario):
         elif campo == 'valorMinimo' or campo == 'valorMaximo':
           if type(pregunta[campo]) != int:
             print(f"El campo {campo} debe ser un entero")
-            return -1
+            raise Exception(f"El campo {campo} debe ser un entero")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
     
     
     #? Campo desplegable
@@ -122,19 +120,19 @@ def comprobarDiccionario(miDiccionario):
           # comprobamos que se trate de una lista
           if not isinstance(pregunta[campo], list):
             print(f"El campo {campo} debe ser una lista")
-            return -1
+            raise Exception(f"El campo {campo} debe ser una lista")
 
           # comprobamos que todos los elementos de la lista sean strings
           if not all(isinstance(item, str) for item in pregunta[campo]):
             print(f"El campo {campo} debe ser una lista de strings")
-            return -1
+            raise Exception(f"El campo {campo} debe ser una lista de strings")
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
       if not opciones:
         print("Falta el campo opciones, obligatorio para el tipo desplegable")
-        return -1
+        raise Exception("Falta el campo opciones, obligatorio para el tipo desplegable")
       
         
     #? Campo casilla
@@ -147,7 +145,7 @@ def comprobarDiccionario(miDiccionario):
           # comprobamos que se trate de un boolean
           if type(pregunta[campo]) != bool:
             print(f"El campo {campo} debe ser un booleano")
-            return -1
+            raise Exception(f"El campo {campo} debe ser un booleano")
           
           if pregunta[campo] == True:
             # si es obligatoria, le añadimos un asterisco para indicar que es obligatoria al usuario.
@@ -156,7 +154,7 @@ def comprobarDiccionario(miDiccionario):
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
         
 
     #? campo email
@@ -168,18 +166,18 @@ def comprobarDiccionario(miDiccionario):
             # comprobamos que se trate de una lista
             if not isinstance(pregunta[campo], list):
               print(f"El campo {campo} debe ser una lista")
-              return -1
+              raise Exception(f"El campo {campo} debe ser una lista")
 
             # comprobamos que todos los elementos de la lista sean strings
             if not all(isinstance(item, str) for item in pregunta[campo]):
               print(f"El campo {campo} debe ser una lista de strings")
-              return -1
+              raise Exception(f"El campo {campo} debe ser una lista de strings")
             
           print(f"Campo {campo} procesado")
 
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
 
 
     #? teléfono y dni
@@ -189,7 +187,7 @@ def comprobarDiccionario(miDiccionario):
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
         
 
     #? campo fecha
@@ -202,14 +200,14 @@ def comprobarDiccionario(miDiccionario):
           # comprobamos que se trate de un string y con formato dd/mm/aaaa
           if type(pregunta[campo]) != str:
             print(f"El campo {campo} debe ser una string")
-            return -1
+            raise Exception(f"El campo {campo} debe ser una string")
           if not validar_fecha(pregunta[campo]):
             print(f"El campo {campo} debe tener el formato dd/mm/aaaa")
-            return -1
+            raise Exception(f"El campo {campo} debe tener el formato dd/mm/aaaa")
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
 
     #? campo especial
     elif pregunta["tipo"] == "campoEspecial":
@@ -222,17 +220,17 @@ def comprobarDiccionario(miDiccionario):
           # comprobamos que se trate de un string
           if type(pregunta[campo]) != str:
             print(f"El campo {campo} debe ser una string")
-            return -1
+            raise Exception(f"El campo {campo} debe ser una string")
           
           print(f"Campo {campo} procesado")
         else:
           print(f"Campo {campo} no válido")
-          return -1
+          raise Exception(f"Campo {campo} no válido")
 
       if not expresionRegular:
         print("Falta el campo expresionRegular, obligatorio para el tipo campoEspecial")
-        return -1
+        raise Exception("Falta el campo expresionRegular, obligatorio para el tipo campoEspecial")
     
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
-      return -1
+      raise Exception(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
