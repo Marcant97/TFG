@@ -10,9 +10,9 @@ import time
 from generadores import generar_models, generar_forms, generar_views, generar_template, modify_urls_py, modify_settings_py
 
 
-def instalar_django():
+def verificar_django():
   """
-  Función encargada de comprobar la instalación de Django y, en caso de no estar instalado, instalarlo.
+  Función encargada de comprobar la instalación de Django y, en caso de no estar instalado, devoler un error.
   """
   try:
     # Verificar si Django ya está instalado
@@ -20,18 +20,12 @@ def instalar_django():
     subprocess.run(["pip", "show", "Django"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
 
   except subprocess.CalledProcessError:
-    # Si hay un error, significa que Django no está instalado, entonces lo instalamos
-    try:
-      # Instalar Django
-      print("Instalando Django...")
-      subprocess.run(["pip", "install", "Django==5.0.1", "--user"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-      print("Django instalado correctamente.")
-    except Exception as e:
-      print(f"Error al instalar Django: {str(e)}")
-      raise
+    mensaje_error = "Django no está instalado. Por favor, instale Django antes de continuar."
+    raise Exception(mensaje_error)
     
   else:
     print("Django ya está instalado.")
+
 
 
 def crear_proyecto():
@@ -116,8 +110,6 @@ def configurar_proyecto(miDiccionario):
 
 
 
-
-
 # Sin probar demasiado, no la he utilizado casi.
 def borrar_proyecto():
   """
@@ -133,4 +125,5 @@ def borrar_proyecto():
     shutil.rmtree(proyecto_dir)
     print("Proyecto Django borrado correctamente.")
   except Exception as e:
-    print(f"Error al borrar el proyecto Django: {str(e)}")
+    mensaje_error = "Error al borrar el proyecto Django: {str(e)}"
+    raise Exception(mensaje_error)
