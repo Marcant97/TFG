@@ -3,5 +3,10 @@
         "tipo": "campoEspecial",
         "titulo": "Introduce un nombre de usuario",
         "expresionRegular": "^[a-zA-Z0-9]{5,10}$"
+    },
+    {
+        "tipo": "campoEspecial",
+        "titulo": "Introduce tu alu",
+        "expresionRegular": "^alu\\d{10}$"
     }
 ]

@@ -222,10 +222,6 @@ def comprobarDiccionario(miDiccionario):
           if type(pregunta[campo]) != str:
             print(f"El campo {campo} debe ser una string")
             return -1
-
-          # le añadimos a la expresión regular una r al principio
-          campo_aux = 'r' + pregunta[campo]
-          pregunta[campo] = campo_aux
           
           print(f"Campo {campo} procesado")
         else:
