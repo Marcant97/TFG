@@ -22,12 +22,11 @@ def verificarJSON(contenido):
   """
   try:
     json.loads(contenido)
-    return True
   except json.JSONDecodeError:
-    return False
+    raise Exception("El contenido no es un JSON válido", json.JSONDecodeError)
 
 
-#! pendiente de hacer un cambio
+
 def leerFichero(fichero):
   """
   Función encargada de leer el fichero, pasarlo a diccionario y verificar que los tipos son correctos
@@ -39,15 +38,12 @@ def leerFichero(fichero):
     dict: diccionario con los datos del fichero
   """
 
-  #! PENDIENTE DE HACER --> llamar a verificar json
-
   # manejo de errores en la lectura del fichero
   try :
     mi_fichero = open(fichero, "r", encoding="utf-8")
+    verificarJSON(mi_fichero.read())
     datos_fichero = json.load(mi_fichero)
-    
     return datos_fichero
-
 
   except FileNotFoundError:
     print("El fichero no existe")
@@ -240,7 +236,3 @@ def comprobarDiccionario(miDiccionario):
     else:
       print(f"Tipo de campo no válido para la pregunta: {pregunta['titulo']}")
       return -1
-
-  # si todo ha ido bien, devolvemos el diccionario (por si han habido modificaciones en algún campo como en la expresión regular).
-  return miDiccionario
-  
