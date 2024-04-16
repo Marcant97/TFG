@@ -15,19 +15,21 @@ def mi_switch(opcion):
     try:
       # 1. Comprobar instalación de django
       verificar_django()
+
       # 2. Borrar proyecto anterior si lo hay, si se queda bloqueado abortar.
       borrar_proyecto()
 
       # 3. Leer fichero de entrada y guardar el diccionario obtenido.
       # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
-      miDiccionario = leerFichero("./examples/prueba5.json")
+      miDiccionario = leerFichero("./examples/form1.json")
 
+      # 4. Comprobar diccionario
       comprobarDiccionario(miDiccionario)
 
-      # 3.Crear proyecto
+      # 5.Crear proyecto
       crear_proyecto()
 
-      # 4. Configurar proyecto
+      # 6. Configurar proyecto
       configurar_proyecto(miDiccionario)
     
     except Exception as e:

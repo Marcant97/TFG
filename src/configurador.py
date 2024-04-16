@@ -21,8 +21,6 @@ def verificar_django():
     mensaje_error = "Django no está instalado. Por favor, instale Django antes de continuar."
     raise Exception(mensaje_error)
 
-verificar_django()
-
 
 
 def crear_proyecto():
