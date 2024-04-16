@@ -12,19 +12,16 @@ from generadores import generar_models, generar_forms, generar_views, generar_te
 
 def verificar_django():
   """
-  Función encargada de comprobar la instalación de Django y, en caso de no estar instalado, devoler un error.
+  Función encargada de comprobar la instalación de Django y, en caso de no estar instalado, devolver un error.
   """
   try:
-    # Verificar si Django ya está instalado
-    print("Verificando si Django ya está instalado...")
-    subprocess.run(["pip", "show", "Django"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-
-  except subprocess.CalledProcessError:
+    # Intentamos importar Django
+    import django
+  except ImportError:
     mensaje_error = "Django no está instalado. Por favor, instale Django antes de continuar."
     raise Exception(mensaje_error)
-    
-  else:
-    print("Django ya está instalado.")
+
+verificar_django()
 
 
 
@@ -46,8 +43,8 @@ def crear_proyecto():
 
 
   except Exception as e:
-    print(f"Error al crear el proyecto Django: {str(e)}")
-    raise
+    raise Exception(f"Error al crear el proyecto Django: {str(e)}")
+
 
 
 def configurar_proyecto(miDiccionario):
