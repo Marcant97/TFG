@@ -7,7 +7,7 @@ import subprocess
 import webbrowser
 import time
 
-from generadores import generar_models, generar_forms, generar_views, generar_template, modificar_urls_py, modificar_settings_py
+from generadores import generar_models, generar_forms, generar_views, generar_templates, modificar_urls_py, modificar_settings_py
 
 
 def verificar_django():
@@ -66,7 +66,7 @@ def configurar_proyecto(miDiccionario):
     os.makedirs("templates", exist_ok=True)
     os.chdir("templates")
 
-    generar_template() #? 5. Se crea y rellena /templates/mi_template.html.
+    generar_templates() #? 5. Se crea y rellena /templates/mi_template.html.
     os.chdir("..")  #* Volvemos al directorio raíz del proyecto.
 
     modificar_urls_py() #? 6. Modificar urls.py

@@ -95,18 +95,18 @@ def generar_models(miDiccionario):
   for pregunta in miDiccionario:
     if pregunta['tipo'] == 'dni':
       # introducir código de validar_dni.txt
-      nombre_archivo = "../../../src/validar_dni.txt"
+      nombre_archivo = "../../../src/ficheros_generacion/validar_dni.txt"
       with open(nombre_archivo, "r", encoding="utf-8") as f:
         codigo += f.read() + "\n"
       break  
 
   #* Sólo para preguntas del tipo número de teléfono.
-  # Se crea utils/prefijos.py a partir de src/prefijos.txt y se importa en models.py el contenido.
+  # Se crea utils/prefijos.py a partir de src/ficheros_generacion/prefijos.txt y se importa en models.py el contenido.
   for pregunta in miDiccionario:
     if pregunta['tipo'] == 'telefono':
       codigo += "from .utils.prefijos import PREFIJOS\n\n"
       # generamos el fichero de prefijos en /utils/prefijos.py
-      nombre_archivo = "../../../src/prefijos.txt"
+      nombre_archivo = "../../../src/ficheros_generacion/prefijos.txt"
       with open(nombre_archivo, "r", encoding="utf-8") as f:
         contenido_fichero = f.read()
 
@@ -225,8 +225,6 @@ def generar_models(miDiccionario):
   with open("models.py", "w", encoding="utf-8") as f:
       f.write(codigo)
 
-# LLAMADA PARA HACER PRUEBAS
-# generar_modelo(diccionario)
 
 
 
@@ -335,10 +333,6 @@ def generar_forms(miDiccionario):
 
 
 
-# LLAMADA PARA HACER PRUEBAS
-# generar_forms(diccionario)
-
-
 
 def generar_views(miDiccionario):
   """
@@ -347,9 +341,13 @@ def generar_views(miDiccionario):
     miDiccionario (dict): Diccionario con las preguntas del formulario.
   """
   print('Creando vistas...')
-  codigo = "from django.shortcuts import render\n"
+  codigo = "from django.shortcuts import render, redirect\n"
   codigo += "from .forms import TuFormulario\n"
   codigo += "from .models import TuModelo\n\n"
+
+  # vista para el home
+  codigo += "def home(request):\n"
+  codigo += "    return render(request, 'home.html')\n\n"
 
   codigo += "def mi_vista(request):\n"
   codigo += "    if request.method == 'POST':\n"
@@ -368,46 +366,52 @@ def generar_views(miDiccionario):
       codigo += f"            form.instance.{nombre_campo} = numero_completo\n"  
   
   codigo += "            form.save()\n"
-  codigo += "            # Realiza acciones adicionales después de guardar el formulario\n"
+  codigo += "            return redirect('vista_enviar')\n"
 
   codigo += "    else:\n"
   codigo += "        form = TuFormulario()\n"
   codigo += "    return render(request, 'mi_template.html', {'form': form})\n"
 
+  # vista para después de enviar el formulario.
+  codigo += "def vista_enviar(request):\n"
+  codigo += "    return render(request, 'enviar.html')\n"
+
   # Escribir el código en el archivo
   with open("views.py", "w", encoding="utf-8") as f:
       f.write(codigo)
 
-# LLAMADA PARA HACER PRUEBAS
-# generar_views(diccionario)
 
 
-def generar_template():
+
+def generar_templates():
   """
   Función que se encarga de generar el fichero mi_template.html del proyecto.
   """
-  print('Creando template...')
-  codigo = """<!-- mi_template.html -->
+  print('Creando templates...')
 
-<!DOCtipo html>
-<html>
-<head>
-    <titulo>Formulario</titulo>
-</head>
-<body>
-    <h2>Formulario</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button tipo="submit">Enviar</button>
-    </form>
-</body>
-</html>
-"""
+  mi_template = ""
+  mi_home = ""
+  mi_enviar = ""
+
+  with open("../../../../src/templates/mi_template.html", "r", encoding="utf-8") as file:
+    mi_template = file.read()
+  
+  with open("../../../../src/templates/home.html", "r", encoding="utf-8") as file:
+    mi_home = file.read()
+
+  with open("../../../../src/templates/enviar.html", "r", encoding="utf-8") as file:
+    mi_enviar = file.read()
+
 
   # Escribir el código en el archivo
   with open("mi_template.html", "w", encoding="utf-8") as f:
-      f.write(codigo)
+    f.write(mi_template)
+
+  with open("home.html", "w", encoding="utf-8") as f:
+    f.write(mi_home)
+
+  with open("enviar.html", "w", encoding="utf-8") as f:
+    f.write(mi_enviar)
 
 
 
@@ -421,8 +425,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.home, name='home'),
     path('formulario/', views.mi_vista, name='mi_vista'),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('enviar/', views.vista_enviar, name='vista_enviar')
 ]
 """
   # Escribir el código en el archivo
