@@ -409,11 +409,9 @@ def generar_template():
   with open("mi_template.html", "w", encoding="utf-8") as f:
       f.write(codigo)
 
-# LLAMADA PARA HACER PRUEBAS
-# generar_template()
 
 
-def modify_urls_py():
+def modificar_urls_py():
   """
   Función encargada de actualizar el archivo urls.py del proyecto.
   """
@@ -430,13 +428,9 @@ urlpatterns = [
   # Escribir el código en el archivo
   with open("urls.py", "w", encoding="utf-8") as f:
     f.write(codigo)
-
-
-# LLAMADA PARA HACER PRUEBAS
-# modify_urls_py()
       
 
-def modify_settings_py():
+def modificar_settings_py():
 
   print('Modificando settings.py...')
 
