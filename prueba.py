@@ -27,9 +27,9 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     if tipo_seleccionado == "texto":
         # Campo opcional para el límite
         limite_label = tk.Label(campos_adicionales_frame, text="Límite de caracteres:")
-        limite_label.grid(row=0, column=0, padx=5, pady=5,)
+        limite_label.grid(row=0, column=0, padx=5, pady=5)
         limite_entry = tk.Entry(campos_adicionales_frame)
-        limite_entry.grid(row=0, column=1, padx=5, pady=5)
+        limite_entry.grid(row=1, column=0, padx=5, pady=5)
 
         limite_label.configure(bg=root.cget('bg')) # fondo
 
@@ -37,17 +37,17 @@ def mostrar_campos_adicionales(tipo_seleccionado):
 
         # campo opcional para el límite inferior
         valor_minimo_label = tk.Label(campos_adicionales_frame, text="Valor mínimo:")
-        valor_minimo_label.grid(row=1, column=0, padx=5, pady=5)
+        valor_minimo_label.grid(row=0, column=0, padx=5, pady=5)
         valor_minimo_entrada = tk.Entry(campos_adicionales_frame)
-        valor_minimo_entrada.grid(row=1, column=1, padx=5, pady=5)
+        valor_minimo_entrada.grid(row=1, column=0, padx=5, pady=5)
 
         valor_minimo_label.configure(bg=root.cget('bg')) # fondo
 
         # campo opcional para el límite superior
         valor_maximo_label = tk.Label(campos_adicionales_frame, text="Valor máximo:")
-        valor_maximo_label.grid(row=0, column=0, padx=5, pady=5)
+        valor_maximo_label.grid(row=2, column=0, padx=5, pady=5)
         valor_maximo_entrada = tk.Entry(campos_adicionales_frame)
-        valor_maximo_entrada.grid(row=0, column=1, padx=5, pady=5)
+        valor_maximo_entrada.grid(row=3, column=0, padx=5, pady=5)
 
         valor_maximo_label.configure(bg=root.cget('bg')) # fondo
 
@@ -123,17 +123,17 @@ root.configure(bg="white")
 
 # campo tipo
 tipo_pregunta_label = tk.Label(root, text="Tipo de pregunta:*")
-tipo_pregunta_label.pack(padx=5, pady=5)
+tipo_pregunta_label.pack(padx=5, pady=5, anchor="w")
 tipo_pregunta_combobox = ttk.Combobox(root, values=tipos_pregunta, state="readonly")
-tipo_pregunta_combobox.pack(padx=5, pady=5)
+tipo_pregunta_combobox.pack(padx=5, pady=5, anchor="w")
 
 tipo_pregunta_label.configure(bg=root.cget('bg')) # fondo
 
 # campo pregunta
 pregunta_label = tk.Label(root, text="Pregunta:*")
-pregunta_label.pack(padx=5, pady=5)
+pregunta_label.pack(padx=5, pady=5, anchor="w")
 pregunta_entry = tk.Entry(root)
-pregunta_entry.pack(padx=5, pady=5)
+pregunta_entry.pack(padx=5, pady=5, anchor="w")
 
 pregunta_label.configure(bg=root.cget('bg')) # fondo
 
@@ -141,31 +141,31 @@ pregunta_label.configure(bg=root.cget('bg')) # fondo
 # Frame para los campos adicionales
 campos_adicionales_frame = tk.Frame(root)
 campos_adicionales_frame = tk.Frame(root, bg=root.cget('bg')) # fondo
-campos_adicionales_frame.pack(padx=5, pady=5, fill="x")
+campos_adicionales_frame.pack(padx=5, pady=5, fill="x", anchor="w")
 
 # Asociar la función mostrar_campos_adicionales al evento de selección de un elemento en el Combobox
 tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
 
 # Botón para agregar pregunta
 agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta)
-agregar_pregunta_button.pack(pady=5)
+agregar_pregunta_button.pack(pady=5, anchor="w")
 
 # Botón para convertir a JSON
 convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
-convertir_button.pack(pady=5)
+convertir_button.pack(pady=5, anchor="w")
 
 # Lista para almacenar las preguntas
 preguntas = []
 
 # Etiqueta para mostrar el resultado
 resultado_label = tk.Label(root, text="")
-resultado_label.pack(pady=5)
+resultado_label.pack(pady=5, anchor="w")
 resultado_label.configure(bg=root.cget('bg')) # fondo
 
 
 # Etiqueta para mostrar el mensaje de confirmación
 mensaje_confirmacion = tk.Label(root, text="")
-mensaje_confirmacion.pack(pady=5)
+mensaje_confirmacion.pack(pady=5, anchor="w")
 mensaje_confirmacion.configure(bg=root.cget('bg')) # fondo
 
 # Iniciar la aplicación
