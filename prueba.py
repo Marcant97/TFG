@@ -48,87 +48,67 @@ def agregar_pregunta():
 
     # Recoger datos de los campos adicionales según el tipo seleccionado
     if tipo_seleccionado == "texto":
-        if limite_entry:
-            limite = limite_entry.get()
-            if limite:
-                campos_adicionales["limite"] = limite
+        limite = limite_entry.get()
+        if limite:
+            campos_adicionales["limite"] = limite
 
     elif tipo_seleccionado == "numero":
-        if limite_superior_entry:
-            limite_superior = limite_superior_entry.get()
-            if limite_superior:
-                campos_adicionales["limite_superior"] = limite_superior
+        limite_superior = limite_superior_entry.get()
+        if limite_superior:
+            campos_adicionales["limite_superior"] = limite_superior
 
-        if limite_inferior_entry:
-            limite_inferior = limite_inferior_entry.get()
-            if limite_inferior:
-                campos_adicionales["limite_inferior"] = limite_inferior
-
+        limite_inferior = limite_inferior_entry.get()
+        if limite_inferior:
+            campos_adicionales["limite_inferior"] = limite_inferior
 
     # Guardar la pregunta y los campos adicionales en la lista
-    preguntas.append({"pregunta": pregunta, "tipo_pregunta": tipo_seleccionado, "campos_adicionales": campos_adicionales})
+    preguntas.append({"pregunta": pregunta, "tipo_pregunta": tipo_seleccionado, **campos_adicionales})
 
     # Limpiar campos de entrada
     pregunta_entry.delete(0, tk.END)
     if tipo_seleccionado == "texto":
-        if limite_entry:
-            limite_entry.delete(0, tk.END)
-
+        limite_entry.delete(0, tk.END)
     elif tipo_seleccionado == "numero":
-        if limite_superior_entry:
-            limite_superior_entry.delete(0, tk.END)
-        if limite_inferior_entry:
-            limite_inferior_entry.delete(0, tk.END)
+        limite_superior_entry.delete(0, tk.END)
+        limite_inferior_entry.delete(0, tk.END)
 
 def convertir_a_json():
     # Convertir la lista de preguntas a JSON
     datos_json = json.dumps(preguntas, indent=4)
-
+    print(datos_json)
     # Mostrar el JSON en la etiqueta de resultado
     resultado_label.config(text=datos_json)
 
 ######## PROGRAMA PRINCIPAL ########
 
-# Crear la ventana principal
 root = tk.Tk()
 root.title("Generador de Formularios")
-
-# Establecer el tamaño inicial de la ventana más grande
 root.geometry("800x600")
 
-# Crear etiqueta y campo de entrada para la primera pregunta.
 pregunta_label = tk.Label(root, text="Pregunta:")
 pregunta_label.pack(padx=5, pady=5)
 pregunta_entry = tk.Entry(root)
 pregunta_entry.pack(padx=5, pady=5)
 
-# Crear etiqueta y combobox para seleccionar el tipo de pregunta
 tipo_pregunta_label = tk.Label(root, text="Tipo de pregunta:")
 tipo_pregunta_label.pack(padx=5, pady=5)
 tipo_pregunta_combobox = ttk.Combobox(root, values=tipos_pregunta, state="readonly")
 tipo_pregunta_combobox.pack(padx=5, pady=5)
 
-# dependiendo del tipo de pregunta seleccionado, se mostrarán campos adicionales
-tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
-
-# Frame para los campos adicionales dependiendo del tipo de pregunta seleccionado
 campos_adicionales_frame = tk.Frame(root)
 campos_adicionales_frame.pack(padx=5, pady=5, fill="x")
 
-# Botón para agregar una nueva pregunta
+tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
+
 agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta)
 agregar_pregunta_button.pack(pady=5)
 
-# Botón para generar el JSON
 convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
 convertir_button.pack(pady=5)
 
-# Lista para almacenar las preguntas
 preguntas = []
 
-# Etiqueta para mostrar el resultado
 resultado_label = tk.Label(root, text="")
 resultado_label.pack(pady=5)
 
-# Ejecutar el bucle principal
 root.mainloop()
