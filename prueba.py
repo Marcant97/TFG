@@ -10,12 +10,15 @@ limite_entry = None
 valor_maximo_entrada = None
 valor_minimo_entrada = None
 
-
+def limpiar_mensaje():
+    mensaje_confirmacion.config(text="")
 
 def mostrar_campos_adicionales(tipo_seleccionado):
     global limite_entry
     global valor_maximo_entrada
     global valor_minimo_entrada
+
+    limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
 
     # Limpiar cualquier widget anterior
     for widget in campos_adicionales_frame.winfo_children():
@@ -24,7 +27,7 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     if tipo_seleccionado == "texto":
         # Campo opcional para el límite
         limite_label = tk.Label(campos_adicionales_frame, text="Límite de caracteres:")
-        limite_label.grid(row=0, column=0, padx=5, pady=5)
+        limite_label.grid(row=0, column=0, padx=5, pady=5,)
         limite_entry = tk.Entry(campos_adicionales_frame)
         limite_entry.grid(row=0, column=1, padx=5, pady=5)
 
@@ -85,10 +88,16 @@ def agregar_pregunta():
         valor_maximo_entrada.delete(0, tk.END)
         valor_minimo_entrada.delete(0, tk.END)
 
+            # Mostrar mensaje de confirmación
+    mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.")
+
+
 
 
 
 def convertir_a_json():
+
+    limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
     # Convertir la lista de preguntas a JSON
     datos_json = json.dumps(preguntas, indent=4)
     print(datos_json)
@@ -152,6 +161,12 @@ preguntas = []
 resultado_label = tk.Label(root, text="")
 resultado_label.pack(pady=5)
 resultado_label.configure(bg=root.cget('bg')) # fondo
+
+
+# Etiqueta para mostrar el mensaje de confirmación
+mensaje_confirmacion = tk.Label(root, text="")
+mensaje_confirmacion.pack(pady=5)
+mensaje_confirmacion.configure(bg=root.cget('bg')) # fondo
 
 # Iniciar la aplicación
 root.mainloop()
