@@ -83,36 +83,57 @@ def convertir_a_json():
     # Mostrar el JSON en la etiqueta de resultado
     resultado_label.config(text=datos_json)
 
-######## PROGRAMA PRINCIPAL ########
 
+
+
+
+
+#?#######################################################################
+########?################# PROGRAMA PRINCIPAL ###########################
+#?#######################################################################
+
+
+
+
+# Se crea la ventana principal.
 root = tk.Tk()
 root.title("Generador de Formularios")
 root.geometry("800x600")
 
-pregunta_label = tk.Label(root, text="Pregunta:")
-pregunta_label.pack(padx=5, pady=5)
-pregunta_entry = tk.Entry(root)
-pregunta_entry.pack(padx=5, pady=5)
-
+# campo tipo
 tipo_pregunta_label = tk.Label(root, text="Tipo de pregunta:")
 tipo_pregunta_label.pack(padx=5, pady=5)
 tipo_pregunta_combobox = ttk.Combobox(root, values=tipos_pregunta, state="readonly")
 tipo_pregunta_combobox.pack(padx=5, pady=5)
 
+# campo pregunta
+pregunta_label = tk.Label(root, text="Pregunta:")
+pregunta_label.pack(padx=5, pady=5)
+pregunta_entry = tk.Entry(root)
+pregunta_entry.pack(padx=5, pady=5)
+
+
+# Frame para los campos adicionales
 campos_adicionales_frame = tk.Frame(root)
 campos_adicionales_frame.pack(padx=5, pady=5, fill="x")
 
+# Asociar la función mostrar_campos_adicionales al evento de selección de un elemento en el Combobox
 tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
 
+# Botón para agregar pregunta
 agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta)
 agregar_pregunta_button.pack(pady=5)
 
+# Botón para convertir a JSON
 convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
 convertir_button.pack(pady=5)
 
+# Lista para almacenar las preguntas
 preguntas = []
 
+# Etiqueta para mostrar el resultado
 resultado_label = tk.Label(root, text="")
 resultado_label.pack(pady=5)
 
+# Iniciar la aplicación
 root.mainloop()
