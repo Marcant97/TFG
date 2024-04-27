@@ -46,7 +46,8 @@ def agregar_pregunta():
     pregunta = pregunta_entry.get()
     campos_adicionales = {}
 
-    # Recoger datos de los campos adicionales según el tipo seleccionado
+    # Recoger datos de los campos adicionales según el tipo seleccionado,
+    # sólo se incluyen si se han rellenado.
     if tipo_seleccionado == "texto":
         limite = limite_entry.get()
         if limite:
@@ -65,12 +66,15 @@ def agregar_pregunta():
     preguntas.append({"pregunta": pregunta, "tipo_pregunta": tipo_seleccionado, **campos_adicionales})
 
     # Limpiar campos de entrada
+    tipo_pregunta_combobox.set("")
     pregunta_entry.delete(0, tk.END)
     if tipo_seleccionado == "texto":
         limite_entry.delete(0, tk.END)
     elif tipo_seleccionado == "numero":
         limite_superior_entry.delete(0, tk.END)
         limite_inferior_entry.delete(0, tk.END)
+
+
 
 def convertir_a_json():
     # Convertir la lista de preguntas a JSON
