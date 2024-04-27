@@ -10,6 +10,13 @@ limite_entry = None
 valor_maximo_entrada = None
 valor_minimo_entrada = None
 
+
+def mostrar_json():
+    # Convertir la lista de preguntas a JSON
+    datos_json = json.dumps(preguntas, indent=4)
+    json_text.delete("1.0", tk.END)  # Limpiar contenido actual
+    json_text.insert(tk.END, datos_json)
+
 def limpiar_mensaje():
     mensaje_confirmacion.config(text="")
 
@@ -91,6 +98,8 @@ def agregar_pregunta():
             # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.")
 
+    mostrar_json()  # Actualizar JSON en la ventana de texto
+
 
 
 
@@ -162,6 +171,10 @@ resultado_label = tk.Label(root, text="")
 resultado_label.pack(pady=5, anchor="w")
 resultado_label.configure(bg=root.cget('bg')) # fondo
 
+# Mostrar JSON
+json_text = tk.Text(root, height=20, width=50)
+json_text.pack(padx=5, pady=5, side="right")
+mostrar_json()  # Mostrar JSON inicialmente
 
 # Etiqueta para mostrar el mensaje de confirmación
 mensaje_confirmacion = tk.Label(root, text="")
