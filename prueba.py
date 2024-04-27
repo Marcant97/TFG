@@ -76,14 +76,13 @@ def agregar_pregunta():
 
 
 
+
 def convertir_a_json():
     # Convertir la lista de preguntas a JSON
     datos_json = json.dumps(preguntas, indent=4)
     print(datos_json)
     # Mostrar el JSON en la etiqueta de resultado
     resultado_label.config(text=datos_json)
-
-
 
 
 
@@ -99,6 +98,8 @@ def convertir_a_json():
 root = tk.Tk()
 root.title("Generador de Formularios")
 root.geometry("800x600")
+root.configure(bg="white")
+
 
 # campo tipo
 tipo_pregunta_label = tk.Label(root, text="Tipo de pregunta:")
@@ -106,11 +107,15 @@ tipo_pregunta_label.pack(padx=5, pady=5)
 tipo_pregunta_combobox = ttk.Combobox(root, values=tipos_pregunta, state="readonly")
 tipo_pregunta_combobox.pack(padx=5, pady=5)
 
+tipo_pregunta_label.configure(bg=root.cget('bg')) # fondo
+
 # campo pregunta
 pregunta_label = tk.Label(root, text="Pregunta:")
 pregunta_label.pack(padx=5, pady=5)
 pregunta_entry = tk.Entry(root)
 pregunta_entry.pack(padx=5, pady=5)
+
+pregunta_label.configure(bg=root.cget('bg')) # fondo
 
 
 # Frame para los campos adicionales
@@ -134,6 +139,7 @@ preguntas = []
 # Etiqueta para mostrar el resultado
 resultado_label = tk.Label(root, text="")
 resultado_label.pack(pady=5)
+resultado_label.configure(bg=root.cget('bg')) # fondo
 
 # Iniciar la aplicación
 root.mainloop()
