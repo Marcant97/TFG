@@ -70,11 +70,11 @@ def agregar_pregunta():
     elif tipo_seleccionado == "numero":
         valor_maximo = valor_maximo_entrada.get()
         if valor_maximo:
-            campos_adicionales["valorMinimo"] = int(valor_maximo)
+            campos_adicionales["valorMaximo"] = int(valor_maximo)
 
         valor_minimo = valor_minimo_entrada.get()
         if valor_minimo:
-            campos_adicionales["valorMaximo"] = int(valor_minimo)
+            campos_adicionales["valorMinimo"] = int(valor_minimo)
 
     # Guardar la pregunta y los campos adicionales en la lista
     preguntas.append({"tipo": tipo_seleccionado, "titulo": pregunta, **campos_adicionales})
