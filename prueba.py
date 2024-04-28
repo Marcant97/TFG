@@ -3,17 +3,19 @@ from tkinter import ttk
 import json
 
 # tipos de preguntas disponibles
-tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación"]
+tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "correo electrónico"]
 
 limite_entry = None
 valor_maximo_entrada = None
 valor_minimo_entrada = None
 opciones_entry = None
 obligatorio_entry = None
+correo_entry = None
+dominios_entry = None
 
 def mostrar_json():
     # Convertir la lista de preguntas a JSON
-    datos_json = json.dumps(preguntas, indent=4)
+    datos_json = json.dumps(preguntas, indent=4, ensure_ascii=False)
     json_text.delete("1.0", tk.END)  # Limpiar contenido actual
     json_text.insert(tk.END, datos_json)
 
@@ -26,6 +28,7 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     global valor_minimo_entrada
     global opciones_entry
     global obligatorio_entry
+    global dominios_entry
 
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
 
@@ -62,20 +65,31 @@ def mostrar_campos_adicionales(tipo_seleccionado):
 
 
     elif tipo_seleccionado == "desplegable":
-        opciones_label = tk.Label(campos_adicionales_frame, text="Opciones (separadas por ;):")
+        opciones_label = tk.Label(campos_adicionales_frame, text="Opciones (separadas por ';') :*")
         opciones_label.grid(row=0, column=0, padx=5, pady=5)
         opciones_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
         opciones_entry.grid(row=1, column=0, padx=5, pady=5)
         opciones_label.configure(bg=root.cget('bg')) # fondo
 
     elif tipo_seleccionado == "casilla de verificación":
-        obligatorio_label = tk.Label(campos_adicionales_frame, text="Indique si es obligatorio o no:")
+        obligatorio_label = tk.Label(campos_adicionales_frame, text="Indique si es obligatorio o no:*")
         obligatorio_label.grid(row=0, column=0, padx=5, pady=5)
         obligatorio_label.configure(bg=root.cget('bg')) # fondo
         # obligatorio_entry es un desplegable con si y no
         obligatorio_entry = ttk.Combobox(campos_adicionales_frame, values=["Sí", "No"], state="readonly")
         obligatorio_entry.grid(row=1, column=0, padx=5, pady=5)
         obligatorio_entry.set("No") # por defecto, no es obligatorio
+
+
+    elif tipo_seleccionado == "correo electrónico":
+        dominios_disponibles_label = tk.Label(campos_adicionales_frame, text="Dominios permitidos (separados por ';') :")
+        dominios_disponibles_label.grid(row=0, column=0, padx=5, pady=5)
+        dominios_disponibles_label.configure(bg=root.cget('bg'))
+
+        dominios_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
+        dominios_entry.grid(row=1, column=0, padx=5, pady=5)
+        
+
 
 
 def agregar_pregunta():
@@ -129,7 +143,13 @@ def agregar_pregunta():
         else:
             mensaje_confirmacion.config(text="Por favor, seleccione si la casilla es obligatoria o no.", fg="red")
             return
-
+        
+    elif tipo_seleccionado == "correo electrónico":
+        tipo_seleccionado = "email" # modificamos el nombre del tipo
+        dominios = dominios_entry.get()
+        if dominios:
+            dominios = dominios.split(";")
+            campos_adicionales["dominiosDisponibles"] = dominios
             
 
         
@@ -149,6 +169,8 @@ def agregar_pregunta():
         opciones_entry.delete(0, tk.END)
     elif tipo_seleccionado == "casilla" or tipo_seleccionado == "casilla de verificación":
         pass # No tiene campos adicionales
+    elif tipo_seleccionado == "email" or tipo_seleccionado == "correo electrónico":
+        dominios_entry.delete(0, tk.END)
 
     # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.", fg="black")
@@ -161,7 +183,7 @@ def agregar_pregunta():
 def convertir_a_json():
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
     # Convertir la lista de preguntas a JSON
-    datos_json = json.dumps(preguntas, indent=4)
+    datos_json = json.dumps(preguntas, indent=4, ensure_ascii=False)
     print(datos_json)
     # Mostrar el JSON en la etiqueta de resultado
     # resultado_label.config(text=datos_json)
