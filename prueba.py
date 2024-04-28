@@ -316,11 +316,11 @@ campos_adicionales_frame.grid(row=0, column=2, rowspan=2, padx=5, pady=5, sticky
 tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
 
 # Botón para agregar pregunta
-agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta)
+agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta, bg="green", fg="white")
 agregar_pregunta_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
 # Botón para convertir a JSON
-convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
+convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json, bg="green", fg="white")
 convertir_button.grid(row=2, column=1, columnspan=2, padx=5, pady=5, sticky="w")
 
 # Lista para almacenar las preguntas
