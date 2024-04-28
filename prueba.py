@@ -70,6 +70,16 @@ def agregar_pregunta():
     pregunta = pregunta_entry.get()
     campos_adicionales = {}
 
+    # Validar que se haya seleccionado un tipo de pregunta
+    if not tipo_seleccionado:
+        mensaje_confirmacion.config(text="Por favor, seleccione primero un tipo de pregunta.", fg="red")
+        return
+
+    # Validar que se haya ingresado un título para la pregunta
+    if not pregunta:
+        mensaje_confirmacion.config(text="Por favor, ingrese un título para la pregunta.", fg="red")
+        return
+
     # Recoger datos de los campos adicionales según el tipo seleccionado,
     # sólo se incluyen si se han rellenado.
     if tipo_seleccionado == "texto":
