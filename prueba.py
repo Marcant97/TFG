@@ -23,6 +23,7 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     global valor_maximo_entrada
     global valor_minimo_entrada
     global opciones_entry
+    global obligatorio_entry
 
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
 
@@ -66,8 +67,11 @@ def mostrar_campos_adicionales(tipo_seleccionado):
         opciones_label.configure(bg=root.cget('bg')) # fondo
 
     elif tipo_seleccionado == "casilla de verificación":
-        pass # no tiene campos adicionales
-
+        obligatorio_label = tk.Label(campos_adicionales_frame, text="Indique si es obligatorio o no:")
+        obligatorio_label.grid(row=0, column=0, padx=5, pady=5)
+        # obligatorio_entry es un desplegable con si y no
+        obligatorio_entry = ttk.Combobox(campos_adicionales_frame, values=["Sí", "No"], state="readonly")
+        obligatorio_entry.set("No") # por defecto, no es obligatorio
 
 
 def agregar_pregunta():
@@ -113,7 +117,18 @@ def agregar_pregunta():
     elif tipo_seleccionado == "casilla de verificación":
         # modificamos el nombre del tipo
         tipo_seleccionado = "casilla"
-        pass # No tiene campos adicionales
+        obligatorio = obligatorio_entry.get()
+        if obligatorio == "Sí":
+            campos_adicionales["obligatorio"] = True
+        elif obligatorio == "No":
+            campos_adicionales["obligatorio"] = False
+        else:
+            mensaje_confirmacion.config(text="Por favor, seleccione si la casilla es obligatoria o no.", fg="red")
+            return
+
+            
+
+        
 
     # Guardar la pregunta y los campos adicionales en la lista
     preguntas.append({"tipo": tipo_seleccionado, "titulo": pregunta, **campos_adicionales})
