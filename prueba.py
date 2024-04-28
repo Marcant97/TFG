@@ -16,7 +16,7 @@ def mostrar_json():
     json_text.insert(tk.END, datos_json)
 
 def limpiar_mensaje():
-    mensaje_confirmacion.config(text="")
+    mensaje_confirmacion.config(text="", fg="black")
 
 def mostrar_campos_adicionales(tipo_seleccionado):
     global limite_entry
@@ -87,8 +87,13 @@ def agregar_pregunta():
             campos_adicionales["valorMinimo"] = int(valor_minimo)
 
     elif tipo_seleccionado == "desplegable":
-        opciones = opciones_entry.get().split(";")  # Obtener opciones y dividirlas por comas
-        campos_adicionales["opciones"] = opciones
+        opciones = opciones_entry.get()
+        if opciones:
+            opciones = opciones.split(";")  # Obtener opciones y dividirlas por comas
+            campos_adicionales["opciones"] = opciones
+        else:
+            mensaje_confirmacion.config(text="Debe ingresar al menos una opción para el desplegable.", fg="red")
+            return  # Salir de la función sin agregar la pregunta
 
     # Guardar la pregunta y los campos adicionales en la lista
     preguntas.append({"tipo": tipo_seleccionado, "titulo": pregunta, **campos_adicionales})
@@ -105,7 +110,7 @@ def agregar_pregunta():
         opciones_entry.delete(0, tk.END)
 
     # Mostrar mensaje de confirmación
-    mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.")
+    mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.", fg="black")
 
     mostrar_json()  # Actualizar JSON en el área de texto
 
