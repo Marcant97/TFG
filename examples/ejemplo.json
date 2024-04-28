@@ -5,28 +5,13 @@
     },
     {
         "tipo": "email",
-        "titulo": "Introduce tu correo electrónico:",
-        "commonDomains": "false",
-        "additionalDomains": [
-            "ull.edu.es",
-            "ull.es"
-        ]
+        "titulo": "Introduce tu dirección de correo electrónico:",
+        "dominiosDisponibles": ["ull.edu.es", "ull.es"]
     },
     {
         "tipo": "numero",
         "titulo": "Introduce tu edad:",
         "valorMaximo": 140
-    },
-    {
-        "tipo": "opcionMultiple",
-        "opcionMultiple": false,
-        "titulo": "¿Cuál es tu color favorito?",
-        "opciones": [
-            {"opcion": "Rojo", "answer": false},
-            {"opcion": "Verde", "answer": false},
-            {"opcion": "Azul", "answer": false},
-            {"opcion": "Amarillo", "answer": false}
-        ]   
     },
     {
         "tipo": "texto",
