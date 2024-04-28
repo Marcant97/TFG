@@ -7,37 +7,33 @@ tiposEspecificos = ["email", "dni", "telefono", "fecha", "campoEspecial"]
 miDiccionario = {}
 
 
-def mi_switch(opcion):
-  if opcion == 0:
-    # terminar la ejecución del programa
-    print("salir")
+def funcion_principal(archivo_seleccionado):
 
-  elif opcion == 1:
-    try:
-      # 1. Comprobar instalación de django
-      verificar_django()
+  try:
+    # 1. Comprobar instalación de django
+    verificar_django()
 
-      # 2. Borrar proyecto anterior si lo hay, si se queda bloqueado abortar.
-      borrar_proyecto()
+    # 2. Borrar proyecto anterior si lo hay, si se queda bloqueado abortar.
+    borrar_proyecto()
 
-      # 3. Leer fichero de entrada y guardar el diccionario obtenido.
-      # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
-      miDiccionario = leerFichero("./examples/ejemploNestor.json")
+    # 3. Leer fichero de entrada y guardar el diccionario obtenido.
+    # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
+    miDiccionario = leerFichero(archivo_seleccionado)
 
-      # 4. Comprobar diccionario
-      comprobarDiccionario(miDiccionario)
+    # 4. Comprobar diccionario
+    comprobarDiccionario(miDiccionario)
 
-      # 5. Generar variables para cada pregunta.
-      generar_variables(miDiccionario)
+    # 5. Generar variables para cada pregunta.
+    generar_variables(miDiccionario)
 
-      # 6.Crear proyecto
-      crear_proyecto()
+    # 6.Crear proyecto
+    crear_proyecto()
 
-      # 7. Configurar proyecto
-      configurar_proyecto(miDiccionario)
-    
-    except Exception as e:
-      print(f"Error: {str(e)}")
-      raise
+    # 7. Configurar proyecto
+    configurar_proyecto(miDiccionario)
+  
+  except Exception as e:
+    print(f"Error: {str(e)}")
+    raise
 
 
