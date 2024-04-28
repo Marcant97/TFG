@@ -33,7 +33,7 @@ def mostrar_campos_adicionales(tipo_seleccionado):
         # Campo opcional para el límite
         limite_label = tk.Label(campos_adicionales_frame, text="Límite de caracteres:")
         limite_label.grid(row=0, column=0, padx=5, pady=5)
-        limite_entry = tk.Entry(campos_adicionales_frame)
+        limite_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
         limite_entry.grid(row=1, column=0, padx=5, pady=5)
 
         limite_label.configure(bg=root.cget('bg')) # fondo
@@ -43,16 +43,16 @@ def mostrar_campos_adicionales(tipo_seleccionado):
         # campo opcional para el límite inferior
         valor_minimo_label = tk.Label(campos_adicionales_frame, text="Valor mínimo:")
         valor_minimo_label.grid(row=0, column=0, padx=5, pady=5)
-        valor_minimo_entrada = tk.Entry(campos_adicionales_frame)
+        valor_minimo_entrada = tk.Entry(campos_adicionales_frame, borderwidth=2)
         valor_minimo_entrada.grid(row=1, column=0, padx=5, pady=5)
 
         valor_minimo_label.configure(bg=root.cget('bg')) # fondo
 
         # campo opcional para el límite superior
         valor_maximo_label = tk.Label(campos_adicionales_frame, text="Valor máximo:")
-        valor_maximo_label.grid(row=2, column=0, padx=5, pady=5)
-        valor_maximo_entrada = tk.Entry(campos_adicionales_frame)
-        valor_maximo_entrada.grid(row=3, column=0, padx=5, pady=5)
+        valor_maximo_label.grid(row=0, column=1, padx=5, pady=5)
+        valor_maximo_entrada = tk.Entry(campos_adicionales_frame, borderwidth=2)
+        valor_maximo_entrada.grid(row=1, column=1, padx=5, pady=5)
 
         valor_maximo_label.configure(bg=root.cget('bg')) # fondo
 
@@ -105,7 +105,7 @@ def convertir_a_json():
 # Se crea la ventana principal.
 root = tk.Tk()
 root.title("Generador de Formularios")
-root.geometry("800x600")
+root.geometry("600x600")
 root.configure(bg="white")
 
 # Campo tipo
@@ -119,43 +119,43 @@ tipo_pregunta_label.configure(bg=root.cget('bg')) # fondo
 # Campo pregunta
 pregunta_label = tk.Label(root, text="Pregunta:*")
 pregunta_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
-pregunta_entry = tk.Entry(root)
+pregunta_entry = tk.Entry(root, borderwidth=2)
 pregunta_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 pregunta_label.configure(bg=root.cget('bg')) # fondo
 
 # Frame para los campos adicionales
 campos_adicionales_frame = tk.Frame(root, bg=root.cget('bg'))
-campos_adicionales_frame.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+campos_adicionales_frame.grid(row=0, column=2, rowspan=2, padx=5, pady=5, sticky="n")
 
 # Asociar la función mostrar_campos_adicionales al evento de selección de un elemento en el Combobox
 tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
 
 # Botón para agregar pregunta
 agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta)
-agregar_pregunta_button.grid(row=3, column=0, padx=5, pady=5, sticky="w")
+agregar_pregunta_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 
 # Botón para convertir a JSON
 convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
-convertir_button.grid(row=3, column=1, padx=5, pady=5, sticky="e")
+convertir_button.grid(row=2, column=1, columnspan=2, padx=5, pady=5, sticky="e")
 
 # Lista para almacenar las preguntas
 preguntas = []
 
 # Etiqueta para mostrar el resultado
 resultado_label = tk.Label(root, text="")
-resultado_label.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="w")
+resultado_label.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 resultado_label.configure(bg=root.cget('bg')) # fondo
 
 # Mostrar JSON
 json_text = tk.Text(root, height=20, width=50)
-json_text.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-root.rowconfigure(5, weight=1)  # Hacer que la fila 5 se expanda
+json_text.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+root.rowconfigure(4, weight=1)  # Hacer que la fila 4 se expanda
 root.columnconfigure(1, weight=1)  # Hacer que la columna 1 se expanda
 mostrar_json()  # Mostrar JSON inicialmente
 
 # Etiqueta para mostrar el mensaje de confirmación
 mensaje_confirmacion = tk.Label(root, text="")
-mensaje_confirmacion.grid(row=6, column=0, columnspan=2, padx=5, pady=5, sticky="w")
+mensaje_confirmacion.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 mensaje_confirmacion.configure(bg=root.cget('bg')) # fondo
 
 # Iniciar la aplicación
