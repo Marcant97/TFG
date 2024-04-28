@@ -3,7 +3,7 @@ from tkinter import ttk
 import json
 
 # tipos de preguntas disponibles
-tipos_pregunta = ["texto", "numero", "desplegable"]
+tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación"]
 
 limite_entry = None
 valor_maximo_entrada = None
@@ -65,6 +65,11 @@ def mostrar_campos_adicionales(tipo_seleccionado):
         opciones_entry.grid(row=1, column=0, padx=5, pady=5)
         opciones_label.configure(bg=root.cget('bg')) # fondo
 
+    elif tipo_seleccionado == "casilla de verificación":
+        pass # no tiene campos adicionales
+
+
+
 def agregar_pregunta():
     tipo_seleccionado = tipo_pregunta_combobox.get()
     pregunta = pregunta_entry.get()
@@ -104,6 +109,11 @@ def agregar_pregunta():
         else:
             mensaje_confirmacion.config(text="Debe ingresar al menos una opción para el desplegable.", fg="red")
             return  # Salir de la función sin agregar la pregunta
+        
+    elif tipo_seleccionado == "casilla de verificación":
+        # modificamos el nombre del tipo
+        tipo_seleccionado = "casilla"
+        pass # No tiene campos adicionales
 
     # Guardar la pregunta y los campos adicionales en la lista
     preguntas.append({"tipo": tipo_seleccionado, "titulo": pregunta, **campos_adicionales})
@@ -118,6 +128,8 @@ def agregar_pregunta():
         valor_minimo_entrada.delete(0, tk.END)
     elif tipo_seleccionado == "desplegable":
         opciones_entry.delete(0, tk.END)
+    elif tipo_seleccionado == "casilla" or tipo_seleccionado == "casilla de verificación":
+        pass # No tiene campos adicionales
 
     # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.", fg="black")
