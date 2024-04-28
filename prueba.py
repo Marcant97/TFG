@@ -289,6 +289,10 @@ root.title("Generador de Formularios")
 root.geometry("800x600")
 root.configure(bg="white")
 
+root.columnconfigure(0, weight=1)  # Expand column 0 (for 'Tipo de pregunta' and 'Pregunta')
+root.columnconfigure(1, weight=1)  # Expand column 1 (for the Combobox and Entry)
+root.columnconfigure(2, weight=1)  # Expand column 2 (for the 'Campos adicionales' frame)
+
 # Campo tipo
 tipo_pregunta_label = tk.Label(root, text="Tipo de pregunta:*")
 tipo_pregunta_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
@@ -317,19 +321,15 @@ agregar_pregunta_button.grid(row=2, column=0, columnspan=2, padx=5, pady=5, stic
 
 # Botón para convertir a JSON
 convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
-convertir_button.grid(row=2, column=1, columnspan=2, padx=5, pady=5, sticky="e")
+convertir_button.grid(row=2, column=1, columnspan=2, padx=5, pady=5, sticky="w")
 
 # Lista para almacenar las preguntas
 preguntas = []
 
-# Etiqueta para mostrar el resultado
-resultado_label = tk.Label(root, text="")
-resultado_label.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="w")
-resultado_label.configure(bg=root.cget('bg')) # fondo
 
 # Mostrar JSON
 json_text = tk.Text(root, height=20, width=50)
-json_text.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+json_text.grid(row=4, column=0, columnspan=3, padx=5, pady=5, sticky="nsew")
 root.rowconfigure(4, weight=1)  # Hacer que la fila 4 se expanda
 root.columnconfigure(1, weight=1)  # Hacer que la columna 1 se expanda
 mostrar_json()  # Mostrar JSON inicialmente
