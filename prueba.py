@@ -3,13 +3,11 @@ from tkinter import ttk
 import json
 
 # tipos de preguntas disponibles
-# tipos_pregunta = ["texto", "numero", "desplegable", "casilla", "email", "dni", "telefono", "fecha", "campoEspecial"]
 tipos_pregunta = ["texto", "numero"]
 
 limite_entry = None
 valor_maximo_entrada = None
 valor_minimo_entrada = None
-
 
 def mostrar_json():
     # Convertir la lista de preguntas a JSON
@@ -58,10 +56,6 @@ def mostrar_campos_adicionales(tipo_seleccionado):
 
         valor_maximo_label.configure(bg=root.cget('bg')) # fondo
 
-
-
-
-
 def agregar_pregunta():
     tipo_seleccionado = tipo_pregunta_combobox.get()
     pregunta = pregunta_entry.get()
@@ -95,17 +89,12 @@ def agregar_pregunta():
         valor_maximo_entrada.delete(0, tk.END)
         valor_minimo_entrada.delete(0, tk.END)
 
-            # Mostrar mensaje de confirmación
+    # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.")
 
-    mostrar_json()  # Actualizar JSON en la ventana de texto
-
-
-
-
+    mostrar_json()  # Actualizar JSON en el área de texto
 
 def convertir_a_json():
-
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
     # Convertir la lista de preguntas a JSON
     datos_json = json.dumps(preguntas, indent=4)
@@ -113,72 +102,60 @@ def convertir_a_json():
     # Mostrar el JSON en la etiqueta de resultado
     resultado_label.config(text=datos_json)
 
-
-
-
-#?#######################################################################
-########?################# PROGRAMA PRINCIPAL ###########################
-#?#######################################################################
-
-
-
-
 # Se crea la ventana principal.
 root = tk.Tk()
 root.title("Generador de Formularios")
 root.geometry("800x600")
 root.configure(bg="white")
 
-
-# campo tipo
+# Campo tipo
 tipo_pregunta_label = tk.Label(root, text="Tipo de pregunta:*")
-tipo_pregunta_label.pack(padx=5, pady=5, anchor="w")
+tipo_pregunta_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
 tipo_pregunta_combobox = ttk.Combobox(root, values=tipos_pregunta, state="readonly")
-tipo_pregunta_combobox.pack(padx=5, pady=5, anchor="w")
+tipo_pregunta_combobox.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 
 tipo_pregunta_label.configure(bg=root.cget('bg')) # fondo
 
-# campo pregunta
+# Campo pregunta
 pregunta_label = tk.Label(root, text="Pregunta:*")
-pregunta_label.pack(padx=5, pady=5, anchor="w")
+pregunta_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
 pregunta_entry = tk.Entry(root)
-pregunta_entry.pack(padx=5, pady=5, anchor="w")
-
+pregunta_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 pregunta_label.configure(bg=root.cget('bg')) # fondo
 
-
 # Frame para los campos adicionales
-campos_adicionales_frame = tk.Frame(root)
-campos_adicionales_frame = tk.Frame(root, bg=root.cget('bg')) # fondo
-campos_adicionales_frame.pack(padx=5, pady=5, fill="x", anchor="w")
+campos_adicionales_frame = tk.Frame(root, bg=root.cget('bg'))
+campos_adicionales_frame.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
 # Asociar la función mostrar_campos_adicionales al evento de selección de un elemento en el Combobox
 tipo_pregunta_combobox.bind("<<ComboboxSelected>>", lambda event: mostrar_campos_adicionales(tipo_pregunta_combobox.get()))
 
 # Botón para agregar pregunta
 agregar_pregunta_button = tk.Button(root, text="Agregar pregunta", command=agregar_pregunta)
-agregar_pregunta_button.pack(pady=5, anchor="w")
+agregar_pregunta_button.grid(row=3, column=0, padx=5, pady=5, sticky="w")
 
 # Botón para convertir a JSON
 convertir_button = tk.Button(root, text="Generar JSON", command=convertir_a_json)
-convertir_button.pack(pady=5, anchor="w")
+convertir_button.grid(row=3, column=1, padx=5, pady=5, sticky="e")
 
 # Lista para almacenar las preguntas
 preguntas = []
 
 # Etiqueta para mostrar el resultado
 resultado_label = tk.Label(root, text="")
-resultado_label.pack(pady=5, anchor="w")
+resultado_label.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 resultado_label.configure(bg=root.cget('bg')) # fondo
 
 # Mostrar JSON
 json_text = tk.Text(root, height=20, width=50)
-json_text.pack(padx=5, pady=5, side="right")
+json_text.grid(row=0, column=2, rowspan=5, padx=5, pady=5, sticky="nsew")
+root.columnconfigure(2, weight=1)  # Hacer que la columna 2 se expanda
+
 mostrar_json()  # Mostrar JSON inicialmente
 
 # Etiqueta para mostrar el mensaje de confirmación
 mensaje_confirmacion = tk.Label(root, text="")
-mensaje_confirmacion.pack(pady=5, anchor="w")
+mensaje_confirmacion.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 mensaje_confirmacion.configure(bg=root.cget('bg')) # fondo
 
 # Iniciar la aplicación
