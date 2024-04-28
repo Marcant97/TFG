@@ -4,7 +4,7 @@ import json
 import re
 
 # tipos de preguntas disponibles
-tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "correo electrónico", "DNI", "teléfono", "fecha"]
+tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "correo electrónico", "DNI", "teléfono", "fecha", "campo especial"]
 
 limite_entry = None
 valor_maximo_entrada = None
@@ -15,11 +15,19 @@ correo_entry = None
 dominios_entry = None
 primera_fecha_entry = None
 ultima_fecha_entry = None
+expresion_regular_entry = None
 
+# Función para validar la expresión regular
+def validar_expresion_regular(expresion):
+    try:
+        re.compile(expresion)
+        return True
+    except re.error:
+        return False
 
 def validar_fecha(fecha):
     # Expresión regular para el formato dd/mm/yyyy
-    patron = r"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$"
+    patron = r"^(3[01]|[12][0-9]|0?[1-9])(\/|-)(0?[1-9]|1[0-2])\2(\d{4})$" ## admite guiones y barras
     return re.match(patron, fecha) is not None
 
 def mostrar_json():
@@ -40,6 +48,7 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     global dominios_entry
     global primera_fecha_entry
     global ultima_fecha_entry
+    global expresion_regular_entry
 
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
 
@@ -119,6 +128,14 @@ def mostrar_campos_adicionales(tipo_seleccionado):
 
         primera_fecha_label.configure(bg=root.cget('bg')) # fondo
         ultima_fecha_label.configure(bg=root.cget('bg')) # fondo
+
+    elif tipo_seleccionado == "campo especial":
+        expresion_regular_label = tk.Label(campos_adicionales_frame, text="Expresión regular:*")
+        expresion_regular_label.grid(row=0, column=0, padx=5, pady=5)
+        expresion_regular_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
+        expresion_regular_entry.grid(row=1, column=0, padx=5, pady=5)
+
+        expresion_regular_label.configure(bg=root.cget('bg'))
         
 
 
@@ -195,11 +212,27 @@ def agregar_pregunta():
         ultima_fecha = ultima_fecha_entry.get()
         if primera_fecha:
             if not validar_fecha(primera_fecha):
-                mensaje_confirmacion.config(text="La primera fecha no tiene un formato válido (dd/mm/yyyy).", fg="red")
+                mensaje_confirmacion.config(text="La primera fecha no tiene un formato válido (dd/mm/yyyy) ó (dd-mm-yyyy).", fg="red")
                 return
             campos_adicionales["primeraFecha"] = primera_fecha
         if ultima_fecha:
+            if not validar_fecha(ultima_fecha):
+                mensaje_confirmacion.config(text="La última fecha no tiene un formato válido (dd/mm/yyyy) ó (dd-mm-yyyy).", fg="red")
+                return
             campos_adicionales["ultimaFecha"] = ultima_fecha
+
+    elif tipo_seleccionado == "campo especial":
+        tipo_seleccionado = "campoEspecial" # modificamos el nombre del tipo
+        expresion_regular = expresion_regular_entry.get()
+        if expresion_regular:
+            # validar expresión regular
+            if not validar_expresion_regular(expresion_regular):
+                mensaje_confirmacion.config(text="La expresión regular no es válida.", fg="red")
+                return
+            campos_adicionales["expresionRegular"] = expresion_regular
+        else:
+            mensaje_confirmacion.config(text="Por favor, ingrese una expresión regular.", fg="red")
+            return
             
 
         
@@ -225,6 +258,11 @@ def agregar_pregunta():
         pass # No tiene campos adicionales
     elif tipo_seleccionado == "telefono":
         pass # No tiene campos adicionales
+    elif tipo_seleccionado == "fecha":
+        primera_fecha_entry.delete(0, tk.END)
+        ultima_fecha_entry.delete(0, tk.END)
+    elif tipo_seleccionado == "campoEspecial" or tipo_seleccionado == "campo especial":
+        expresion_regular_entry.delete(0, tk.END)
 
     # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.", fg="black")
@@ -248,7 +286,7 @@ def convertir_a_json():
 # Se crea la ventana principal.
 root = tk.Tk()
 root.title("Generador de Formularios")
-root.geometry("600x600")
+root.geometry("800x600")
 root.configure(bg="white")
 
 # Campo tipo
