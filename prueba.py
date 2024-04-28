@@ -148,14 +148,14 @@ resultado_label.configure(bg=root.cget('bg')) # fondo
 
 # Mostrar JSON
 json_text = tk.Text(root, height=20, width=50)
-json_text.grid(row=0, column=2, rowspan=5, padx=5, pady=5, sticky="nsew")
-root.columnconfigure(2, weight=1)  # Hacer que la columna 2 se expanda
-
+json_text.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+root.rowconfigure(5, weight=1)  # Hacer que la fila 5 se expanda
+root.columnconfigure(1, weight=1)  # Hacer que la columna 1 se expanda
 mostrar_json()  # Mostrar JSON inicialmente
 
 # Etiqueta para mostrar el mensaje de confirmación
 mensaje_confirmacion = tk.Label(root, text="")
-mensaje_confirmacion.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="w")
+mensaje_confirmacion.grid(row=6, column=0, columnspan=2, padx=5, pady=5, sticky="w")
 mensaje_confirmacion.configure(bg=root.cget('bg')) # fondo
 
 # Iniciar la aplicación
