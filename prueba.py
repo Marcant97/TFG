@@ -3,7 +3,7 @@ from tkinter import ttk
 import json
 
 # tipos de preguntas disponibles
-tipos_pregunta = ["texto", "numero"]
+tipos_pregunta = ["texto", "numero", "desplegable"]
 
 limite_entry = None
 valor_maximo_entrada = None
@@ -22,6 +22,7 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     global limite_entry
     global valor_maximo_entrada
     global valor_minimo_entrada
+    global opciones_entry
 
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
 
@@ -56,6 +57,14 @@ def mostrar_campos_adicionales(tipo_seleccionado):
 
         valor_maximo_label.configure(bg=root.cget('bg')) # fondo
 
+
+    elif tipo_seleccionado == "desplegable":
+        opciones_label = tk.Label(campos_adicionales_frame, text="Opciones (separadas por ;):")
+        opciones_label.grid(row=0, column=0, padx=5, pady=5)
+        opciones_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
+        opciones_entry.grid(row=1, column=0, padx=5, pady=5)
+        opciones_label.configure(bg=root.cget('bg')) # fondo
+
 def agregar_pregunta():
     tipo_seleccionado = tipo_pregunta_combobox.get()
     pregunta = pregunta_entry.get()
@@ -77,6 +86,10 @@ def agregar_pregunta():
         if valor_minimo:
             campos_adicionales["valorMinimo"] = int(valor_minimo)
 
+    elif tipo_seleccionado == "desplegable":
+        opciones = opciones_entry.get().split(";")  # Obtener opciones y dividirlas por comas
+        campos_adicionales["opciones"] = opciones
+
     # Guardar la pregunta y los campos adicionales en la lista
     preguntas.append({"tipo": tipo_seleccionado, "titulo": pregunta, **campos_adicionales})
 
@@ -88,11 +101,16 @@ def agregar_pregunta():
     elif tipo_seleccionado == "numero":
         valor_maximo_entrada.delete(0, tk.END)
         valor_minimo_entrada.delete(0, tk.END)
+    elif tipo_seleccionado == "desplegable":
+        opciones_entry.delete(0, tk.END)
 
     # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.")
 
     mostrar_json()  # Actualizar JSON en el área de texto
+
+
+
 
 def convertir_a_json():
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
@@ -100,7 +118,10 @@ def convertir_a_json():
     datos_json = json.dumps(preguntas, indent=4)
     print(datos_json)
     # Mostrar el JSON en la etiqueta de resultado
-    resultado_label.config(text=datos_json)
+    # resultado_label.config(text=datos_json)
+
+
+
 
 # Se crea la ventana principal.
 root = tk.Tk()
