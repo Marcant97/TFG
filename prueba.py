@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 import json
+import re
 
 # tipos de preguntas disponibles
-tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "correo electrónico"]
+tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "correo electrónico", "DNI", "teléfono", "fecha"]
 
 limite_entry = None
 valor_maximo_entrada = None
@@ -12,6 +13,14 @@ opciones_entry = None
 obligatorio_entry = None
 correo_entry = None
 dominios_entry = None
+primera_fecha_entry = None
+ultima_fecha_entry = None
+
+
+def validar_fecha(fecha):
+    # Expresión regular para el formato dd/mm/yyyy
+    patron = r"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}$"
+    return re.match(patron, fecha) is not None
 
 def mostrar_json():
     # Convertir la lista de preguntas a JSON
@@ -29,6 +38,8 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     global opciones_entry
     global obligatorio_entry
     global dominios_entry
+    global primera_fecha_entry
+    global ultima_fecha_entry
 
     limpiar_mensaje() # limpiamos mensaje de pregunta añadida correctamente.
 
@@ -88,6 +99,26 @@ def mostrar_campos_adicionales(tipo_seleccionado):
 
         dominios_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
         dominios_entry.grid(row=1, column=0, padx=5, pady=5)
+
+    elif tipo_seleccionado == "DNI":
+        pass # No tiene campos adicionales
+
+    elif tipo_seleccionado == "teléfono":
+        pass # No tiene campos adicionales
+
+    elif tipo_seleccionado == "fecha":
+        primera_fecha_label = tk.Label(campos_adicionales_frame, text="Primera fecha (dd/mm/yyyy):")
+        primera_fecha_label.grid(row=0, column=0, padx=5, pady=5)
+        primera_fecha_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
+        primera_fecha_entry.grid(row=1, column=0, padx=5, pady=5)
+
+        ultima_fecha_label = tk.Label(campos_adicionales_frame, text="Última fecha (dd/mm/yyyy):")
+        ultima_fecha_label.grid(row=0, column=1, padx=5, pady=5)
+        ultima_fecha_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
+        ultima_fecha_entry.grid(row=1, column=1, padx=5, pady=5)
+
+        primera_fecha_label.configure(bg=root.cget('bg')) # fondo
+        ultima_fecha_label.configure(bg=root.cget('bg')) # fondo
         
 
 
@@ -150,6 +181,25 @@ def agregar_pregunta():
         if dominios:
             dominios = dominios.split(";")
             campos_adicionales["dominiosDisponibles"] = dominios
+
+    elif tipo_seleccionado == "DNI":
+        tipo_seleccionado = "dni" # modificamos el nombre del tipo
+        # no tiene campos adicionales.
+
+    elif tipo_seleccionado == "teléfono":
+        tipo_seleccionado = "telefono"
+        # no tiene campos adicionales.
+
+    elif tipo_seleccionado == "fecha":
+        primera_fecha = primera_fecha_entry.get()
+        ultima_fecha = ultima_fecha_entry.get()
+        if primera_fecha:
+            if not validar_fecha(primera_fecha):
+                mensaje_confirmacion.config(text="La primera fecha no tiene un formato válido (dd/mm/yyyy).", fg="red")
+                return
+            campos_adicionales["primeraFecha"] = primera_fecha
+        if ultima_fecha:
+            campos_adicionales["ultimaFecha"] = ultima_fecha
             
 
         
@@ -171,6 +221,10 @@ def agregar_pregunta():
         pass # No tiene campos adicionales
     elif tipo_seleccionado == "email" or tipo_seleccionado == "correo electrónico":
         dominios_entry.delete(0, tk.END)
+    elif tipo_seleccionado == "dni":
+        pass # No tiene campos adicionales
+    elif tipo_seleccionado == "telefono":
+        pass # No tiene campos adicionales
 
     # Mostrar mensaje de confirmación
     mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.", fg="black")
