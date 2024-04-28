@@ -8,6 +8,8 @@ tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación"]
 limite_entry = None
 valor_maximo_entrada = None
 valor_minimo_entrada = None
+opciones_entry = None
+obligatorio_entry = None
 
 def mostrar_json():
     # Convertir la lista de preguntas a JSON
@@ -69,8 +71,10 @@ def mostrar_campos_adicionales(tipo_seleccionado):
     elif tipo_seleccionado == "casilla de verificación":
         obligatorio_label = tk.Label(campos_adicionales_frame, text="Indique si es obligatorio o no:")
         obligatorio_label.grid(row=0, column=0, padx=5, pady=5)
+        obligatorio_label.configure(bg=root.cget('bg')) # fondo
         # obligatorio_entry es un desplegable con si y no
         obligatorio_entry = ttk.Combobox(campos_adicionales_frame, values=["Sí", "No"], state="readonly")
+        obligatorio_entry.grid(row=1, column=0, padx=5, pady=5)
         obligatorio_entry.set("No") # por defecto, no es obligatorio
 
 
