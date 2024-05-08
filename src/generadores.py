@@ -147,7 +147,7 @@ def generar_models(miDiccionario):
       if valorMinimo != None and valorMaximo != None:
         print('valorMinimo y valorMaximo presentes')
         campo = f"  {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({valorMinimo}), MaxValueValidator({valorMaximo})])\n"
-      elif valorMaximo != None:
+      elif valorMinimo != None:
         print('valorMinimo presente')
         campo = f"  {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({valorMinimo})])\n"
       elif valorMaximo != None:
