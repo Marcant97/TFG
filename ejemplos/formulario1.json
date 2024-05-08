@@ -1,0 +1,12 @@
+[
+    {
+        "tipo": "numero",
+        "titulo": "Introduce tu edad",
+        "valorMaximo": 100
+    },
+    {
+        "tipo": "fecha",
+        "titulo": "Introduce fecha de nacimiento",
+        "primeraFecha": "01/01/2000"
+    }
+]
