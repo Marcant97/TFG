@@ -31,6 +31,9 @@ def insertar_json():
         label = tk.Label(root, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
         label.pack(pady=10)
 
+        # Actualizar la ventana
+        root.update()
+
         try:
             funcion_principal(archivo_seleccionado)
         except Exception as e:
