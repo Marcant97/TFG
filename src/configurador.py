@@ -2,7 +2,6 @@
 import subprocess
 import os
 import shutil
-# pip install -r requirements.txt
 import subprocess
 import webbrowser
 import time
@@ -59,18 +58,18 @@ def configurar_proyecto(miDiccionario):
 
     
     generar_models(miDiccionario) #? 1. Crear y rellenar models.py
-    generar_forms(miDiccionario) #? 2. Crear y rellenar forms.py
-    generar_views(miDiccionario) #? 3. Crear y rellenar views.py
+    generar_forms(miDiccionario)  #? 2. Crear y rellenar forms.py
+    generar_views(miDiccionario)  #? 3. Crear y rellenar views.py
 
     #* 4. Se crea la subcarpeta /templates y nos movemos dentro de ella.
     os.makedirs("templates", exist_ok=True)
     os.chdir("templates")
 
-    generar_templates() #? 5. Se crea y rellena /templates/mi_template.html.
-    os.chdir("..")  #* Volvemos al directorio raíz del proyecto.
+    generar_templates()      #? 5. Se crea y rellena /templates/mi_template.html.
+    os.chdir("..")           #* Volvemos al directorio raíz del proyecto.
 
-    modificar_urls_py() #? 6. Modificar urls.py
-    modificar_settings_py() #? 7. Modificar settings.py, se añade 'mysite' a INSTALLED_APPS.
+    modificar_urls_py()      #? 6. Modificar urls.py
+    modificar_settings_py()  #? 7. Modificar settings.py, se añade 'mysite' a INSTALLED_APPS.
 
 
     #? 8. Aplicar migraciones
@@ -84,7 +83,7 @@ def configurar_proyecto(miDiccionario):
     subprocess.run(["python", "manage.py", "migrate"])
 
 
-    #!! PASO OPCIONAL --> Arrancar servidor en modo desarrollo ("python manage.py runserver")
+    #? PASO OPCIONAL --> Arrancar servidor en modo desarrollo ("python manage.py runserver")
     print("Arrancando servidor en modo desarrollo...")
     comando = 'start cmd /c "python manage.py runserver"'
     subprocess.run(comando, shell=True)
@@ -95,7 +94,20 @@ def configurar_proyecto(miDiccionario):
     url = "http://127.0.0.1:8000/formulario"
     webbrowser.open(url)
 
-    # 9. Crear superusuario (opcional)
+    #? 9. Crear superusuario (opcional)
+    #? 9.1 se crea el superusuario
+    # ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"
+    subprocess.run(["python", "manage.py", "shell", "-c", "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"])
+
+    #? 9.2 se crea el fichero admin.py
+    with open("mysite/admin.py", "w") as f:
+      f.write("from django.contrib import admin\n")
+      f.write("from .models import TuModelo\n")
+      f.write("admin.site.register(TuModelo)")
+
+    # El último paso necesario consiste en añadir la ruta de la aplicación al fichero urls.py del proyecto.
+    # Este paso ya se realiza durante la configuración del proyecto, por lo tanto, no es necesario repetirlo.
+
 
 
 
