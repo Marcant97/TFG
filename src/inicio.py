@@ -43,7 +43,7 @@ def insertar_json():
             label.pack(pady=10)
 
             # Mostrar el error
-            label = tk.Label(root, text=str(e), bg="white", font=("Arial", 12), fg="black")
+            label = tk.Label(root, text=str(e), bg="white", font=("Arial", 12), fg="black", wraplength=400)
             label.pack(pady=10)
 
             # Actualizar la ventana
