@@ -20,6 +20,7 @@ Se realizará un generador de código para la automatización de la creación de
 - [x] Campo numérico
 - [x] Desplegable
 - [x] Casilla de verificación
+- [x] Casilla de selección múltiple
 
 **Tipos específicos:**
 - [x] Correo electrónico
