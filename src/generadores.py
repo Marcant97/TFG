@@ -26,6 +26,10 @@ def generar_variables(miDiccionario):
       titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo_original)
       nuevo_titulo = titulo_limpio.lower().rstrip('_')
 
+      if nuevo_titulo == '': # si el título limpio está vacío, se añade un nombre genérico.
+        nuevo_titulo = 'campo'
+        titulo_limpio = 'campo' # cuando hay más de una ocurrencia, es necesario para que no esté vacío.
+
       # si el título limpio no está en la lista de variables creadas, se añade a la lista y se actualiza el diccionario.
       if nuevo_titulo not in variables_creadas:
         variables_creadas.append(nuevo_titulo)
