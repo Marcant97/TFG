@@ -31,8 +31,25 @@ def insertar_json():
         label = tk.Label(root, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
         label.pack(pady=10)
 
+        try:
+            funcion_principal(archivo_seleccionado)
+        except Exception as e:
+            for widget in root.winfo_children():
+                widget.destroy()
+                
+            print(e)
+            # Mostrar mensaje de error
+            label = tk.Label(root, text="Ha ocurrido un error al generar el formulario.", bg="white", font=("Arial", 16), fg="red")
+            label.pack(pady=10)
+
+            # Mostrar el error
+            label = tk.Label(root, text=str(e), bg="white", font=("Arial", 12), fg="black")
+            label.pack(pady=10)
+
+            # Actualizar la ventana
+            root.update()
         # esperar 2 segundos, luego se llama a la función principal. Aquí comienza el programa principal.
-        root.after(2000, lambda: funcion_principal(archivo_seleccionado))
+        # root.after(2000, lambda: funcion_principal(archivo_seleccionado))
 
     def seleccionar_archivo():
         """
