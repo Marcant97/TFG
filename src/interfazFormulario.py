@@ -28,26 +28,6 @@ expresion_regular_entry = None
  
 def crear_interfaz_generador_formularios():
 
-    def generando_formulario2():
-        # root.destroy() # se destruye la ventana principal.
-        
-        # creamos la nueva ventana
-        root2 = tk.Tk()
-        root2.title("Interfaz Principal")
-        root2.geometry("500x200")
-        root2.configure(bg="white")
-
-        # Añadir un título
-        label = tk.Label(root2, text="Generando formulario...", bg="white", font=("Arial", 14))
-        label.pack(pady=10)
-
-        # Añadir un mensaje
-        label = tk.Label(root2, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
-        label.pack(pady=10)
-
-        # esperar 2 segundos, luego se llama a la función principal. Aquí comienza el programa principal.
-        # root.after(2000, lambda: funcion_principal(archivo_seleccionado))
-
     def directorio_ejemplos():
         """
         Verifica si el directorio existe y lo crea si no existe.
@@ -71,7 +51,8 @@ def crear_interfaz_generador_formularios():
 
     def crear_formulario():
         root.destroy() # se destruye la ventana principal.
-        # limpiar_mensaje()  # Limpiamos mensaje de pregunta añadida correctamente.
+        
+        # se crea una nueva ventana.
         root2 = tk.Tk()
         root2.title("Interfaz Principal")
         root2.geometry("500x200")
@@ -84,39 +65,55 @@ def crear_interfaz_generador_formularios():
         # Añadir un mensaje
         label = tk.Label(root2, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
         label.pack(pady=10)
-        # llamada a generando_formulario2 para dar información al usuario
-        # generando_formulario2()
 
         # forzamos la actualización de la interfaz gráfica antes de continuar.
         root2.update()
 
-        # Convertir la lista de preguntas a JSON
-        datos_json = json.dumps(preguntas, indent=4, ensure_ascii=False)
+        try:
+            # Convertir la lista de preguntas a JSON
+            datos_json = json.dumps(preguntas, indent=4, ensure_ascii=False)
+            print(datos_json)
+            # Crear el directorio de ejemplos si no existe
+            directorio_ejemplos()
 
-        # Crear el directorio de ejemplos si no existe
-        directorio_ejemplos()
+            # entrar al directorio
+            os.chdir("./ejemplos")
 
-        # entrar al directorio
-        os.chdir("./ejemplos")
+            # Obtener el siguiente número de formulario disponible
+            numero_formulario = obtener_siguiente_numero()
 
-        # Obtener el siguiente número de formulario disponible
-        numero_formulario = obtener_siguiente_numero()
+            # Crear el nombre del formulario
+            nombre_formulario = f"formulario{numero_formulario}.json"
 
-        # Crear el nombre del formulario
-        nombre_formulario = f"formulario{numero_formulario}.json"
+            # Generar el fichero y guardarlo en la carpeta actual
+            with open(nombre_formulario, "w", encoding="utf-8") as f:
+                f.write(datos_json)
 
-        # Generar el fichero y guardarlo en la carpeta actual
-        with open(nombre_formulario, "w") as f:
-            f.write(datos_json)
+            # Obtener la ruta completa del fichero
+            ruta_fichero = os.path.abspath(nombre_formulario)
 
-        # Obtener la ruta completa del fichero
-        ruta_fichero = os.path.abspath(nombre_formulario)
+            # Volver al directorio raíz
+            os.chdir("..")
 
-        # Volver al directorio raíz
-        os.chdir("..")
+            # Llamar a la función principal, aquí comienza el programa principal por el flujo de "crear formulario".
+            funcion_principal(ruta_fichero)
+        
+        except Exception as e:
+            # borrar el contenido de la ventana
+            for widget in root2.winfo_children():
+                widget.destroy()
 
-        # Llamar a la función principal, aquí comienza el programa principal por el flujo de "crear formulario".
-        funcion_principal(ruta_fichero)
+            print(e)
+            # Mostrar mensaje de error
+            label = tk.Label(root2, text="Ha ocurrido un error al generar el formulario.", bg="white", font=("Arial", 16), fg="red")
+            label.pack(pady=10)
+
+            # Mostrar el error
+            label = tk.Label(root2, text=str(e), bg="white", font=("Arial", 12), fg="black")
+            label.pack(pady=10)
+
+            # Actualizar la ventana
+            root2.update()
 
     # Función para validar la expresión regular
     def validar_expresion_regular(expresion):
