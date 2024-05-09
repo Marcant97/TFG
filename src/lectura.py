@@ -14,26 +14,14 @@ def validar_fecha(fecha):
         return False
 
 
-# def verificarJSON(contenido):
-#   """
-#   Función que verifica si el contenido pasado es un JSON válido
-#   Parámetros:
-#     contenido: 
-#   """
-#   try:
-#     json.loads(contenido)
-#   except json.JSONDecodeError:
-#     raise Exception("El contenido no es un JSON válido", json.JSONDecodeError)
-
-
 
 def leerFichero(fichero):
   """
-  Función encargada de leer el fichero, pasarlo a diccionario y verificar que los tipos son correctos
+  Función encargada de leer el fichero y pasarlo a diccionario.
+  Además, comprueba que el json está correctamente construido.
   Args:
     fichero (str): ruta del fichero a leer
-    tiposGenericos (list): lista con los tipos genéricos
-    tiposEspecificos (list): lista con los tipos específicos
+    
   Returns:
     dict: diccionario con los datos del fichero
   """
@@ -55,16 +43,11 @@ def leerFichero(fichero):
     raise Exception(f"Error al leer el fichero: {str(e)}")
 
 
-
 def comprobarDiccionario(miDiccionario):
   """
   Función encargada de comprobar que el diccionario pasado cumple con los requisitos
   Args:
     miDiccionario (dict): diccionario con los datos
-    tiposGenericos (list): lista con los tipos genéricos
-    tiposEspecificos (list): lista con los tipos específicos
-  Returns:
-    int: 0 si todo es correcto, -1 si hay algún error
   """
 
   print("Comprobando diccionario")

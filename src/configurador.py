@@ -112,7 +112,7 @@ def borrar_proyecto():
   try:
     # Obtener la ruta del directorio de trabajo actual
     directorio_actual = os.getcwd()
-    # print("Directorio actual para borrar:", directorio_actual)
+    
     # Construir la ruta del directorio del proyecto
     proyecto_dir = os.path.join(directorio_actual, "django_test")  # Reemplaza con el nombre del proyecto
     

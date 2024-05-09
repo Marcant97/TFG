@@ -5,7 +5,7 @@ variables_creadas = [] # Lista para almacenar las variables creadas en el diccio
 
 def generar_variables(miDiccionario):
   """
-  Función que se encarga de agrgar un campo a cada pregunta del diccionario, quitando los caracteres especiales y espacios de un string, creando así un nombre 
+  Función que se encarga de agregar un campo a cada pregunta del diccionario, quitando los caracteres especiales y espacios de un string, creando así un nombre 
   válido para cada variable del diccionario. En el caso de que existan preguntas idénticas en el diccionario, se añade un número al final del nombre de la variable.
 
   Args:
@@ -15,19 +15,23 @@ def generar_variables(miDiccionario):
     str: cadena de caracteres limpia.
   """
 
+  # lista de caracteres válidos
   caracteres_validos = set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
   for pregunta in miDiccionario:
+
+    # se obtiene el título de la pregunta y se procesa
     titulo_original = pregunta['titulo']
     titulo_limpio = ''.join(c if c in caracteres_validos else '' for c in titulo_original)
     nuevo_titulo = titulo_limpio.lower().rstrip('_')
 
-
+    # si el título limpio no está en la lista de variables creadas, se añade a la lista y se actualiza el diccionario.
     if nuevo_titulo not in variables_creadas:
       variables_creadas.append(nuevo_titulo)
       nombre_variable = {'nombre_variable': nuevo_titulo}
       pregunta.update(nombre_variable)
 
     else: # ya existe una pregunta con el mismo nombre de variable
+      # se añade un numero al final del nombre de la variable de forma incremental.
       contador = 1
       while True:
         nuevo_titulo = f"{titulo_limpio}{contador}"

@@ -8,7 +8,9 @@ miDiccionario = {}
 
 
 def funcion_principal(archivo_seleccionado):
-
+  """
+  Función encargada de manejar el flujo principal del programa.
+  """
   try:
     # 1. Comprobar instalación de django
     verificar_django()
@@ -17,7 +19,7 @@ def funcion_principal(archivo_seleccionado):
     borrar_proyecto()
 
     # 3. Leer fichero de entrada y guardar el diccionario obtenido.
-    # He puesto primero la lectura del fichero por que al crear el proyecto se cambia la ruta. Lo ideal es ubicarme siempre en la raíz.
+    # Primero se lleva a cabo la lectura del fichero porque al crear el proyecto se cambia la ruta.
     miDiccionario = leerFichero(archivo_seleccionado)
 
     # 4. Comprobar diccionario
