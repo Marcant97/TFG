@@ -8,12 +8,13 @@ import time
 from funciones import funcion_principal
 
 # tipos de preguntas disponibles
-tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "correo electrónico", "DNI", "teléfono", "fecha", "campo especial"]
+tipos_pregunta = ["texto", "numero", "desplegable", "casilla de verificación", "casilla de selección", "correo electrónico", "DNI", "teléfono", "fecha", "campo especial"]
 
 limite_entry = None
 valor_maximo_entrada = None
 valor_minimo_entrada = None
 opciones_entry = None
+opciones_casilla_entry = None
 obligatorio_entry = None
 correo_entry = None
 dominios_entry = None
@@ -157,6 +158,7 @@ def crear_interfaz_generador_formularios():
         global valor_maximo_entrada
         global valor_minimo_entrada
         global opciones_entry
+        global opciones_casilla_entry
         global obligatorio_entry
         global dominios_entry
         global primera_fecha_entry
@@ -213,6 +215,12 @@ def crear_interfaz_generador_formularios():
             obligatorio_entry.grid(row=1, column=0, padx=5, pady=5)
             obligatorio_entry.set("No") # por defecto, no es obligatorio
 
+        elif tipo_seleccionado == "casilla de selección":
+            opciones_label = tk.Label(campos_adicionales_frame, text="Opciones (separadas por ';') :*")
+            opciones_label.grid(row=0, column=0, padx=5, pady=5)
+            opciones_casilla_entry = tk.Entry(campos_adicionales_frame, borderwidth=2)
+            opciones_casilla_entry.grid(row=1, column=0, padx=5, pady=5)
+            opciones_label.configure(bg=root.cget('bg'))
 
         elif tipo_seleccionado == "correo electrónico":
             dominios_disponibles_label = tk.Label(campos_adicionales_frame, text="Dominios permitidos (separados por ';') :")
@@ -308,6 +316,16 @@ def crear_interfaz_generador_formularios():
                 campos_adicionales["obligatorio"] = False
             else:
                 mensaje_confirmacion.config(text="Por favor, seleccione si la casilla es obligatoria o no.", fg="red")
+                return
+            
+        elif tipo_seleccionado == "casilla de selección":
+            tipo_seleccionado = "casillaSeleccion"
+            opciones = opciones_casilla_entry.get()
+            if opciones:
+                opciones = opciones.split(";")
+                campos_adicionales["opciones"] = opciones
+            else:
+                mensaje_confirmacion.config(text="Debe ingresar al menos una opción para la casilla de selección.", fg="red")
                 return
             
         elif tipo_seleccionado == "correo electrónico":
