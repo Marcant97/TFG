@@ -1,10 +1,8 @@
 from django.db import models
 
-class TuModelo(models.Model):
-    # Define los campos necesarios para tu modelo
-    opcion1 = models.BooleanField(default=False)
-    opcion2 = models.BooleanField(default=False)
-    opcion3 = models.BooleanField(default=False)
+from django.core.exceptions import ValidationError
 
-    def __str__(self):
-        return f"TuModelo #{self.pk}"
+from django.core.validators import RegexValidator
+
+class TuModelo(models.Model):
+  casilladeseleccin = models.CharField(max_length=100, blank=True, null=True)

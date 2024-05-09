@@ -1,23 +1,17 @@
 from django import forms
 from .models import TuModelo
 
+from django.utils import timezone
+from datetime import datetime
 class TuFormulario(forms.ModelForm):
-    # Define las opciones para las casillas de verificación
-    OPCIONES = [
-        ('opcion1', 'Opción 1'),
-        ('opcion2', 'Opción 2'),
-        ('opcion3', 'Opción 3'),
-        # Añade más opciones si es necesario
+    opciones_casilladeseleccin = [
+        ('opcion 1', 'opcion 1'),
+        ('opcion 2', 'opcion 2'),
+        ('opcion 3', 'opcion 3'),
     ]
-
-    # Define las casillas de verificación usando un campo ChoiceField
-    opciones_correctas = forms.MultipleChoiceField(
-        label='Selecciona las respuestas correctas:',
-        required=False,
-        widget=forms.CheckboxSelectMultiple,  # Usa CheckboxSelectMultiple para múltiples selecciones
-        choices=OPCIONES,
-    )
-
+    casilladeseleccin = forms.MultipleChoiceField(label='casilla de selección', required=False, widget=forms.CheckboxSelectMultiple, choices=opciones_casilladeseleccin)
     class Meta:
         model = TuModelo
-        fields = ['opciones_correctas']
+        fields = [
+            'casilladeseleccin',
+        ]

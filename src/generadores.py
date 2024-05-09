@@ -185,9 +185,15 @@ def generar_models(miDiccionario):
         codigo += campo
 
 
-      #^ Tipo de campo para preguntas de selección múltiple (casilla)
+      #^ Tipo de campo para preguntas de casillas de verificación
       elif pregunta['tipo'] == 'casilla':
         campo = f"  {titulo_limpio} = models.BooleanField(default=False)\n"
+        codigo += campo
+
+
+      #^ Tipo de campo para preguntas de selección múltiple (casillas de selección)
+      elif pregunta['tipo'] == 'casillaSeleccion':
+        campo = f"  {titulo_limpio} = models.CharField(max_length=100, blank=True, null=True)\n"
         codigo += campo
 
 
@@ -274,6 +280,20 @@ def generar_forms(miDiccionario):
           obligatorio = pregunta.get("obligatorio", False)
           file.write(f"    {nombre_campo} = forms.BooleanField(label='{titulo}', required={obligatorio})\n")
 
+      #? Parte específica sólo para las preguntas del tipo casillaSeleccion.
+      for pregunta in miDiccionario:
+        if pregunta['tipo'] == 'casillaSeleccion':
+          titulo = pregunta.get("titulo", "")
+          nombre_campo = pregunta['nombre_variable']
+
+          file.write(f"    opciones_{nombre_campo} = [\n")
+          for opcion in pregunta['opciones']:
+            file.write(f"        ('{opcion}', '{opcion}'),\n")
+          file.write("    ]\n")
+
+          file.write(f"    {nombre_campo} = forms.MultipleChoiceField(label='{titulo}', required=False, widget=forms.CheckboxSelectMultiple, choices=opciones_{nombre_campo})\n")
+
+
       #? Parte específica sólo para las preguntas del tipo fecha, se importan lo necesario para gestionar las fechas mínimas y máximas.
       primera_fecha_formulario = True
       for pregunta in miDiccionario:
@@ -314,7 +334,7 @@ def generar_forms(miDiccionario):
       file.write("        ]\n")
 
       # si existe un campo cuyo tipo sea diferente a 'casilla', se añade el atributo 'labels' al formulario.
-      if any(pregunta['tipo'] != 'casilla' for pregunta in miDiccionario):
+      if any(pregunta['tipo'] != 'casilla' and pregunta['tipo'] != 'casillaSeleccion' for pregunta in miDiccionario):
         # se evita escribir labels vacío si sólo hay casillas.
         file.write("        labels = {\n")
         #* Se recorren las preguntas del diccionario
@@ -322,7 +342,7 @@ def generar_forms(miDiccionario):
           tipo = pregunta.get("tipo", "")
           titulo = pregunta.get("titulo", "")
           nombre_campo = pregunta['nombre_variable']
-          if tipo != 'casilla':
+          if tipo != 'casilla' and tipo != 'casillaSeleccion':
             if tipo == 'telefono':
               file.write(f"            'prefijo_{nombre_campo}': 'Prefijo telefónico',\n")
             file.write(f"            '{nombre_campo}': '{titulo}',\n")

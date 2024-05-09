@@ -17,7 +17,6 @@ def validar_fecha(fecha):
         return False
 
 
-
 def leerFichero(fichero):
   """
   Función encargada de leer el fichero y pasarlo a diccionario.
@@ -116,9 +115,10 @@ def comprobarDiccionario(miDiccionario):
           raise Exception("Falta el campo opciones, obligatorio para el tipo desplegable")
         
           
-      #? Campo casilla
+      #? Campo casilla de verificación
       # el campo 'obligatorio' es opcional, si no se especifica se considera False
       elif pregunta["tipo"] == "casilla":
+        opciones = False
         for campo in pregunta:
           if campo == "tipo" or campo == "titulo":
             print(f"Campo {campo} procesado")
@@ -137,6 +137,32 @@ def comprobarDiccionario(miDiccionario):
             print(f"Campo {campo} no válido")
             raise Exception(f"Campo {campo} no válido")
           
+
+      #? campo casilla de selección
+      elif pregunta["tipo"] == "casillaSeleccion":
+        for campo in pregunta:
+          if campo == "tipo" or campo == "titulo":
+            print(f"Campo {campo} procesado")
+          elif campo == 'opciones':
+            opciones = True
+            # comprobamos que se trate de una lista
+            if not isinstance(pregunta[campo], list):
+              print(f"El campo {campo} debe ser una lista")
+              raise Exception(f"El campo {campo} debe ser una lista")
+
+            # comprobamos que todos los elementos de la lista sean strings
+            if not all(isinstance(item, str) for item in pregunta[campo]):
+              print(f"El campo {campo} debe ser una lista de strings")
+              raise Exception(f"El campo {campo} debe ser una lista de strings")
+            print(f"Campo {campo} procesado")
+          else:
+            print(f"Campo {campo} no válido")
+            raise Exception(f"Campo {campo} no válido")
+          
+        if not opciones:
+          print("Falta el campo opciones, obligatorio para el tipo casillas de selección")
+          raise Exception("Falta el campo opciones, obligatorio para el tipo casillas de selección")
+
 
       #? campo email
       # el campo 'dominiosDisponibles' es opcional, si no se especifica se consideran todos los dominios de correo que cumplan con la expresión regular 

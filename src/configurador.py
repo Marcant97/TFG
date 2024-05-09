@@ -83,6 +83,21 @@ def configurar_proyecto(miDiccionario):
     subprocess.run(["python", "manage.py", "migrate"])
 
 
+    #? 9. Crear superusuario (opcional)
+    #? 9.1 se crea el superusuario
+    # ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"
+    subprocess.run(["python", "manage.py", "shell", "-c", "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"])
+
+    #? 9.2 se crea el fichero admin.py
+    with open("mysite/admin.py", "w") as f:
+      f.write("from django.contrib import admin\n")
+      f.write("from .models import TuModelo\n\n")
+      f.write("admin.site.register(TuModelo)")
+
+    # El último paso necesario consiste en añadir la ruta de la aplicación al fichero urls.py del proyecto.
+    # Este paso ya se realiza durante la configuración del proyecto, por lo tanto, no es necesario repetirlo.
+
+    
     #? PASO OPCIONAL --> Arrancar servidor en modo desarrollo ("python manage.py runserver")
     print("Arrancando servidor en modo desarrollo...")
     comando = 'start cmd /c "python manage.py runserver"'
@@ -93,21 +108,6 @@ def configurar_proyecto(miDiccionario):
     #? Abrir navegador y entrar en la dirección con "http://127.0.0.1:8000/formulario"
     url = "http://127.0.0.1:8000/formulario"
     webbrowser.open(url)
-
-    #? 9. Crear superusuario (opcional)
-    #? 9.1 se crea el superusuario
-    # ./manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"
-    subprocess.run(["python", "manage.py", "shell", "-c", "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"])
-
-    #? 9.2 se crea el fichero admin.py
-    with open("mysite/admin.py", "w") as f:
-      f.write("from django.contrib import admin\n")
-      f.write("from .models import TuModelo\n")
-      f.write("admin.site.register(TuModelo)")
-
-    # El último paso necesario consiste en añadir la ruta de la aplicación al fichero urls.py del proyecto.
-    # Este paso ya se realiza durante la configuración del proyecto, por lo tanto, no es necesario repetirlo.
-
 
 
 
