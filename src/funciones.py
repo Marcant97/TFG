@@ -36,6 +36,8 @@ def funcion_principal(archivo_seleccionado):
   
   except Exception as e:
     print(f"Error: {str(e)}")
-    raise
+    # no continuamos con la ejecución del programa
+    return
+    
 
 
