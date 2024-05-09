@@ -18,7 +18,6 @@ Se realizará un generador de código para la automatización de la creación de
 **Tipos genéricos:**
 - [x] Campo de texto
 - [x] Campo numérico
-- [ ] Multiopción
 - [x] Desplegable
 - [x] Casilla de verificación
 

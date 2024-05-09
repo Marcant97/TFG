@@ -3,6 +3,7 @@ from tkinter import ttk
 import json
 import re
 import os
+import time
 
 from funciones import funcion_principal
 
@@ -27,14 +28,40 @@ expresion_regular_entry = None
  
 def crear_interfaz_generador_formularios():
 
+    def generando_formulario2():
+        # root.destroy() # se destruye la ventana principal.
+        
+        # creamos la nueva ventana
+        root2 = tk.Tk()
+        root2.title("Interfaz Principal")
+        root2.geometry("500x200")
+        root2.configure(bg="white")
+
+        # Añadir un título
+        label = tk.Label(root2, text="Generando formulario...", bg="white", font=("Arial", 14))
+        label.pack(pady=10)
+
+        # Añadir un mensaje
+        label = tk.Label(root2, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
+        label.pack(pady=10)
+
+        # esperar 2 segundos, luego se llama a la función principal. Aquí comienza el programa principal.
+        # root.after(2000, lambda: funcion_principal(archivo_seleccionado))
+
     def directorio_ejemplos():
+        """
+        Verifica si el directorio existe y lo crea si no existe.
+        """
         directorio = "./ejemplos"
-        """Verifica si el directorio existe y lo crea si no existe."""
         if not os.path.exists(directorio):
             os.makedirs(directorio)
 
+
     def obtener_siguiente_numero():
-        """Obtiene el siguiente número de formulario disponible."""
+        """
+        Obtiene el siguiente número de formulario disponible.
+        Esta función se utiliza para la generación de nombres de ficheros.
+        """
         numero = 1
         while True:
             nombre_fichero = f"formulario{numero}.json"
@@ -43,8 +70,26 @@ def crear_interfaz_generador_formularios():
             numero += 1
 
     def crear_formulario():
-        limpiar_mensaje()  # Limpiamos mensaje de pregunta añadida correctamente.
-        
+        root.destroy() # se destruye la ventana principal.
+        # limpiar_mensaje()  # Limpiamos mensaje de pregunta añadida correctamente.
+        root2 = tk.Tk()
+        root2.title("Interfaz Principal")
+        root2.geometry("500x200")
+        root2.configure(bg="white")
+
+        # Añadir un título
+        label = tk.Label(root2, text="Generando formulario...", bg="white", font=("Arial", 14))
+        label.pack(pady=10)
+
+        # Añadir un mensaje
+        label = tk.Label(root2, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
+        label.pack(pady=10)
+        # llamada a generando_formulario2 para dar información al usuario
+        # generando_formulario2()
+
+        # forzamos la actualización de la interfaz gráfica antes de continuar.
+        root2.update()
+
         # Convertir la lista de preguntas a JSON
         datos_json = json.dumps(preguntas, indent=4, ensure_ascii=False)
 
@@ -70,11 +115,14 @@ def crear_interfaz_generador_formularios():
         # Volver al directorio raíz
         os.chdir("..")
 
-        # Llamar a la función principal
+        # Llamar a la función principal, aquí comienza el programa principal por el flujo de "crear formulario".
         funcion_principal(ruta_fichero)
 
     # Función para validar la expresión regular
     def validar_expresion_regular(expresion):
+        """
+        Función encargada de validar que la expresión regular es válida.
+        """
         try:
             re.compile(expresion)
             return True
@@ -82,20 +130,32 @@ def crear_interfaz_generador_formularios():
             return False
 
     def validar_fecha(fecha):
+        """
+        Función encaragda de validar que el formato de las fechas es correcto.
+        """
         # Expresión regular para el formato dd/mm/yyyy
         patron = r"^(3[01]|[12][0-9]|0?[1-9])(\/|-)(0?[1-9]|1[0-2])\2(\d{4})$" ## admite guiones y barras
         return re.match(patron, fecha) is not None
 
     def mostrar_json():
+        """
+        Función encargada de mostrar el JSON en el área de texto.
+        """
         # Convertir la lista de preguntas a JSON
         datos_json = json.dumps(preguntas, indent=4, ensure_ascii=False)
         json_text.delete("1.0", tk.END)  # Limpiar contenido actual
         json_text.insert(tk.END, datos_json)
 
     def limpiar_mensaje():
+        """
+        Función encargada de limpiar el mensaje de confirmación.
+        """
         mensaje_confirmacion.config(text="", fg="black")
 
     def mostrar_campos_adicionales(tipo_seleccionado):
+        """
+        Dependiendo del tipo de pregunta, se muestran sus campos adicionales (si los tiene).
+        """
         global limite_entry
         global valor_maximo_entrada
         global valor_minimo_entrada
@@ -197,6 +257,11 @@ def crear_interfaz_generador_formularios():
 
 
     def agregar_pregunta():
+        """
+        Función encargada de agregar una pregunta a la lista de preguntas.
+        """
+
+        # se obtiene el tipo y la pregunta.
         tipo_seleccionado = tipo_pregunta_combobox.get()
         pregunta = pregunta_entry.get()
         campos_adicionales = {}
@@ -293,7 +358,7 @@ def crear_interfaz_generador_formularios():
 
             
 
-        # Guardar la pregunta y los campos adicionales en la lista
+        # Se almacena la pregunta y los campos adicionales en la lista
         preguntas.append({"tipo": tipo_seleccionado, "titulo": pregunta, **campos_adicionales})
 
         # Limpiar campos de entrada
@@ -323,10 +388,12 @@ def crear_interfaz_generador_formularios():
         # Mostrar mensaje de confirmación
         mensaje_confirmacion.config(text="La pregunta se ha agregado correctamente.", fg="black")
 
-        mostrar_json()  # Actualizar JSON en el área de texto
+        # Actualizar JSON en el área de texto
+        mostrar_json()  
 
 
 
+    #####? VENTANA PRINCIPAL #####
 
     # Se crea la ventana principal.
     root = tk.Tk()
