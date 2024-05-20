@@ -21,30 +21,41 @@ def verificar_django():
     raise Exception(mensaje_error)
 
 
-
 def crear_proyecto():
-  """
-  Función encargada de crear el proyecto Django.
-  """
-  try:
-    print("\nCreando proyecto Django...")
-    
-    os.makedirs("django_test", exist_ok=True) # Crear el directorio para el proyecto
-    os.chdir("django_test") # Cambiar al directorio del proyecto
-    
-    # python -m django startproject mytestsite
-    subprocess.run(["python", "-m", "django", "startproject", "mysite"])
-    
-    os.chdir("mysite") # Cambiar al directorio del proyecto Django
-    print("Proyecto Django creado correctamente.")
+    """
+    Función encargada de crear el proyecto Django con nombre único.
+    """
+    directorio_base = "proyecto_django"
+    nombre_base = "mi_sitio"
+    contador = 1
+
+    try:
+      print("\nCreando proyecto Django...")
+
+      # Crear el directorio base si no existe
+      os.makedirs(directorio_base, exist_ok=True)
+      os.chdir(directorio_base)  # Cambiar al directorio base
+
+      # Generar un nombre único para el proyecto
+      nombre_unico = nombre_base
+      while os.path.exists(nombre_unico):
+          nombre_unico = f"{nombre_base}_{contador}"
+          contador += 1
+
+      # Crear el proyecto Django
+      subprocess.run(["python", "-m", "django", "startproject", nombre_unico])
+
+      os.chdir(nombre_unico)  # Cambiar al directorio del proyecto Django
+      print(f"Proyecto Django '{nombre_unico}' creado correctamente.")
+
+      return nombre_unico
+
+    except Exception as e:
+      raise Exception(f"Error al crear el proyecto Django: {str(e)}")
 
 
-  except Exception as e:
-    raise Exception(f"Error al crear el proyecto Django: {str(e)}")
 
-
-
-def configurar_proyecto(miDiccionario):
+def configurar_proyecto(miDiccionario, nombre_proyecto):
   """
   Función encargada de configurar el proyecto Django.
   Args:
@@ -54,7 +65,7 @@ def configurar_proyecto(miDiccionario):
   try:
     
     print("\nConfigurando proyecto Django...")
-    os.chdir("mysite")  # se cambias al directorio del proyecto Django "./django_test/mysite/mysite"
+    os.chdir(nombre_proyecto)  # se cambias al directorio del proyecto Django "./django_test/nombre_proyecto/nombre_proyecto"
 
     
     generar_models(miDiccionario) #? 1. Crear y rellenar models.py
@@ -69,15 +80,15 @@ def configurar_proyecto(miDiccionario):
     os.chdir("..")           #* Volvemos al directorio raíz del proyecto.
 
     modificar_urls_py()      #? 6. Modificar urls.py
-    modificar_settings_py()  #? 7. Modificar settings.py, se añade 'mysite' a INSTALLED_APPS.
+    modificar_settings_py(nombre_proyecto)  #? 7. Modificar settings.py, se añade 'nombre_proyecto' a INSTALLED_APPS.
 
 
     #? 8. Aplicar migraciones
       #* 8.1 cambiar de directorio a la raíz del proyecto, que es donde está el fichero manage.py
     os.chdir("..")
       
-      #* 8.2 python manage.py makemigrations mysite
-    subprocess.run(["python", "manage.py", "makemigrations", "mysite"])
+      #* 8.2 python manage.py makemigrationsnombre_proyecto
+    subprocess.run(["python", "manage.py", "makemigrations", nombre_proyecto])
       
       #* 8.3 python manage.py migrate
     subprocess.run(["python", "manage.py", "migrate"])
@@ -89,7 +100,9 @@ def configurar_proyecto(miDiccionario):
     subprocess.run(["python", "manage.py", "shell", "-c", "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"])
 
     #? 9.2 se crea el fichero admin.py
-    with open("mysite/admin.py", "w") as f:
+    # "nombre_proyecto/admin.py"
+    ruta = os.path.join(nombre_proyecto, "admin.py")
+    with open(ruta, "w") as f:
       f.write("from django.contrib import admin\n")
       f.write("from .models import TuModelo\n\n")
       f.write("admin.site.register(TuModelo)")
@@ -108,8 +121,6 @@ def configurar_proyecto(miDiccionario):
     #? Abrir navegador y entrar en la dirección con "http://127.0.0.1:8000/formulario"
     url = "http://127.0.0.1:8000/formulario"
     webbrowser.open(url)
-
-
 
   except Exception as e:
     print(f"Error al configurar el proyecto Django: {str(e)}")

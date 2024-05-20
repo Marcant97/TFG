@@ -16,7 +16,7 @@ def funcion_principal(archivo_seleccionado):
     verificar_django()
 
     # 2. Borrar proyecto anterior si lo hay, si se queda bloqueado abortar.
-    borrar_proyecto()
+    # borrar_proyecto()
 
     # 3. Leer fichero de entrada y guardar el diccionario obtenido.
     # Primero se lleva a cabo la lectura del fichero porque al crear el proyecto se cambia la ruta.
@@ -29,10 +29,10 @@ def funcion_principal(archivo_seleccionado):
     generar_variables(miDiccionario)
 
     # 6.Crear proyecto
-    crear_proyecto()
+    nombre_proyecto = crear_proyecto()
 
     # 7. Configurar proyecto
-    configurar_proyecto(miDiccionario)
+    configurar_proyecto(miDiccionario, nombre_proyecto)
   
   except Exception as e:
     print(f"Error: {str(e)}")

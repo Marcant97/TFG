@@ -322,7 +322,7 @@ miDiccionario9999 = [
 # comprobarDiccionario(miDiccionario888)
 # comprobarDiccionario(miDiccionario8888)
 
-comprobarDiccionario(miDiccionario9)
-comprobarDiccionario(miDiccionario99)
-comprobarDiccionario(miDiccionario999)
-comprobarDiccionario(miDiccionario9999)
+# comprobarDiccionario(miDiccionario9)
+# comprobarDiccionario(miDiccionario99)
+# comprobarDiccionario(miDiccionario999)
+# comprobarDiccionario(miDiccionario9999)

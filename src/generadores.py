@@ -491,7 +491,7 @@ urlpatterns = [
     raise e
       
 
-def modificar_settings_py():
+def modificar_settings_py(nombre_proyecto):
 
   print('Modificando settings.py...')
 
@@ -502,9 +502,10 @@ def modificar_settings_py():
 
     # Recorremos las líneas en busca de la lista INSTALLED_APPS
     for i, linea in enumerate(lineas):
-      #* Si encontramos la línea, le añadimos 'mysite' a la lista
+      #* Si encontramos la línea, le añadimos 'nombre_proyecto' a la lista
       if 'INSTALLED_APPS' in linea:
-        lineas[i] = "INSTALLED_APPS = [ 'mysite',\n"
+        # nueva_linea = f"INSTALLED_APPS = [ {nombre_proyecto},\n"
+        lineas[i] = f"INSTALLED_APPS = ['{nombre_proyecto}',\n"
       elif 'LANGUAGE_CODE' in linea:
         lineas[i] = "LANGUAGE_CODE = 'es-es'\n"
 
