@@ -3,6 +3,11 @@ from tkinter import filedialog
 from interfazFormulario import crear_interfaz_generador_formularios
 from funciones import funcion_principal
 
+
+#? Crear ejecutable con pyinstaller
+# pyinstaller --add-data "src/ficheros_generacion/*.txt;src/ficheros_generacion" --add-data "src/templates/*.html;src/templates" src/inicio.py
+
+
 def crear_interfaz():
     root.destroy() # se destruye la ventana principal.
     crear_interfaz_generador_formularios()
