@@ -5,17 +5,25 @@ Se realizará un generador de código para la automatización de la creación de
 #### Alumno: **Marco Antonio Barroso Hormiga**
 #### Tutora: **María Elena Sánchez Nielsen**
 
+### Descripción:
 
-### Pasos:
-1. Se inicia una interfaz gráfica que permite elegir un fichero de entrada en formato JSON o construir un formulario desde cero.
-2. Se comprueba la versión de django instalada en el sistema.
-********3. Se borra el proyecto anterior si existe.
-3. A partri del fichero seleccionado o generado, se lee, se obtiene el contenido y se verifica que sea correcto.
-4. Se crea y configura un proyecto django por completo
-5. Se crea un superusuario al que se puede acceder en /admin con user: admin, pass: adminpass.
-4. Se arranca el servidor en modo desarrollo y se abre el formulario en el navegador.
+La herramienta desarrollada permite:
+1. Insertar un fichero en formato JSON con las preguntas del formulario siguiendo un formato determinado.
+2. Generar de forma interactiva un formulario
+
+Todo ello se realiza a través de una interfaz simple desarrollada con la librería Tkinter.
+El formulario se genera en un proyecto Django, que se crea y configura de forma automática. Por último, se arranca un servidor en modo desarrollo y una ventana del navegador con el formulario generado para poder visualizarlo.
+
+### Rutas disponibles:
+
+- **/home**: Página de inicio
+- **/formulario**: Página donde se aloja el formulario creado.
+- **/admin**: Página de administración de Django. Credenciales del superusuario creado por defecto: Usuario: _admin_, Contraseña: _adminpass_
+- **/enviar**: Página de confirmación de envío del formulario.
+
 
 ## Campos disponibles:
+
 **Tipos genéricos:**
 - [x] Campo de texto
 - [x] Campo numérico
