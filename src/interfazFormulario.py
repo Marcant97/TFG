@@ -51,6 +51,11 @@ def crear_interfaz_generador_formularios():
             numero += 1
 
     def crear_formulario():
+
+        if not preguntas:
+            mensaje_confirmacion.config(text="Por favor, añada al menos una pregunta antes de crear el formulario.", fg="red")
+            return
+
         root.destroy() # se destruye la ventana principal.
         
         # se crea una nueva ventana.
