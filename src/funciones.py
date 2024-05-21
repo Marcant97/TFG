@@ -1,5 +1,5 @@
 from lectura import leerFichero, comprobarDiccionario
-from configurador import crear_proyecto, verificar_django, borrar_proyecto, configurar_proyecto
+from configurador import crear_proyecto, verificar_django,  configurar_proyecto
 from generadores import generar_variables
 
 tiposGenericos = ["texto", "numero", "opcionMultiple", "desplegable", "casilla"]
@@ -15,23 +15,20 @@ def funcion_principal(archivo_seleccionado):
     # 1. Comprobar instalación de django
     verificar_django()
 
-    # 2. Borrar proyecto anterior si lo hay, si se queda bloqueado abortar.
-    # borrar_proyecto()
-
-    # 3. Leer fichero de entrada y guardar el diccionario obtenido.
+    # 2. Leer fichero de entrada y guardar el diccionario obtenido.
     # Primero se lleva a cabo la lectura del fichero porque al crear el proyecto se cambia la ruta.
     miDiccionario = leerFichero(archivo_seleccionado)
 
-    # 4. Comprobar diccionario
+    # 3. Comprobar diccionario
     comprobarDiccionario(miDiccionario)
 
-    # 5. Generar variables para cada pregunta.
+    # 4. Generar variables para cada pregunta.
     generar_variables(miDiccionario)
 
-    # 6.Crear proyecto
+    # 5.Crear proyecto
     nombre_proyecto = crear_proyecto()
 
-    # 7. Configurar proyecto
+    # 6. Configurar proyecto
     configurar_proyecto(miDiccionario, nombre_proyecto)
   
   except Exception as e:
