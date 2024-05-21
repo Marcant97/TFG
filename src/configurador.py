@@ -6,7 +6,7 @@ import subprocess
 import webbrowser
 import time
 
-from generadores import generar_models, generar_forms, generar_views, generar_templates, modificar_urls_py, modificar_settings_py
+from generadores import generar_models, generar_forms, generar_views, generar_templates, modificar_urls_py, modificar_settings_py, resource_path
 
 
 def verificar_django():
@@ -45,7 +45,8 @@ def crear_proyecto():
       # Crear el proyecto Django
       subprocess.run(["python", "-m", "django", "startproject", nombre_unico])
 
-      os.chdir(nombre_unico)  # Cambiar al directorio del proyecto Django
+      # os.chdir(nombre_unico)  # Cambiar al directorio del proyecto Django
+      os.chdir("..")  # retrocedemos al directorio base
       print(f"Proyecto Django '{nombre_unico}' creado correctamente.")
 
       return nombre_unico
@@ -65,32 +66,28 @@ def configurar_proyecto(miDiccionario, nombre_proyecto):
   try:
     
     print("\nConfigurando proyecto Django...")
-    os.chdir(nombre_proyecto)  # se cambias al directorio del proyecto Django "./django_test/nombre_proyecto/nombre_proyecto"
 
+    ruta_actual = os.getcwd()
+    ruta_proyecto = os.path.join(ruta_actual, "proyecto_django", nombre_proyecto, nombre_proyecto)
     
-    generar_models(miDiccionario) #? 1. Crear y rellenar models.py
-    generar_forms(miDiccionario)  #? 2. Crear y rellenar forms.py
-    generar_views(miDiccionario)  #? 3. Crear y rellenar views.py
+    generar_models(miDiccionario, ruta_proyecto) #? 1. Crear y rellenar models.py
+    generar_forms(miDiccionario, ruta_proyecto)  #? 2. Crear y rellenar forms.py
+    generar_views(miDiccionario, ruta_proyecto)  #? 3. Crear y rellenar views.py
 
-    #* 4. Se crea la subcarpeta /templates y nos movemos dentro de ella.
-    os.makedirs("templates", exist_ok=True)
-    os.chdir("templates")
 
-    generar_templates()      #? 5. Se crea y rellena /templates/mi_template.html.
-    os.chdir("..")           #* Volvemos al directorio raíz del proyecto.
+    generar_templates(ruta_proyecto)      #? 5. Se crea y rellena /templates/mi_template.html.
 
-    modificar_urls_py()      #? 6. Modificar urls.py
-    modificar_settings_py(nombre_proyecto)  #? 7. Modificar settings.py, se añade 'nombre_proyecto' a INSTALLED_APPS.
+    modificar_urls_py(ruta_proyecto)      #? 6. Modificar urls.py
+    modificar_settings_py(nombre_proyecto, ruta_proyecto)  #? 7. Modificar settings.py, se añade 'nombre_proyecto' a INSTALLED_APPS.
 
+    ruta_manage = os.path.join("proyecto_django", nombre_proyecto)
+    os.chdir(ruta_manage)  # se cambia al directorio del proyecto Django "./proyecto_django/nombre_proyecto"
 
     #? 8. Aplicar migraciones
-      #* 8.1 cambiar de directorio a la raíz del proyecto, que es donde está el fichero manage.py
-    os.chdir("..")
-      
-      #* 8.2 python manage.py makemigrationsnombre_proyecto
+    #* 8.1 python manage.py makemigrationsnombre_proyecto
     subprocess.run(["python", "manage.py", "makemigrations", nombre_proyecto])
       
-      #* 8.3 python manage.py migrate
+    #* 8.2 python manage.py migrate
     subprocess.run(["python", "manage.py", "migrate"])
 
 
@@ -101,8 +98,8 @@ def configurar_proyecto(miDiccionario, nombre_proyecto):
 
     #? 9.2 se crea el fichero admin.py
     # "nombre_proyecto/admin.py"
-    ruta = os.path.join(nombre_proyecto, "admin.py")
-    with open(ruta, "w") as f:
+    ruta_admin = os.path.join(ruta_proyecto, "admin.py")
+    with open(ruta_admin, "w") as f:
       f.write("from django.contrib import admin\n")
       f.write("from .models import TuModelo\n\n")
       f.write("admin.site.register(TuModelo)")
@@ -128,6 +125,7 @@ def configurar_proyecto(miDiccionario, nombre_proyecto):
 
 
 
+#### ! PENDIENTE DE MODIFICAR POR EL CAMBIO EN LAS RUTAS A PESAR DE QUE ESTA FUNCIÓN NO SE USA.
 def borrar_proyecto():
   """
   Función encargada de borrar el proyecto Django.
@@ -137,7 +135,7 @@ def borrar_proyecto():
     directorio_actual = os.getcwd()
     
     # Construir la ruta del directorio del proyecto
-    proyecto_dir = os.path.join(directorio_actual, "django_test")  # Reemplaza con el nombre del proyecto
+    proyecto_dir = os.path.join(directorio_actual, "proyecto_django")  # Reemplaza con el nombre del proyecto
     
     # Verificar si el directorio del proyecto existe
     if os.path.exists(proyecto_dir):
