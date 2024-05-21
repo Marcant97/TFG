@@ -1,7 +1,20 @@
 from datetime import datetime
 import os
+import sys
 
 variables_creadas = [] # Lista para almacenar las variables creadas en el diccionario.
+
+
+def resource_path(relative_path):
+  """Obtiene la ruta absoluta al recurso, funciona para desarrollo y PyInstaller"""
+  try:
+      # PyInstaller crea una carpeta temporal y almacena el path en _MEIPASS
+      base_path = sys._MEIPASS
+  except AttributeError:
+      base_path = os.path.abspath(".")
+
+  return os.path.join(base_path, relative_path)
+
 
 def generar_variables(miDiccionario):
   """
@@ -53,7 +66,7 @@ def generar_variables(miDiccionario):
     raise e
 
 
-def generar_models(miDiccionario):
+def generar_models(miDiccionario, ruta_proyecto):
   
   #^ Procesamos el diccionario para generar el modelo
   print('Creando modelos...')
@@ -135,8 +148,6 @@ def generar_models(miDiccionario):
     codigo += ("from django.core.validators import RegexValidator\n\n")
 
     codigo += "class TuModelo(models.Model):\n"
-
-
 
 
     ###* Se procesan las preguntas del diccionario ###
@@ -243,15 +254,16 @@ def generar_models(miDiccionario):
       
 
     # Escribir el código en el archivo
-    with open("models.py", "w", encoding="utf-8") as f:
-        f.write(codigo)
+    ruta_models = os.path.join(ruta_proyecto, "models.py")
+    with open(ruta_models, "w", encoding="utf-8") as f:
+      f.write(codigo)
 
   except Exception as e:
     print("Error al generar models.py:", e)
     raise e
 
 
-def generar_forms(miDiccionario):
+def generar_forms(miDiccionario, ruta_proyecto):
   """
   Función que se encarga de generar el fichero forms.py del proyecto.
   Args:
@@ -262,7 +274,8 @@ def generar_forms(miDiccionario):
 
   try:
 
-    with open("forms.py", "w", encoding="utf-8") as file:
+    ruta_forms = os.path.join(ruta_proyecto, "forms.py")
+    with open(ruta_forms, "w", encoding="utf-8") as file:
       
       file.write("from django import forms\n")
       file.write("from .models import TuModelo\n\n")
@@ -374,7 +387,7 @@ def generar_forms(miDiccionario):
     raise e
 
 
-def generar_views(miDiccionario):
+def generar_views(miDiccionario, ruta_proyecto):
   """
   Función que se encarga de generar el fichero views.py del proyecto.
   Args:
@@ -419,7 +432,8 @@ def generar_views(miDiccionario):
     codigo += "    return render(request, 'enviar.html')\n"
 
     # Escribir el código en el archivo
-    with open("views.py", "w", encoding="utf-8") as f:
+    ruta_views = os.path.join(ruta_proyecto, "views.py")
+    with open(ruta_views, "w", encoding="utf-8") as f:
         f.write(codigo)
 
       
@@ -428,7 +442,7 @@ def generar_views(miDiccionario):
     raise e
 
 
-def generar_templates():
+def generar_templates(ruta_proyecto):
   """
   Función que se encarga de generar el fichero mi_template.html del proyecto.
   """
@@ -436,28 +450,38 @@ def generar_templates():
 
   try:
 
+    # crear subcarpeta templates dentro del proyecto django
+    os.makedirs(os.path.join(ruta_proyecto, "templates"), exist_ok=True)
+
     mi_template = ""
     mi_home = ""
     mi_enviar = ""
+    
+    template_path = resource_path("src/templates/mi_template.html")
+    home_path = resource_path("src/templates/home.html")
+    enviar_path = resource_path("src/templates/enviar.html")
 
-    with open("../../../../src/templates/mi_template.html", "r", encoding="utf-8") as file:
+    with open(template_path, "r", encoding="utf-8") as file:
       mi_template = file.read()
     
-    with open("../../../../src/templates/home.html", "r", encoding="utf-8") as file:
+    with open(home_path, "r", encoding="utf-8") as file:
       mi_home = file.read()
 
-    with open("../../../../src/templates/enviar.html", "r", encoding="utf-8") as file:
+    with open(enviar_path, "r", encoding="utf-8") as file:
       mi_enviar = file.read()
 
 
     # Escribir el código en el archivo
-    with open("mi_template.html", "w", encoding="utf-8") as f:
+    ruta_mi_template = os.path.join(ruta_proyecto, "templates", "mi_template.html")
+    with open(ruta_mi_template, "w", encoding="utf-8") as f:
       f.write(mi_template)
 
-    with open("home.html", "w", encoding="utf-8") as f:
+    ruta_home = os.path.join(ruta_proyecto, "templates", "home.html")
+    with open(ruta_home, "w", encoding="utf-8") as f:
       f.write(mi_home)
 
-    with open("enviar.html", "w", encoding="utf-8") as f:
+    ruta_enviar = os.path.join(ruta_proyecto, "templates", "enviar.html")
+    with open(ruta_enviar, "w", encoding="utf-8") as f:
       f.write(mi_enviar)
     
   except Exception as e:
@@ -465,7 +489,7 @@ def generar_templates():
     raise e
 
 
-def modificar_urls_py():
+def modificar_urls_py(ruta_proyecto):
   """
   Función encargada de actualizar el archivo urls.py del proyecto.
   """
@@ -484,20 +508,22 @@ urlpatterns = [
 
   try:
     # Escribir el código en el archivo
-    with open("urls.py", "w", encoding="utf-8") as f:
+    ruta_urls = os.path.join(ruta_proyecto, "urls.py")
+    with open(ruta_urls, "w", encoding="utf-8") as f:
       f.write(codigo)
   except Exception as e:
     print("Error al modificar urls.py:", e)
     raise e
       
 
-def modificar_settings_py(nombre_proyecto):
+def modificar_settings_py(nombre_proyecto, ruta_proyecto):
 
   print('Modificando settings.py...')
 
   try:
+    ruta_settings = os.path.join(ruta_proyecto, "settings.py")
     #* Se abre el fichero en modo lectura
-    with open("settings.py", "r", encoding="utf-8") as f:
+    with open(ruta_settings, "r", encoding="utf-8") as f:
       lineas = f.readlines() # Leemos las líneas del fichero
 
     # Recorremos las líneas en busca de la lista INSTALLED_APPS
@@ -510,7 +536,7 @@ def modificar_settings_py(nombre_proyecto):
         lineas[i] = "LANGUAGE_CODE = 'es-es'\n"
 
     # Escribir las líneas modificadas en el archivo
-    with open("settings.py", "w", encoding="utf-8") as f:
+    with open(ruta_settings, "w", encoding="utf-8") as f:
       f.writelines(lineas)
       f.write('DATE_FORMAT = "%d/%m/%Y"\n')
       f.write("USE_L10N = False")
