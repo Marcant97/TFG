@@ -33,6 +33,11 @@ def leerFichero(fichero):
     mi_fichero = open(fichero, "r", encoding="utf-8")
 
     datos_fichero = json.load(mi_fichero)
+
+    # Verificar si el JSON está vacío (lista vacía)
+    if isinstance(datos_fichero, list) and not datos_fichero:
+      raise ValueError("El JSON está vacío")
+    
     return datos_fichero
 
   except FileNotFoundError:
