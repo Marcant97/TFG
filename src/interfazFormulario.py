@@ -61,7 +61,7 @@ def crear_interfaz_generador_formularios():
         # se crea una nueva ventana.
         root2 = tk.Tk()
         root2.title("Interfaz Principal")
-        root2.geometry("500x200")
+        root2.geometry("600x200")
         root2.configure(bg="white")
 
         # Añadir un título
