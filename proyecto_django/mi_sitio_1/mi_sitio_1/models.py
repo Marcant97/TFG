@@ -6,9 +6,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from django.core.validators import EmailValidator
 from django.core.validators import validate_email
-def fintroducetudireccindecorreoelectrnico_email(value):
-    if not value.endswith('ull.edu.es') and not value.endswith('ull.es'):
-        raise ValidationError('El correo electrónico debe pertenecer a uno de los siguientes dominios [ull.edu.es, ull.es]')
+def fintroduceunadireccindecorreoelectrnicosloullesoulledues_email(value):
+    if not value.endswith('ull.es') and not value.endswith('ull.edu.es'):
+        raise ValidationError('El correo electrónico debe pertenecer a uno de los siguientes dominios [ull.es, ull.edu.es]')
 
 def validar_dni(value):
 
@@ -49,13 +49,19 @@ from .utils.prefijos import PREFIJOS
 from django.core.validators import RegexValidator
 
 class TuModelo(models.Model):
-  introducetunombreyapellidos = models.CharField(max_length=100)
-  introducetufechadenacimiento = models.DateField()
-  introducetuedad = models.IntegerField(validators=[MinValueValidator(14), MaxValueValidator(100)])
-  introducetualu = models.CharField(max_length=200, validators=[RegexValidator(regex='^alu[0-9]{10}$', message='Introduzca un valor que cumpla la expresión regular: ^alu[0-9]{10}$')])
-  prefijo_introducetunmerodetelfono = models.CharField(max_length=14, blank=True, choices=PREFIJOS)
-  introducetunmerodetelfono = models.CharField(max_length=14, blank=True)
-  introducetudireccindecorreoelectrnico = models.EmailField(max_length=254, validators=[validate_email,fintroducetudireccindecorreoelectrnico_email])
-  introducetudni = models.CharField(max_length=9, validators=[validar_dni])
-  seleccionatutalladecamiseta = models.CharField(max_length=100, choices=[('XS', 'XS'),('S', 'S'),('M', 'M'),('L', 'L'),('XL', 'XL'),('XXL', 'XXL'),])
-  aceptoelreglamentodelaprueba = models.BooleanField(default=False)
+  introducetunombre = models.CharField(max_length=15)
+  introducetusapellidos = models.CharField(max_length=100)
+  introducetuedad = models.IntegerField()
+  introducetunmerodehermanos = models.IntegerField(validators=[MinValueValidator(0)])
+  introducetunotamedia = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
+  seleccionatunivelmximodeestudios = models.CharField(max_length=100, choices=[('Sin estudios', 'Sin estudios'),('Educación primaria', 'Educación primaria'),('Educación secundaria', 'Educación secundaria'),('Bachillerato', 'Bachillerato'),('Formación Profesional', 'Formación Profesional'),('Grado', 'Grado'),('Máster', 'Máster'),('Doctorado', 'Doctorado'),])
+  indicasiposeesalgncarnetdeconducir = models.BooleanField(default=False)
+  quactividadeshasrealizadoestasemana = models.CharField(max_length=100, blank=True, null=True)
+  introduceunadireccindecorreoelectrnico = models.EmailField(max_length=254)
+  introduceunadireccindecorreoelectrnicosloullesoulledues = models.EmailField(max_length=254, validators=[validate_email,fintroduceunadireccindecorreoelectrnicosloullesoulledues_email])
+  introduceundnivlido = models.CharField(max_length=9, validators=[validar_dni])
+  prefijo_introduceunnmerodetelfono = models.CharField(max_length=14, blank=True, choices=PREFIJOS)
+  introduceunnmerodetelfono = models.CharField(max_length=14, blank=True)
+  introducetufechadenacimientoslomayoresdeedad = models.DateField()
+  introduceunnombredeusuario = models.CharField(max_length=200, validators=[RegexValidator(regex='^[a-zA-Z0-9_-]{3,16}$', message='Introduzca un valor que cumpla la expresión regular: ^[a-zA-Z0-9_-]{3,16}$')])
+  aceptoqueseenvenmisdatos = models.BooleanField(default=False)

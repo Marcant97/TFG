@@ -10,11 +10,11 @@ def mi_vista(request):
         form = TuFormulario(request.POST)
         if form.is_valid():
             # se combina el número de teléfono con el prefijo antes de guardar el contenido del formulario en la base de datos.
-            prefijo = request.POST.get('prefijo_introducetunmerodetelfono')
-            numero_telefono = request.POST.get('introducetunmerodetelfono')
+            prefijo = request.POST.get('prefijo_introduceunnmerodetelfono')
+            numero_telefono = request.POST.get('introduceunnmerodetelfono')
             numero_completo = f"{prefijo} {numero_telefono}"
              # Guarda el número de teléfono completo en el formulario
-            form.instance.introducetunmerodetelfono = numero_completo
+            form.instance.introduceunnmerodetelfono = numero_completo
             form.save()
             return redirect('vista_enviar')
     else:
