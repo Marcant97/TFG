@@ -5,7 +5,7 @@ from funciones import funcion_principal
 
 
 #? Crear ejecutable con pyinstaller
-# pyinstaller --add-data "src/ficheros_generacion/*.txt;src/ficheros_generacion" --add-data "src/templates/*.html;src/templates" src/inicio.py
+# pyinstaller --onefile --add-data "src/ficheros_generacion/*.txt;src/ficheros_generacion" --add-data "src/templates/*.html;src/templates" src/inicio.py
 
 
 def crear_interfaz():
@@ -87,7 +87,7 @@ def insertar_json():
 
 root = tk.Tk()
 root.title("Interfaz Principal")
-root.geometry("500x200")
+root.geometry("600x200")
 root.configure(bg="white")
 
 # Añadir un título
