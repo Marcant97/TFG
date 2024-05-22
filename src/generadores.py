@@ -123,27 +123,31 @@ def generar_models(miDiccionario, ruta_proyecto):
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'dni':
         # introducir código de validar_dni.txt
-        nombre_archivo = "../../../src/ficheros_generacion/validar_dni.txt"
-        with open(nombre_archivo, "r", encoding="utf-8") as f:
+        ruta_ficheroDNI = resource_path("src/ficheros_generacion/validar_dni.txt")
+        
+        with open(ruta_ficheroDNI, "r", encoding="utf-8") as f:
           codigo += f.read() + "\n"
-        break  
+        break
 
     #* Sólo para preguntas del tipo número de teléfono.
     # Se crea utils/prefijos.py a partir de src/ficheros_generacion/prefijos.txt y se importa en models.py el contenido.
     for pregunta in miDiccionario:
       if pregunta['tipo'] == 'telefono':
         codigo += "from .utils.prefijos import PREFIJOS\n\n"
-        # generamos el fichero de prefijos en /utils/prefijos.py
-        nombre_archivo = "../../../src/ficheros_generacion/prefijos.txt"
-        with open(nombre_archivo, "r", encoding="utf-8") as f:
+
+        # primero se lee el fichero prefijos.txt en src/ficheros_generacion
+        ruta_ficheroPrefijos = resource_path("src/ficheros_generacion/prefijos.txt")
+        with open(ruta_ficheroPrefijos, "r", encoding="utf-8") as f:
           contenido_fichero = f.read()
 
-        os.makedirs("utils", exist_ok=True) # Crear el directorio para el proyecto
-        os.chdir("utils")
+        # Posteriormente, se crea el directorio /utils
+        os.makedirs(os.path.join(ruta_proyecto, "utils"), exist_ok=True)
+
+        # Finalmente, se genera el fichero prefijos.py en /utils y se escribe el contenido del fichero prefijos.txt
+        ruta_prefijos = os.path.join(ruta_proyecto, "utils", "prefijos.py")
         # Escribir el contenido del fichero en el fichero prefijos.py
-        with open("prefijos.py", "w", encoding="utf-8") as f:
+        with open(ruta_prefijos, "w", encoding="utf-8") as f:
           f.write(contenido_fichero)
-        os.chdir("..")
 
     codigo += ("from django.core.validators import RegexValidator\n\n")
 
@@ -457,10 +461,12 @@ def generar_templates(ruta_proyecto):
     mi_home = ""
     mi_enviar = ""
     
+    # se obtiene la ruta a cada uno de los ficheros de la carpeta templates
     template_path = resource_path("src/templates/mi_template.html")
     home_path = resource_path("src/templates/home.html")
     enviar_path = resource_path("src/templates/enviar.html")
 
+    # se leen los ficheros
     with open(template_path, "r", encoding="utf-8") as file:
       mi_template = file.read()
     
@@ -471,7 +477,7 @@ def generar_templates(ruta_proyecto):
       mi_enviar = file.read()
 
 
-    # Escribir el código en el archivo
+    # Se escriben los ficheros leídos en el proyecto
     ruta_mi_template = os.path.join(ruta_proyecto, "templates", "mi_template.html")
     with open(ruta_mi_template, "w", encoding="utf-8") as f:
       f.write(mi_template)
