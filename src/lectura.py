@@ -57,7 +57,7 @@ def comprobarDiccionario(miDiccionario):
     miDiccionario (dict): diccionario con los datos
   """
 
-  print("Comprobando diccionario\n")
+  print("Comprobando diccionario")
   try:
     for pregunta in miDiccionario:
 

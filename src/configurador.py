@@ -30,7 +30,7 @@ def crear_proyecto():
     contador = 1
 
     try:
-      print("\nCreando proyecto Django...")
+      print("Creando proyecto Django...")
 
       # Crear el directorio base si no existe
       os.makedirs(directorio_base, exist_ok=True)
@@ -45,7 +45,6 @@ def crear_proyecto():
       # Crear el proyecto Django
       subprocess.run(["python", "-m", "django", "startproject", nombre_unico])
 
-      # os.chdir(nombre_unico)  # Cambiar al directorio del proyecto Django
       os.chdir("..")  # retrocedemos al directorio base
       print(f"Proyecto Django '{nombre_unico}' creado correctamente.")
 
@@ -80,8 +79,9 @@ def configurar_proyecto(miDiccionario, nombre_proyecto):
     modificar_urls_py(ruta_proyecto)      #? 6. Modificar urls.py
     modificar_settings_py(nombre_proyecto, ruta_proyecto)  #? 7. Modificar settings.py, se añade 'nombre_proyecto' a INSTALLED_APPS.
 
+    # se obtiene la ruta donde se encuentra el fichero manage.py y nos movemos a ese directorio
     ruta_manage = os.path.join("proyecto_django", nombre_proyecto)
-    os.chdir(ruta_manage)  # se cambia al directorio del proyecto Django "./proyecto_django/nombre_proyecto"
+    os.chdir(ruta_manage)
 
     #? 8. Aplicar migraciones
     #* 8.1 python manage.py makemigrationsnombre_proyecto
@@ -97,7 +97,8 @@ def configurar_proyecto(miDiccionario, nombre_proyecto):
     subprocess.run(["python", "manage.py", "shell", "-c", "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')"])
 
     #? 9.2 se crea el fichero admin.py
-    # "nombre_proyecto/admin.py"
+    # Se utiliza ruta proyecto que se obtuvo al principio de la función y no la ruta actual que
+    # es la ruta donde se encuentra el fichero manage.py.
     ruta_admin = os.path.join(ruta_proyecto, "admin.py")
     with open(ruta_admin, "w") as f:
       f.write("from django.contrib import admin\n")
@@ -107,7 +108,6 @@ def configurar_proyecto(miDiccionario, nombre_proyecto):
     # El último paso necesario consiste en añadir la ruta de la aplicación al fichero urls.py del proyecto.
     # Este paso ya se realiza durante la configuración del proyecto, por lo tanto, no es necesario repetirlo.
 
-    
     #? PASO OPCIONAL --> Arrancar servidor en modo desarrollo ("python manage.py runserver")
     print("Arrancando servidor en modo desarrollo...")
     comando = 'start cmd /c "python manage.py runserver"'

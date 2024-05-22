@@ -103,7 +103,7 @@ def generar_models(miDiccionario, ruta_proyecto):
           #^ lo convertimos en una string y le quitamos "'", para que sea válido en el código
           dominiosDisponiblesError = str(pregunta['dominiosDisponibles']).replace("'", "")
           dominiosDisponibles = pregunta['dominiosDisponibles']
-          # if not value.endswith('ull.edu.es') and not value.endswith('ull.es'):
+
           if (len(dominiosDisponibles) == 1):
             codigo += f"    if not value.endswith('{dominiosDisponibles[0]}'):\n"
           else:
@@ -114,8 +114,6 @@ def generar_models(miDiccionario, ruta_proyecto):
               else: # si no es el último, se añade 'and not'
                 codigo += f" value.endswith('{dominiosDisponibles[i]}') and not"
 
-
-          #codigo += f"    if not value.endswith({dominiosDisponibles}):\n"
           errorString = f"'El correo electrónico debe pertenecer a uno de los siguientes dominios {dominiosDisponiblesError}'"
           codigo += f"        raise ValidationError({errorString})\n\n"
 
@@ -175,13 +173,10 @@ def generar_models(miDiccionario, ruta_proyecto):
         valorMinimo = pregunta.get('valorMinimo', None)
         valorMaximo = pregunta.get('valorMaximo', None)
         if valorMinimo != None and valorMaximo != None:
-          print('valorMinimo y valorMaximo presentes')
           campo = f"  {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({valorMinimo}), MaxValueValidator({valorMaximo})])\n"
         elif valorMinimo != None:
-          print('valorMinimo presente')
           campo = f"  {titulo_limpio} = models.IntegerField(validators=[MinValueValidator({valorMinimo})])\n"
         elif valorMaximo != None:
-          print('valorMaximo presente')
           campo = f"  {titulo_limpio} = models.IntegerField(validators=[MaxValueValidator({valorMaximo})])\n"
         else:
           campo = f"  {titulo_limpio} = models.IntegerField()\n"
@@ -245,7 +240,6 @@ def generar_models(miDiccionario, ruta_proyecto):
       #^ Tipo de campo para preguntas de tipo específico, campo especial.
       elif pregunta['tipo'] == 'campoEspecial':
         titulo = pregunta.get("titulo", "")
-        # nombre_campo = limpiar_titulo(titulo)
         expresion_regular = pregunta.get("expresionRegular", "")
         if expresion_regular != "":
           codigo += (f"  {titulo_limpio} = models.CharField(max_length=200, validators=[RegexValidator(regex='{expresion_regular}', message='Introduzca un valor que cumpla la expresión regular: {expresion_regular}')])\n")
