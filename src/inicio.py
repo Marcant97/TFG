@@ -21,7 +21,7 @@ def insertar_json():
     def generando_formulario1(archivo_seleccionado):
         """
         Función encargada de mostrar una ventana que indica que se está generando el formulario.
-        Sólo se utilizar para el flujo "insertar json".
+        Sólo se utiliza para el flujo "insertar json".
         """
 
         # destruir los elementos de la ventana anterior

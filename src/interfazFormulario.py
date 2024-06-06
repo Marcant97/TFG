@@ -71,7 +71,6 @@ def crear_interfaz_generador_formularios():
         # Añadir un mensaje
         label = tk.Label(root2, text="Por favor, espere unos segundos", bg="white", font=("Arial", 12))
         label.pack(pady=10)
-
         # forzamos la actualización de la interfaz gráfica antes de continuar.
         root2.update()
 
@@ -137,7 +136,7 @@ def crear_interfaz_generador_formularios():
         Función encaragda de validar que el formato de las fechas es correcto.
         """
         # Expresión regular para el formato dd/mm/yyyy
-        patron = r"^(3[01]|[12][0-9]|0?[1-9])(\/|-)(0?[1-9]|1[0-2])\2(\d{4})$" ## admite guiones y barras
+        patron = r"^(3[01]|[12][0-9]|0?[1-9])/(0?[1-9]|1[0-2])/(\d{4})$" ## admite sólo barras
         return re.match(patron, fecha) is not None
 
     def mostrar_json():
@@ -264,8 +263,6 @@ def crear_interfaz_generador_formularios():
             expresion_regular_label.configure(bg=root.cget('bg'))
             
 
-
-
     def agregar_pregunta():
         """
         Función encargada de agregar una pregunta a la lista de preguntas.
@@ -353,12 +350,12 @@ def crear_interfaz_generador_formularios():
             ultima_fecha = ultima_fecha_entry.get()
             if primera_fecha:
                 if not validar_fecha(primera_fecha):
-                    mensaje_confirmacion.config(text="La primera fecha no tiene un formato válido (dd/mm/yyyy) ó (dd-mm-yyyy).", fg="red")
+                    mensaje_confirmacion.config(text="La primera fecha no tiene un formato válido (dd/mm/yyyy).", fg="red")
                     return
                 campos_adicionales["primeraFecha"] = primera_fecha
             if ultima_fecha:
                 if not validar_fecha(ultima_fecha):
-                    mensaje_confirmacion.config(text="La última fecha no tiene un formato válido (dd/mm/yyyy) ó (dd-mm-yyyy).", fg="red")
+                    mensaje_confirmacion.config(text="La última fecha no tiene un formato válido (dd/mm/yyyy).", fg="red")
                     return
                 campos_adicionales["ultimaFecha"] = ultima_fecha
 
