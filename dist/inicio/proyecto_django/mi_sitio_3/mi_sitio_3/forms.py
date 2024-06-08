@@ -4,7 +4,7 @@ from .models import TuModelo
 from django.utils import timezone
 from datetime import datetime
 class TuFormulario(forms.ModelForm):
-    opciones_quesloquemstehagustado = [
+    opciones_indicaloquetehagustado = [
         ('La calidad del producto', 'La calidad del producto'),
         ('El precio', 'El precio'),
         ('La atención al cliente', 'La atención al cliente'),
@@ -12,13 +12,13 @@ class TuFormulario(forms.ModelForm):
         ('Otro', 'Otro'),
         ('Nada', 'Nada'),
     ]
-    quesloquemstehagustado = forms.MultipleChoiceField(label='¿Qué es lo que más te ha gustado?', required=False, widget=forms.CheckboxSelectMultiple, choices=opciones_quesloquemstehagustado)
+    indicaloquetehagustado = forms.MultipleChoiceField(label='Indica lo que te ha gustado', required=False, widget=forms.CheckboxSelectMultiple, choices=opciones_indicaloquetehagustado)
     class Meta:
         model = TuModelo
         fields = [
             'seleccionaturangodeedad',
             'eligetugnero',
-            'quesloquemstehagustado',
+            'indicaloquetehagustado',
             'eligedel110tugradodesatisfaccin',
             'djanostussugerenciasfelicitacionesoquejas',
         ]

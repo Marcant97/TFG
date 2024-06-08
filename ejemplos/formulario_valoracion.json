@@ -11,7 +11,7 @@
     },
     {
         "tipo": "casillaSeleccion",
-        "titulo": "¿Qué es lo que más te ha gustado?",
+        "titulo": "Indica lo que te ha gustado",
         "opciones": ["La calidad del producto", "El precio", "La atención al cliente", "La rapidez en la entrega", "Otro", "Nada"]
     },
     {

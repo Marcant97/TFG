@@ -14,5 +14,5 @@ class TuModelo(models.Model):
   eligetupeluqueroa = models.CharField(max_length=100, choices=[('Carlos', 'Carlos'),('Silvia', 'Silvia'),('Laura', 'Laura'),('Javier', 'Javier'),('Ana', 'Ana'),])
   eligelafechaparatucita = models.DateField()
   eligelahoraparatucita = models.CharField(max_length=100, choices=[('9:00', '9:00'),('10:00', '10:00'),('11:00', '11:00'),('12:00', '12:00'),('13:00', '13:00'),('16:00', '16:00'),('17:00', '17:00'),('18:00', '18:00'),('19:00', '19:00'),])
-  quserviciosdeseas = models.CharField(max_length=100, blank=True, null=True)
+  indicalosserviciosquedeseas = models.CharField(max_length=100, blank=True, null=True)
   indicasitienesalgunapeticinespecial = models.CharField(max_length=100)

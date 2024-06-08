@@ -4,7 +4,7 @@ from .models import TuModelo
 from django.utils import timezone
 from datetime import datetime
 class TuFormulario(forms.ModelForm):
-    opciones_quserviciosdeseas = [
+    opciones_indicalosserviciosquedeseas = [
         ('Corte de pelo', 'Corte de pelo'),
         ('Tinte', 'Tinte'),
         ('Peinado', 'Peinado'),
@@ -14,7 +14,7 @@ class TuFormulario(forms.ModelForm):
         ('Tratamiento capilar', 'Tratamiento capilar'),
         ('Otro', 'Otro'),
     ]
-    quserviciosdeseas = forms.MultipleChoiceField(label='¿Qué servicio/s deseas?', required=False, widget=forms.CheckboxSelectMultiple, choices=opciones_quserviciosdeseas)
+    indicalosserviciosquedeseas = forms.MultipleChoiceField(label='Indica los servicios que deseas', required=False, widget=forms.CheckboxSelectMultiple, choices=opciones_indicalosserviciosquedeseas)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         min_date_eligelafechaparatucita = datetime.strptime('01/01/2024', '%d/%m/%Y').strftime('%Y-%m-%d')
@@ -31,7 +31,7 @@ class TuFormulario(forms.ModelForm):
             'eligetupeluqueroa',
             'eligelafechaparatucita',
             'eligelahoraparatucita',
-            'quserviciosdeseas',
+            'indicalosserviciosquedeseas',
             'indicasitienesalgunapeticinespecial',
         ]
         labels = {

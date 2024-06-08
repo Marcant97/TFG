@@ -29,7 +29,7 @@
     },
     {
         "tipo": "casillaSeleccion",
-        "titulo": "¿Qué servicio/s deseas?",
+        "titulo": "Indica los servicios que deseas",
         "opciones": ["Corte de pelo", "Tinte", "Peinado", "Recogido", "Lavado", "Secado", "Tratamiento capilar", "Otro"]
     },
     {
