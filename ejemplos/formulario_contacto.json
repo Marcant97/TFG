@@ -1,0 +1,25 @@
+[
+    {
+        "tipo": "texto",
+        "titulo": "Introduce tu nombre"
+    },
+    {
+        "tipo": "email",
+        "titulo": "Introduce tu dirección de correo electrónico"
+    },
+    {
+        "tipo": "texto",
+        "titulo": "Asunto",
+        "limite": 30
+    },
+    {
+        "tipo": "texto",
+        "titulo": "Mensaje",
+        "limite": 500
+    },
+    {
+        "tipo": "casilla",
+        "titulo": "Acepto las condiciones de uso y la política de privacidad",
+        "obligatorio": true
+    }
+]

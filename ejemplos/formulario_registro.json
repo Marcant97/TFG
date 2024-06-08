@@ -1,0 +1,46 @@
+[
+    {
+        "tipo": "texto",
+        "titulo": "Introduce tu nombre y apellidos"
+    },
+    {
+        "tipo": "fecha",
+        "titulo": "Introduce tu fecha de nacimiento",
+        "ultimaFecha": "31/12/2005"
+    },
+    {
+        "tipo": "desplegable",
+        "titulo": "Elige tu género",
+        "opciones": ["Hombre", "Mujer", "Otro"]
+    },
+    {
+        "tipo": "dni",
+        "titulo": "Introduce tu DNI"
+    },
+    {
+        "tipo": "email",
+        "titulo": "Introduce tu dirección de correo electrónico"
+    },
+    {
+        "tipo": "telefono",
+        "titulo": "Introduce tu número de teléfono"
+    },
+    {
+        "tipo": "texto",
+        "titulo": "Introduce tu dirección"
+    },
+    {
+        "tipo": "numero",
+        "titulo": "Introduce tu código postal"
+    },
+    {
+        "tipo": "campoEspecial",
+        "titulo": "Introduce un nombre de usuario",
+        "expresionRegular": "^[a-zA-Z0-9_-]{3,16}$"
+    },
+    {
+        "tipo": "casilla",
+        "titulo": "Acepto las condiciones de uso y la política de privacidad",
+        "obligatorio": true
+    }
+]

@@ -1,0 +1,28 @@
+[
+    {
+        "tipo": "desplegable",
+        "titulo": "Selecciona tu rango de edad",
+        "opciones": ["Menos de 18 años", "18-24 años", "25-34 años", "35-44 años", "45-54 años", "55-64 años", "65-74 años", "75 años o más"]
+    },
+    {
+        "tipo": "desplegable",
+        "titulo": "Elige tu género",
+        "opciones": ["Hombre", "Mujer", "Otro"]
+    },
+    {
+        "tipo": "casillaSeleccion",
+        "titulo": "¿Qué es lo que más te ha gustado?",
+        "opciones": ["La calidad del producto", "El precio", "La atención al cliente", "La rapidez en la entrega", "Otro", "Nada"]
+    },
+    {
+        "tipo": "desplegable",
+        "titulo": "Elige del 1-10 tu grado de satisfacción",
+        "opciones": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    },
+    {
+        "tipo": "texto",
+        "titulo": "Déjanos tus sugerencias, felicitaciones o quejas",
+        "limite": 500
+    }
+]
+

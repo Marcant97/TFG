@@ -1,0 +1,40 @@
+[
+    {
+        "tipo": "texto",
+        "titulo": "Introduce tu nombre",
+        "limite": 30
+    },
+    {
+        "tipo": "email",
+        "titulo": "Introduce tu dirección de correo electrónico"
+    },
+    {
+        "tipo": "telefono",
+        "titulo": "Introduce tu número de teléfono"
+    },
+    {
+        "tipo": "desplegable",
+        "titulo": "Elige tu peluquero/a",
+        "opciones": ["Carlos", "Silvia", "Laura", "Javier", "Ana"]
+    },
+    {
+        "tipo": "fecha",
+        "titulo": "Elige la fecha para tu cita",
+        "primeraFecha": "01/01/2024"
+    },
+    {
+        "tipo": "desplegable",
+        "titulo": "Elige la hora para tu cita",
+        "opciones": ["9:00", "10:00", "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00"]
+    },
+    {
+        "tipo": "casillaSeleccion",
+        "titulo": "¿Qué servicio/s deseas?",
+        "opciones": ["Corte de pelo", "Tinte", "Peinado", "Recogido", "Lavado", "Secado", "Tratamiento capilar", "Otro"]
+    },
+    {
+        "tipo": "texto",
+        "titulo": "Indica si tienes alguna petición especial",
+        "limite": 100
+    }
+]
