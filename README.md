@@ -1,18 +1,18 @@
 # Generador de Código para la Automatización de la Creación de Formularios en Desarrollos Python
-Este repositorio contiene la herramienta desarrollada para el Trabajo de Fin de Grado del Grado en Ingeniería Informática.
-Se realizará un generador de código para la automatización de la creación de formularios en desarrollos Python.
+Este repositorio contiene asociado a la herramienta desarrollada para el Trabajo de Fin de Grado del Grado en Ingeniería Informática.
 
 #### Alumno: **Marco Antonio Barroso Hormiga**
 #### Tutora: **María Elena Sánchez Nielsen**
 
 ### Descripción:
 
-La herramienta desarrollada permite:
-1. Insertar un fichero en formato JSON con las preguntas del formulario siguiendo un formato determinado.
-2. Generar de forma interactiva un formulario
+El objetivo de este Trabajo Fin de Grado es la implementación de una herramienta que automatice la generación de código Python/Django para la creación de formularios. Esta aplicación toma como entrada ficheros en formato JSON. La herramienta desarrollada no solo se encargará de leer y procesar el fichero JSON
+de entrada, sino que también creará y configurará un proyecto Django al completo, inclu-
+yendo todos los componentes necesarios para que el formulario funcione correctamente.
+Esto incluye la creación de modelos, vistas y plantillas, así como la configuración de rutas
+y validaciones necesarias.
 
-Todo ello se realiza a través de una interfaz simple desarrollada con la librería Tkinter.
-El formulario se genera en un proyecto Django, que se crea y configura de forma automática. Por último, se arranca un servidor en modo desarrollo y una ventana del navegador con el formulario generado para poder visualizarlo.
+Todo ello se realiza a través de una interfaz gráfica simple desarrollada con la librería Tkinter. Por último, se inicia un servidor en modo desarrollo y se abre el navegador web por defecto para visualizar el formulario creado de forma automática.
 
 ### Rutas disponibles:
 
@@ -20,6 +20,21 @@ El formulario se genera en un proyecto Django, que se crea y configura de forma 
 - **/formulario**: Página donde se aloja el formulario creado.
 - **/admin**: Página de administración de Django. Credenciales del superusuario creado por defecto: Usuario: _admin_, Contraseña: _adminpass_
 - **/enviar**: Página de confirmación de envío del formulario.
+
+
+### Instrucciones de uso:
+Para usar el generador se dispone de 2 alternativas:
+
+1. En el directorio _/dist/inicio_ se encuentra el ejecutable de la aplicación. Para usarlo es necesario clonar la carpeta _\_internal_ así como el ejecutable.
+
+2. La otra opción consiste en clonar la carpeta _/src_ y ejecutar el archivo _inicio.py_.
+
+Para ambas opciones es necesario tener instalada una versión reciente de Python instalada en el sistema, así como una versión de Django. Además, sólo funciona para sistemas Windows.
+
+
+### Formularios de prueba y proyectos ya generados:
+
+En _/ejemplos_ se encuentra una serie de formularios diferentes a modo de ejemplo. Además, en _/dist/inicio\_proyecto\_django_ se encuentran los proyectos generados a partir de los formularios de ejemplo.
 
 
 ## Campos disponibles:
