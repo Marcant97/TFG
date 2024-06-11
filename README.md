@@ -1,5 +1,5 @@
 # Generador de Código para la Automatización de la Creación de Formularios en Desarrollos Python
-Este repositorio contiene asociado a la herramienta desarrollada para el Trabajo de Fin de Grado del Grado en Ingeniería Informática.
+Este repositorio contiene el código de la herramienta desarrollada para el Trabajo Fin de Grado del Grado en Ingeniería Informática.
 
 #### Alumno: **Marco Antonio Barroso Hormiga**
 #### Tutora: **María Elena Sánchez Nielsen**
